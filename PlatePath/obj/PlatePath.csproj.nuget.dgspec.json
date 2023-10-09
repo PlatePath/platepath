@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "D:\\uni\\platepath\\PlatePath\\PlatePath\\PlatePath.csproj": {}
+    "D:\\uni\\platepath\\PlatePath\\PlatePath.csproj": {}
   },
   "projects": {
-    "D:\\uni\\platepath\\PlatePath\\PlatePath\\PlatePath.csproj": {
+    "D:\\uni\\platepath\\PlatePath\\PlatePath.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\uni\\platepath\\PlatePath\\PlatePath\\PlatePath.csproj",
+        "projectUniqueName": "D:\\uni\\platepath\\PlatePath\\PlatePath.csproj",
         "projectName": "PlatePath",
-        "projectPath": "D:\\uni\\platepath\\PlatePath\\PlatePath\\PlatePath.csproj",
+        "projectPath": "D:\\uni\\platepath\\PlatePath\\PlatePath.csproj",
         "packagesPath": "C:\\Users\\merto\\.nuget\\packages\\",
-        "outputPath": "D:\\uni\\platepath\\PlatePath\\PlatePath\\obj\\",
+        "outputPath": "D:\\uni\\platepath\\PlatePath\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\merto\\AppData\\Roaming\\NuGet\\NuGet.Config",
@@ -67,29 +67,10 @@
             "net47",
             "net471",
             "net472",
-            "net48",
-            "net481"
+            "net48"
           ],
           "assetTargetFallback": true,
           "warn": true,
-          "downloadDependencies": [
-            {
-              "name": "Microsoft.AspNetCore.App.Ref",
-              "version": "[6.0.22, 6.0.22]"
-            },
-            {
-              "name": "Microsoft.NETCore.App.Host.win-x64",
-              "version": "[6.0.22, 6.0.22]"
-            },
-            {
-              "name": "Microsoft.NETCore.App.Ref",
-              "version": "[6.0.22, 6.0.22]"
-            },
-            {
-              "name": "Microsoft.WindowsDesktop.App.Ref",
-              "version": "[6.0.22, 6.0.22]"
-            }
-          ],
           "frameworkReferences": {
             "Microsoft.AspNetCore.App": {
               "privateAssets": "none"
@@ -98,7 +79,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.401\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.201\\RuntimeIdentifierGraph.json"
         }
       }
     }
