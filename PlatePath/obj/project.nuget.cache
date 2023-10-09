@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "2SoeXAbS17knBw4FcdNafxZAML3nCmAVJVABcDs2tGb+CljiXfau8VAKotwHpUTgSKOvNw4utFD3lVUmO06GDQ==",
+  "dgSpecHash": "sJELmAtgyrrB9NEslnbzy82l9dZpm7j8LFvdrVHvb4I210S2I3ouklZZHiVE1JURCzdQVIzqM+N6eVDUOpHd1A==",
   "success": true,
-  "projectFilePath": "D:\\uni\\platepath\\PlatePath\\PlatePath\\PlatePath.csproj",
+  "projectFilePath": "D:\\uni\\platepath\\PlatePath\\PlatePath.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\merto\\.nuget\\packages\\humanizer.core\\2.8.26\\humanizer.core.2.8.26.nupkg.sha512",
     "C:\\Users\\merto\\.nuget\\packages\\microsoft.aspnetcore.cryptography.internal\\6.0.3\\microsoft.aspnetcore.cryptography.internal.6.0.3.nupkg.sha512",
@@ -55,11 +55,7 @@
     "C:\\Users\\merto\\.nuget\\packages\\system.security.permissions\\4.7.0\\system.security.permissions.4.7.0.nupkg.sha512",
     "C:\\Users\\merto\\.nuget\\packages\\system.security.principal.windows\\4.7.0\\system.security.principal.windows.4.7.0.nupkg.sha512",
     "C:\\Users\\merto\\.nuget\\packages\\system.text.encoding.codepages\\4.7.0\\system.text.encoding.codepages.4.7.0.nupkg.sha512",
-    "C:\\Users\\merto\\.nuget\\packages\\system.windows.extensions\\4.7.0\\system.windows.extensions.4.7.0.nupkg.sha512",
-    "C:\\Users\\merto\\.nuget\\packages\\microsoft.netcore.app.ref\\6.0.22\\microsoft.netcore.app.ref.6.0.22.nupkg.sha512",
-    "C:\\Users\\merto\\.nuget\\packages\\microsoft.windowsdesktop.app.ref\\6.0.22\\microsoft.windowsdesktop.app.ref.6.0.22.nupkg.sha512",
-    "C:\\Users\\merto\\.nuget\\packages\\microsoft.aspnetcore.app.ref\\6.0.22\\microsoft.aspnetcore.app.ref.6.0.22.nupkg.sha512",
-    "C:\\Users\\merto\\.nuget\\packages\\microsoft.netcore.app.host.win-x64\\6.0.22\\microsoft.netcore.app.host.win-x64.6.0.22.nupkg.sha512"
+    "C:\\Users\\merto\\.nuget\\packages\\system.windows.extensions\\4.7.0\\system.windows.extensions.4.7.0.nupkg.sha512"
   ],
   "logs": []
 }
