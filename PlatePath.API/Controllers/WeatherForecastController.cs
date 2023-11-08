@@ -29,5 +29,11 @@ namespace PlatePath.API.Controllers
             })
             .ToArray();
         }
+
+        [HttpGet(Name = "Kuramiqnko")]
+        public string Kuramiqnko()
+        {
+            return "Kuramiqnko";
+        }
     }
 }

@@ -2,3 +2,4 @@
 [Oo]bj/
 *.suo
 node_modules
+*.dtbcache.v2
