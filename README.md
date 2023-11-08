@@ -5,4 +5,4 @@
 * Kaloyan Ognyanov Parvanov
 * Mertol Ademov Bekirov
 * Veselin Rumenov Inzov
-* Christian Diez Petrov
+* Kristian Diez Petrov
