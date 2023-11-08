@@ -1,3 +1,4 @@
 [Bb]in/
 [Oo]bj/
 *.suo
+node_modules
