@@ -2,4 +2,5 @@
 [Oo]bj/
 *.suo
 node_modules
+.idea/*
 *.dtbcache.v2
