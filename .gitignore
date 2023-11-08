@@ -3,3 +3,4 @@
 *.suo
 node_modules
 .idea/*
+*.dtbcache.v2
