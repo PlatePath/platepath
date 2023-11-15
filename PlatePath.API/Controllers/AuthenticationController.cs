@@ -29,8 +29,7 @@ namespace PlatePath.API.Controllers
             _configuration = configuration;
         }
 
-        [HttpPost]
-        [Route("login")]
+        [HttpPost("login")]
         public async Task<IActionResult> Login([FromBody] LoginUser loginUser)
         {
             var user = await _userManager.FindByNameAsync(loginUser.Username);
@@ -60,8 +59,7 @@ namespace PlatePath.API.Controllers
             return Unauthorized();
         }
 
-        [HttpPost]
-        [Route("register")]
+        [HttpPost("register")]
         public async Task<IActionResult> Register([FromBody] RegisterUser registerUser)
         {
             var userExists = await _userManager.FindByNameAsync(registerUser.Username);
@@ -80,11 +78,17 @@ namespace PlatePath.API.Controllers
                 var error = result.Errors.FirstOrDefault()?.Description;
                 return StatusCode(StatusCodes.Status500InternalServerError, new Response { Status = "Error", Message = $"Creating User failed! Error:{error}" });
             }
+
+            if (!await _roleManager.RoleExistsAsync(UserRoles.User))
+                await _roleManager.CreateAsync(new IdentityRole(UserRoles.User));
+
+            if (await _roleManager.RoleExistsAsync(UserRoles.User))
+                await _userManager.AddToRoleAsync(user, UserRoles.User);
+
             return Ok(new Response { Status = "Success", Message = "User created successfully!" });
         }
 
-        [HttpPost]
-        [Route("register-admin")]
+        [HttpPost("register-admin")]  
         public async Task<IActionResult> RegisterAdmin([FromBody] RegisterUser registerAdmin)
         {
             var userExists = await _userManager.FindByNameAsync(registerAdmin.Username);
