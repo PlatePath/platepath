@@ -64,7 +64,7 @@ namespace PlatePath.API.Controllers
         {
             var userExists = await _userManager.FindByNameAsync(registerUser.Username);
             if (userExists is not null)
-                return StatusCode(StatusCodes.Status500InternalServerError, new Response { Status = "Error", Message = "User already exists!" });
+                return StatusCode(StatusCodes.Status409Conflict, new Response { Status = "Error", Message = "User already exists!" });
 
             var user = new IdentityUser
             {
@@ -76,7 +76,7 @@ namespace PlatePath.API.Controllers
             if (!result.Succeeded)
             {
                 var error = result.Errors.FirstOrDefault()?.Description;
-                return StatusCode(StatusCodes.Status500InternalServerError, new Response { Status = "Error", Message = $"Creating User failed! Error:{error}" });
+                return StatusCode(StatusCodes.Status409Conflict, new Response { Status = "Error", Message = $"Creating User failed! Error:{error}" });
             }
 
             if (!await _roleManager.RoleExistsAsync(UserRoles.User))
@@ -103,7 +103,7 @@ namespace PlatePath.API.Controllers
             };
             var result = await _userManager.CreateAsync(user, registerAdmin.Password);
             if (!result.Succeeded)
-                return StatusCode(StatusCodes.Status500InternalServerError, new Response { Status = "Error", Message = "User creation failed! Please check user details and try again." });
+                return StatusCode(StatusCodes.Status409Conflict, new Response { Status = "Error", Message = "User creation failed! Please check user details and try again." });
 
             if (!await _roleManager.RoleExistsAsync(UserRoles.Admin))
                 await _roleManager.CreateAsync(new IdentityRole(UserRoles.Admin));
