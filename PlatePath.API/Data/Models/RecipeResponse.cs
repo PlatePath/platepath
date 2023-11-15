@@ -89,7 +89,15 @@ public class Ingredient
 
 public class NutrientsInfo
 {
-    // No info on this class, have to make a request to the API to see what it returns when searching for a real recipe
+    public Nutrient[]? Nutrients { get; set; }
+}
+
+public class Nutrient
+{
+    public string? Name { get; set; } // not exactly like in the response, has to be decided how to store this
+    public string? Label { get; set; }
+    public double Quantity { get; set; }
+    public string? Unit { get; set; }
 }
 
 public class Digest
