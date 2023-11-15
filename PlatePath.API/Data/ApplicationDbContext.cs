@@ -8,7 +8,5 @@ namespace PlatePath.API.Data
             : base(options)
         {
         }
-
-        public DbSet<Recipe> Recipes { get; set; }
     }
 }
