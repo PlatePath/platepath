@@ -1,5 +1,9 @@
 ﻿namespace PlatePath.API.Data.Models;
 
+/// <summary>
+/// Maps a response from Edamam's recipe search API (/api/recipes/v2).
+/// Documentation: https://developer.edamam.com/edamam-docs-recipe-api#/
+/// </summary>
 public class RecipeResponse
 {
     public int From { get; set; }
