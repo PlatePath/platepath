@@ -60,3 +60,7 @@ h6 {
 #__next {
   isolation: isolate;
 }
+a {
+  color: "inherit";
+  text-decoration: none;
+}
