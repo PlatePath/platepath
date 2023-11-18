@@ -8,12 +8,12 @@ namespace PlatePath.API.Data.Models.MealPlan;
 public class MealPlanResponse
 {
     public string? Status { get; set; }
-    public Selection? Selection { get; set; }
+    public Selection[]? Selection { get; set; }
 }
 
 public class Selection
 {
-    public Section[]? Sections { get; set; }
+    public Section? Sections { get; set; }
 }
 
 public class Section
