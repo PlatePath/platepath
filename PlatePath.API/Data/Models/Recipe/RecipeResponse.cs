@@ -15,7 +15,7 @@ public class RecipeResponse
 
 public class Hit
 {
-    public Recipe? Recipe { get; set; }
+    public RecipeDescription? Recipe { get; set; }
     public Links? Links { get; set; }
 }
 
@@ -31,7 +31,7 @@ public class Link
     public string? Title { get; set; }
 }
 
-public class Recipe
+public class RecipeDescription
 {
     public string? Uri { get; set; }
     public string? Label { get; set; }
