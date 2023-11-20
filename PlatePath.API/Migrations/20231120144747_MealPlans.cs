@@ -8,16 +8,6 @@ namespace PlatePath.API.Migrations
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.DeleteData(
-                table: "AspNetRoles",
-                keyColumn: "Id",
-                keyValue: "0f3b3216-bfed-4ad1-9c73-411d40765cc4");
-
-            migrationBuilder.DeleteData(
-                table: "AspNetRoles",
-                keyColumn: "Id",
-                keyValue: "a33c861c-48df-4b31-b974-3af58888f58f");
-
             migrationBuilder.CreateTable(
                 name: "MealPlans",
                 columns: table => new
@@ -54,16 +44,6 @@ namespace PlatePath.API.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
-            /*migrationBuilder.InsertData(
-                table: "AspNetRoles",
-                columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
-                values: new object[] { "655d0884-acdb-439f-8db4-dee281a30cee", "1", "Admin", "Admin" });
-
-            migrationBuilder.InsertData(
-                table: "AspNetRoles",
-                columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
-                values: new object[] { "a663d7c5-15fa-4e1d-9ff6-92516ace4e94", "2", "User", "User" });*/
-
             migrationBuilder.CreateIndex(
                 name: "IX_MealPlanRecipe_MealsId",
                 table: "MealPlanRecipe",
@@ -77,26 +57,6 @@ namespace PlatePath.API.Migrations
 
             migrationBuilder.DropTable(
                 name: "MealPlans");
-
-            migrationBuilder.DeleteData(
-                table: "AspNetRoles",
-                keyColumn: "Id",
-                keyValue: "655d0884-acdb-439f-8db4-dee281a30cee");
-
-            migrationBuilder.DeleteData(
-                table: "AspNetRoles",
-                keyColumn: "Id",
-                keyValue: "a663d7c5-15fa-4e1d-9ff6-92516ace4e94");
-
-            migrationBuilder.InsertData(
-                table: "AspNetRoles",
-                columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
-                values: new object[] { "0f3b3216-bfed-4ad1-9c73-411d40765cc4", "1", "Admin", "Admin" });
-
-            migrationBuilder.InsertData(
-                table: "AspNetRoles",
-                columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
-                values: new object[] { "a33c861c-48df-4b31-b974-3af58888f58f", "2", "User", "User" });
         }
     }
 }
