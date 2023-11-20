@@ -1,5 +1,7 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using PlatePath.API.Data.Models.MealPlans;
+
 
 namespace PlatePath.API.Data.Models.Recipes
 {
@@ -22,5 +24,7 @@ namespace PlatePath.API.Data.Models.Recipes
         public List<DietLabel> DietLabels { get; set; } = new();
         
         public List<Ingredient> Ingredients { get; set; } = new();
+
+        public List<MealPlan> MealPlans { get; set; } = new();
     }
 }
