@@ -1,7 +1,7 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace PlatePath.API.Data.Models.Recipes
+namespace PlatePath.API.Data.Models.Recipe
 {
     public class Recipe
     {

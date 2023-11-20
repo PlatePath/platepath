@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using PlatePath.API.Data.Models.Authentication;
-using PlatePath.API.Data.Models.Recipes;
+using PlatePath.API.Data.Models.Recipe;
 
 namespace PlatePath.API.Data
 {
