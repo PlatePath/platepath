@@ -3,7 +3,6 @@ using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using PlatePath.API.Data.Models.Authentication;
 using PlatePath.API.Data.Models.Recipes;
-using Ingredient = PlatePath.API.Data.Models.Ingredient;
 
 namespace PlatePath.API.Data
 {
@@ -25,8 +24,10 @@ namespace PlatePath.API.Data
 
         public DbSet<Recipe> Recipes { get; set; }
         
+        public DbSet<DietLabel> DietLabels { get; set; }
+        
         public DbSet<Ingredient> Ingredients { get; set; }
-
+        
         private static void SeedRoles(ModelBuilder builder, IConfiguration configuration)
         {
             var rolesSeedData = configuration.GetSection("RolesSeedData").Get<List<RoleSeedData>>();
