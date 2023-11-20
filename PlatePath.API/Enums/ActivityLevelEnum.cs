@@ -2,7 +2,7 @@
 {
     public enum ActivityLevelEnum
     {
-        Sedentary,
+        Sedentary = 1,
         LightlyActive,
         ModeratelyActive,
         VeryActive,

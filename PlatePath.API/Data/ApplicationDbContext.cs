@@ -61,14 +61,14 @@ namespace PlatePath.API.Data
 
         private static void SeedGenders(ModelBuilder builder, IConfiguration configuration)
         {
-            var gendersSeedData = configuration.GetSection("GendersSeedData").Get<List<Gender>>();
-
-            builder.Entity<Gender>().HasData(gendersSeedData.Select(gender =>
-                new Gender
-                {
-                    Name = gender.Name,
-                }
-            ));
+            builder.Entity<Gender>().HasData(Enum.GetValues(typeof(GenderEnum))
+                        .Cast<GenderEnum>()
+                        .Select(e => new Gender
+                        {
+                            Id = (int)e,
+                            Name = e.ToString()
+                        })
+                        .ToList());
         }
 
         private static void SeedActivityLevels(ModelBuilder builder, IConfiguration configuration)
@@ -77,6 +77,7 @@ namespace PlatePath.API.Data
                         .Cast<ActivityLevelEnum>()
                         .Select(e => new ActivityLevel
                         {
+                            Id = (int)e,
                             Name = e.ToString()
                         })
                         .ToList());
@@ -88,6 +89,7 @@ namespace PlatePath.API.Data
                         .Cast<WeightGoalEnum>()
                         .Select(e => new WeightGoal
                         {
+                            Id = (int)e,
                             Name = e.ToString()
                         })
                         .ToList());

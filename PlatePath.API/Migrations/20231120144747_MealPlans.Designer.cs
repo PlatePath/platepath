@@ -98,14 +98,14 @@ namespace PlatePath.API.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "655d0884-acdb-439f-8db4-dee281a30cee",
+                            Id = "16dfc99b-be89-4e30-9e1f-9feac6004bcc",
                             ConcurrencyStamp = "1",
                             Name = "Admin",
                             NormalizedName = "Admin"
                         },
                         new
                         {
-                            Id = "a663d7c5-15fa-4e1d-9ff6-92516ace4e94",
+                            Id = "4f9b2648-1d91-474a-9056-e94fec669481",
                             ConcurrencyStamp = "2",
                             Name = "User",
                             NormalizedName = "User"

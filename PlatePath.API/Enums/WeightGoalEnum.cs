@@ -2,7 +2,7 @@
 {
     public enum WeightGoalEnum
     {
-        LooseWeight,
+        LooseWeight = 1,
         MaintainWeight,
         GainWeight,
     }
