@@ -4,6 +4,7 @@
     {
         public string EdamamAppID { get; set; }
         public string EdamamAppKey { get; set; }
+        public string EdamamAccountUser { get; set; }
         public string EdamamMealPlanner { get; set; }
         public string EdamamRecipeSearch { get; set; }
         public string EdamamRecipeSearchURI { get; set; }

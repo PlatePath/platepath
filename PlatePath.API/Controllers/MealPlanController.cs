@@ -32,7 +32,6 @@ namespace PlatePath.API.Controllers
         public async Task<IActionResult> GenerateMealPlan([FromBody] LoginUser loginUser) //TODO add request params
         {
             var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-
             return Ok(await _edamamService.GenerateMealPlan()); //TODO add params
         }
     }
