@@ -1,11 +1,13 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using PlatePath.API.Data.Models;
 using PlatePath.API.Data.Models.Authentication;
 using PlatePath.API.Data.Models.Authentication.Login;
 using PlatePath.API.Data.Models.Authentication.SignUp;
+using PlatePath.API.Singleton;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
@@ -18,15 +20,15 @@ namespace PlatePath.API.Controllers
     {
         private readonly UserManager<IdentityUser> _userManager;
         private readonly RoleManager<IdentityRole> _roleManager;
-        private readonly IConfiguration _configuration;
+        private readonly Configuration _cfg;
 
         public AuthenticationController(UserManager<IdentityUser> userManager,
                                         RoleManager<IdentityRole> roleManager,
-                                        IConfiguration configuration)
+                                        IOptions<Configuration> cfg)
         {
             _userManager = userManager;
             _roleManager = roleManager;
-            _configuration = configuration;
+            _cfg = cfg.Value;
         }
 
         [HttpPost("login")]
@@ -88,7 +90,7 @@ namespace PlatePath.API.Controllers
             return Ok(new Response { Status = "Success", Message = "User created successfully!" });
         }
 
-        [HttpPost("register-admin")]  
+        [HttpPost("register-admin")]
         public async Task<IActionResult> RegisterAdmin([FromBody] RegisterUser registerAdmin)
         {
             var userExists = await _userManager.FindByNameAsync(registerAdmin.Username);
@@ -122,11 +124,11 @@ namespace PlatePath.API.Controllers
 
         private JwtSecurityToken GetToken(List<Claim> authClaims)
         {
-            var authSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["JWT:Secret"]));
+            var authSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_cfg.JWTConfig.Secret));
 
             var token = new JwtSecurityToken(
-                issuer: _configuration["JWT:ValidIssuer"],
-                audience: _configuration["JWT:ValidAudience"],
+                issuer: _cfg.JWTConfig.ValidIssuer,
+                audience: _cfg.JWTConfig.ValidAudience,
                 expires: DateTime.Now.AddHours(1),
                 claims: authClaims,
                 signingCredentials: new SigningCredentials(authSigningKey, SecurityAlgorithms.HmacSha256)

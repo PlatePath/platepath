@@ -1,8 +1,12 @@
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
+using PlatePath.API.Clients;
 using PlatePath.API.Data;
+using PlatePath.API.Services;
+using PlatePath.API.Singleton;
 using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -43,9 +47,9 @@ builder.Services.AddAuthentication(options =>
         ValidateAudience = true,
         ValidateLifetime = true,
         ValidateIssuerSigningKey = true,
-        ValidAudience = configuration["JWT:ValidAudience"],
-        ValidIssuer = configuration["JWT:ValidIssuer"],
-        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["JWT:Secret"]))
+        ValidAudience = configuration["Configuration:JWTConfig:ValidAudience"],
+        ValidIssuer = configuration["Configuration:JWTConfig:ValidIssuer"],
+        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["Configuration:JWTConfig:Secret"]))
     };
 });
 
@@ -53,6 +57,15 @@ builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+
+builder.Services.Configure<Configuration>(builder.Configuration.GetSection("Configuration"));
+builder.Configuration.AddJsonFile("appsettings.json");
+
+builder.Services.AddTransient<IAdminService, AdminService>();
+builder.Services.AddTransient<IEdamamService, EdamamService>();
+builder.Services.AddTransient<IForumService, ForumService>();
+builder.Services.AddTransient<IProfileService, ProfileService>();
+builder.Services.AddTransient<IEdamamClient, EdamamClient>();
 
 var app = builder.Build();
 
