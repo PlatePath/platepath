@@ -1,4 +1,4 @@
-namespace PlatePath.API.Data.Models.MealPlan;
+namespace PlatePath.API.Data.Models.MealPlans;
 
 /// <summary>
 /// Maps a response from Edamam's meal plan generation API (/api/meal-planner/v1/{app_id}/select).
