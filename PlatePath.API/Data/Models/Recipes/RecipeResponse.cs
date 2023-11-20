@@ -1,4 +1,4 @@
-﻿namespace PlatePath.API.Data.Models;
+﻿namespace PlatePath.API.Data.Models.Recipes;
 
 /// <summary>
 /// Maps a response from Edamam's recipe search API (/api/recipes/v2).
@@ -77,7 +77,7 @@ public class ImageInfo
     public int Height { get; set; }
 }
 
-public class Ingredient
+public class RecipeIngredient
 {
     public string? Text { get; set; }
     public double Quantity { get; set; }
