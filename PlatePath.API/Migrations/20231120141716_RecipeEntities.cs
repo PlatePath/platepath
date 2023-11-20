@@ -126,16 +126,6 @@ namespace PlatePath.API.Migrations
             migrationBuilder.DropTable(
                 name: "Ingredients");
 
-            migrationBuilder.DeleteData(
-                table: "AspNetRoles",
-                keyColumn: "Id",
-                keyValue: "0f3b3216-bfed-4ad1-9c73-411d40765cc4");
-
-            migrationBuilder.DeleteData(
-                table: "AspNetRoles",
-                keyColumn: "Id",
-                keyValue: "a33c861c-48df-4b31-b974-3af58888f58f");
-
             migrationBuilder.DropColumn(
                 name: "Carbohydrates",
                 table: "Recipes");
@@ -151,16 +141,6 @@ namespace PlatePath.API.Migrations
             migrationBuilder.DropColumn(
                 name: "Protein",
                 table: "Recipes");
-
-            migrationBuilder.InsertData(
-                table: "AspNetRoles",
-                columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
-                values: new object[] { "708bb177-3be9-4fb2-9073-1a064c141b2b", "1", "Admin", "Admin" });
-
-            migrationBuilder.InsertData(
-                table: "AspNetRoles",
-                columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
-                values: new object[] { "fb2f797f-1123-4c87-b46d-d1d96a9ae3a5", "2", "User", "User" });
         }
     }
 }
