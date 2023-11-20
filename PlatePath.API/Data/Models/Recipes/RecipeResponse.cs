@@ -1,4 +1,4 @@
-﻿namespace PlatePath.API.Data.Models.Recipe;
+﻿namespace PlatePath.API.Data.Models.Recipes;
 
 /// <summary>
 /// Maps a response from Edamam's recipe search API (/api/recipes/v2).
