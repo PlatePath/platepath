@@ -8,16 +8,6 @@ namespace PlatePath.API.Migrations
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.DeleteData(
-                table: "AspNetRoles",
-                keyColumn: "Id",
-                keyValue: "708bb177-3be9-4fb2-9073-1a064c141b2b");
-
-            migrationBuilder.DeleteData(
-                table: "AspNetRoles",
-                keyColumn: "Id",
-                keyValue: "fb2f797f-1123-4c87-b46d-d1d96a9ae3a5");
-            
             migrationBuilder.CreateTable(
                 name: "Recipes",
                 columns: table => new
@@ -110,16 +100,6 @@ namespace PlatePath.API.Migrations
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
-
-            /*migrationBuilder.InsertData(
-                table: "AspNetRoles",
-                columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
-                values: new object[] { "0f3b3216-bfed-4ad1-9c73-411d40765cc4", "1", "Admin", "Admin" });
-
-            migrationBuilder.InsertData(
-                table: "AspNetRoles",
-                columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
-                values: new object[] { "a33c861c-48df-4b31-b974-3af58888f58f", "2", "User", "User" });*/
 
             migrationBuilder.CreateIndex(
                 name: "IX_DietLabelRecipe_RecipesId",
