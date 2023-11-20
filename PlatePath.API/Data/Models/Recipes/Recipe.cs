@@ -2,6 +2,7 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using PlatePath.API.Data.Models.MealPlans;
 
+
 namespace PlatePath.API.Data.Models.Recipes
 {
     public class Recipe

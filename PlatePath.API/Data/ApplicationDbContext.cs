@@ -30,7 +30,7 @@ namespace PlatePath.API.Data
         public DbSet<Ingredient> Ingredients { get; set; }
         
         public DbSet<MealPlan> MealPlans { get; set; }
-        
+
         private static void SeedRoles(ModelBuilder builder, IConfiguration configuration)
         {
             var rolesSeedData = configuration.GetSection("RolesSeedData").Get<List<RoleSeedData>>();
