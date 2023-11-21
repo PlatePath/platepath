@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using PlatePath.API.Data;
 
@@ -11,9 +12,10 @@ using PlatePath.API.Data;
 namespace PlatePath.API.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20231121192836_AddIsBannedToUsers")]
+    partial class AddIsBannedToUsers
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -96,14 +98,14 @@ namespace PlatePath.API.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "305ab135-e39b-4e8a-a05d-a3f60cf5c501",
+                            Id = "9220310b-6be2-4c56-85c1-acd87a496480",
                             ConcurrencyStamp = "1",
                             Name = "Admin",
                             NormalizedName = "Admin"
                         },
                         new
                         {
-                            Id = "8155b3fc-550d-453c-9a2d-ff83209d805c",
+                            Id = "d791b77c-efae-4142-ad86-8c1ee44d1a82",
                             ConcurrencyStamp = "2",
                             Name = "User",
                             NormalizedName = "User"
@@ -260,90 +262,6 @@ namespace PlatePath.API.Migrations
                         });
                 });
 
-            modelBuilder.Entity("PlatePath.API.Data.Models.Forum.Comment", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
-
-                    b.Property<int?>("ParentCommentId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("PostId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Text")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("UserId")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ParentCommentId");
-
-                    b.HasIndex("PostId");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("Comments");
-                });
-
-            modelBuilder.Entity("PlatePath.API.Data.Models.Forum.Like", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
-
-                    b.Property<int>("CommentId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("PostId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("UserId")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("CommentId");
-
-                    b.HasIndex("PostId");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("Likes");
-                });
-
-            modelBuilder.Entity("PlatePath.API.Data.Models.Forum.Post", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
-
-                    b.Property<string>("Description")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Title")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("UserId")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("Posts");
-                });
-
             modelBuilder.Entity("PlatePath.API.Data.Models.Genders.Gender", b =>
                 {
                     b.Property<int>("Id")
@@ -456,9 +374,6 @@ namespace PlatePath.API.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("PostId")
-                        .HasColumnType("int");
-
                     b.Property<double>("Protein")
                         .HasColumnType("float");
 
@@ -466,10 +381,6 @@ namespace PlatePath.API.Migrations
                         .HasColumnType("nvarchar(450)");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("PostId")
-                        .IsUnique()
-                        .HasFilter("[PostId] IS NOT NULL");
 
                     b.HasIndex("UserId");
 
@@ -710,63 +621,6 @@ namespace PlatePath.API.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("PlatePath.API.Data.Models.Forum.Comment", b =>
-                {
-                    b.HasOne("PlatePath.API.Data.Models.Forum.Comment", "ParentComment")
-                        .WithMany("ChildComments")
-                        .HasForeignKey("ParentCommentId");
-
-                    b.HasOne("PlatePath.API.Data.Models.Forum.Post", "Post")
-                        .WithMany("Comments")
-                        .HasForeignKey("PostId")
-                        .OnDelete(DeleteBehavior.NoAction)
-                        .IsRequired();
-
-                    b.HasOne("PlatePath.API.Data.Models.Users.User", "User")
-                        .WithMany("Comments")
-                        .HasForeignKey("UserId");
-
-                    b.Navigation("ParentComment");
-
-                    b.Navigation("Post");
-
-                    b.Navigation("User");
-                });
-
-            modelBuilder.Entity("PlatePath.API.Data.Models.Forum.Like", b =>
-                {
-                    b.HasOne("PlatePath.API.Data.Models.Forum.Comment", "Comment")
-                        .WithMany("Likes")
-                        .HasForeignKey("CommentId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("PlatePath.API.Data.Models.Forum.Post", "Post")
-                        .WithMany("Likes")
-                        .HasForeignKey("PostId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("PlatePath.API.Data.Models.Users.User", "User")
-                        .WithMany("Likes")
-                        .HasForeignKey("UserId");
-
-                    b.Navigation("Comment");
-
-                    b.Navigation("Post");
-
-                    b.Navigation("User");
-                });
-
-            modelBuilder.Entity("PlatePath.API.Data.Models.Forum.Post", b =>
-                {
-                    b.HasOne("PlatePath.API.Data.Models.Users.User", "User")
-                        .WithMany("Posts")
-                        .HasForeignKey("UserId");
-
-                    b.Navigation("User");
-                });
-
             modelBuilder.Entity("PlatePath.API.Data.Models.MealPlans.MealPlan", b =>
                 {
                     b.HasOne("PlatePath.API.Data.Models.Users.User", null)
@@ -776,16 +630,9 @@ namespace PlatePath.API.Migrations
 
             modelBuilder.Entity("PlatePath.API.Data.Models.Recipes.Recipe", b =>
                 {
-                    b.HasOne("PlatePath.API.Data.Models.Forum.Post", "Post")
-                        .WithOne("Recipe")
-                        .HasForeignKey("PlatePath.API.Data.Models.Recipes.Recipe", "PostId")
-                        .OnDelete(DeleteBehavior.NoAction);
-
                     b.HasOne("PlatePath.API.Data.Models.Users.User", null)
                         .WithMany("Recipes")
                         .HasForeignKey("UserId");
-
-                    b.Navigation("Post");
                 });
 
             modelBuilder.Entity("PlatePath.API.Data.Models.Users.User", b =>
@@ -815,32 +662,9 @@ namespace PlatePath.API.Migrations
                     b.Navigation("WeightGoal");
                 });
 
-            modelBuilder.Entity("PlatePath.API.Data.Models.Forum.Comment", b =>
-                {
-                    b.Navigation("ChildComments");
-
-                    b.Navigation("Likes");
-                });
-
-            modelBuilder.Entity("PlatePath.API.Data.Models.Forum.Post", b =>
-                {
-                    b.Navigation("Comments");
-
-                    b.Navigation("Likes");
-
-                    b.Navigation("Recipe")
-                        .IsRequired();
-                });
-
             modelBuilder.Entity("PlatePath.API.Data.Models.Users.User", b =>
                 {
-                    b.Navigation("Comments");
-
-                    b.Navigation("Likes");
-
                     b.Navigation("MealPlans");
-
-                    b.Navigation("Posts");
 
                     b.Navigation("Recipes");
                 });
