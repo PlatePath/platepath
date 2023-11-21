@@ -8,7 +8,7 @@ namespace PlatePath.API.Data.Models.MealPlans;
 public class MealPlanResponse
 {
     public string? status { get; set; }
-    public List<Selection> selections { get; set; }
+    public List<Selection> selection { get; set; }
 }
 
 public class Selection
@@ -27,4 +27,5 @@ public class ResponseSections
 
 public class ResponseMeal
 {
+    public string? assigned { get; set; }
 }
