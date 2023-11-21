@@ -26,9 +26,9 @@ namespace PlatePath.API.Data
         {
             base.OnModelCreating(builder);
             SeedRoles(builder, _configuration);
-            SeedGenders(builder, _configuration);
-            SeedActivityLevels(builder, _configuration);
-            SeedWeightGoals(builder, _configuration);
+            SeedGenders(builder);
+            SeedActivityLevels(builder);
+            SeedWeightGoals(builder);
         }
 
         public DbSet<Recipe> Recipes { get; set; }
@@ -59,7 +59,7 @@ namespace PlatePath.API.Data
             ));
         }
 
-        private static void SeedGenders(ModelBuilder builder, IConfiguration configuration)
+        private static void SeedGenders(ModelBuilder builder)
         {
             builder.Entity<Gender>().HasData(Enum.GetValues(typeof(GenderEnum))
                         .Cast<GenderEnum>()
@@ -71,7 +71,7 @@ namespace PlatePath.API.Data
                         .ToList());
         }
 
-        private static void SeedActivityLevels(ModelBuilder builder, IConfiguration configuration)
+        private static void SeedActivityLevels(ModelBuilder builder)
         {
             builder.Entity<ActivityLevel>().HasData(Enum.GetValues(typeof(ActivityLevelEnum))
                         .Cast<ActivityLevelEnum>()
@@ -83,7 +83,7 @@ namespace PlatePath.API.Data
                         .ToList());
         }
 
-        private static void SeedWeightGoals(ModelBuilder builder, IConfiguration configuration)
+        private static void SeedWeightGoals(ModelBuilder builder)
         {
             builder.Entity<WeightGoal>().HasData(Enum.GetValues(typeof(WeightGoalEnum))
                         .Cast<WeightGoalEnum>()

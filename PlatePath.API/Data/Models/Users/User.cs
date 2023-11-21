@@ -23,7 +23,7 @@ namespace PlatePath.API.Data.Models.Users
 
         public double? HeightCm { get; set; }
 
-        public double? WeightCm { get; set; }
+        public double? WeightKg { get; set; }
 
         public double? NeededCalories { get; set; }
 
