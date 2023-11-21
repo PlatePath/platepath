@@ -16,9 +16,10 @@ using System.Text;
 
 namespace PlatePath.API.Controllers
 {
-    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+
     [ApiController]
     [Route("api/mealplan")]
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     public class MealPlanController : ControllerBase
     {
         readonly IEdamamService _edamamService;
@@ -29,6 +30,7 @@ namespace PlatePath.API.Controllers
         }
 
         [HttpPost("generate")]
+        [Authorize(Roles = "User")]
         public async Task<IActionResult> GenerateMealPlan([FromBody] LoginUser loginUser) //TODO add request params
         {
             var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;

@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
+using Microsoft.OpenApi.Models;
 using PlatePath.API.Clients;
 using PlatePath.API.Data;
 using PlatePath.API.Services;
@@ -56,7 +57,38 @@ builder.Services.AddAuthentication(options =>
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+builder.Services.AddSwaggerGen(c => {
+    c.SwaggerDoc("v1", new OpenApiInfo
+    {
+        Title = "JWTToken_Auth_API",
+        Version = "v1"
+    });
+    c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme()
+    {
+        Name = "Authorization",
+        Type = SecuritySchemeType.ApiKey,
+        Scheme = "Bearer",
+        BearerFormat = "JWT",
+        In = ParameterLocation.Header,
+        Description = "JWT Bearer Authorization header. \r\n\r\n Enter 'Bearer' then insert the token. \r\n\r\n Example: \"Bearer 1safsfsdfdfd\"",
+    });
+    c.AddSecurityRequirement(new OpenApiSecurityRequirement {
+        {
+            new OpenApiSecurityScheme {
+                Reference = new OpenApiReference {
+                    Type = ReferenceType.SecurityScheme,
+                        Id = "Bearer"
+                }
+            },
+            new string[] {}
+        }
+    });
+});
+
+builder.Services.AddLogging(builder =>
+{
+    builder.AddEventLog();
+});
 
 builder.Services.Configure<Configuration>(builder.Configuration.GetSection("Configuration"));
 builder.Configuration.AddJsonFile("appsettings.json");
@@ -90,6 +122,8 @@ app.UseAuthorization();
 app.UseAuthentication();
 
 app.MapControllers();
+
+app.UseStatusCodePages();
 
 
 app.Run();

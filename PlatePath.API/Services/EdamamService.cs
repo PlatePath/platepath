@@ -6,12 +6,13 @@ namespace PlatePath.API.Services
 {
     public class EdamamService : IEdamamService
     {
-        readonly Configuration _cfg;
         readonly IEdamamClient _edamamClient;
-
-        public EdamamService(IEdamamClient edamamClient, IOptions<Configuration> cfg)
+        readonly ILogger<EdamamService> _logger;
+        readonly Configuration _cfg;
+        public EdamamService(IEdamamClient edamamClient, ILogger<EdamamService> logger, IOptions<Configuration> cfg)
         {
             _edamamClient = edamamClient;
+            _logger = logger;
             _cfg = cfg.Value;
         }
 

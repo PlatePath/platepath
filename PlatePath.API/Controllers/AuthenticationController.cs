@@ -6,6 +6,7 @@ using PlatePath.API.Data.Models;
 using PlatePath.API.Data.Models.Authentication;
 using PlatePath.API.Data.Models.Authentication.Login;
 using PlatePath.API.Data.Models.Authentication.SignUp;
+using PlatePath.API.Services;
 using PlatePath.API.Singleton;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
@@ -17,16 +18,19 @@ namespace PlatePath.API.Controllers
     [Route("api/authenticate")]
     public class AuthenticationController : ControllerBase
     {
-        private readonly UserManager<IdentityUser> _userManager;
-        private readonly RoleManager<IdentityRole> _roleManager;
-        private readonly Configuration _cfg;
+        readonly UserManager<IdentityUser> _userManager;
+        readonly RoleManager<IdentityRole> _roleManager;
+        readonly ILogger<EdamamService> _logger;
+        readonly Configuration _cfg;
 
         public AuthenticationController(UserManager<IdentityUser> userManager,
                                         RoleManager<IdentityRole> roleManager,
+                                        ILogger<EdamamService> logger,
                                         IOptions<Configuration> cfg)
         {
             _userManager = userManager;
             _roleManager = roleManager;
+            _logger = logger;
             _cfg = cfg.Value;
         }
 

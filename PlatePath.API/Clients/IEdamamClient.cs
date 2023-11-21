@@ -1,12 +1,15 @@
-﻿namespace PlatePath.API.Clients
+﻿using PlatePath.API.Data.Models.MealPlans;
+using PlatePath.API.Data.Models.Recipes;
+
+namespace PlatePath.API.Clients
 {
     public interface IEdamamClient
     {
-        Task<string?> GenerateMealPlan(string request);
+        Task<MealPlanResponse?> GenerateMealPlan(string request);
 
-        Task<string?> GetRecipeInfoByURI(string request);
+        Task<RecipeResponse?> GetRecipeInfoByURI(string request);
 
-        Task<string?> GetRecipeInfo(string request);
+        Task<RecipeResponse?> GetRecipeInfo(string request);
 
         Task<string?> GetNutritionData(string request);
     }
