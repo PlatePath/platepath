@@ -12,8 +12,8 @@ using PlatePath.API.Data;
 namespace PlatePath.API.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20231120144747_MealPlans")]
-    partial class MealPlans
+    [Migration("20231121190824_AddEdamamIdToRecipes")]
+    partial class AddEdamamIdToRecipes
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -98,14 +98,14 @@ namespace PlatePath.API.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "16dfc99b-be89-4e30-9e1f-9feac6004bcc",
+                            Id = "305ab135-e39b-4e8a-a05d-a3f60cf5c501",
                             ConcurrencyStamp = "1",
                             Name = "Admin",
                             NormalizedName = "Admin"
                         },
                         new
                         {
-                            Id = "4f9b2648-1d91-474a-9056-e94fec669481",
+                            Id = "8155b3fc-550d-453c-9a2d-ff83209d805c",
                             ConcurrencyStamp = "2",
                             Name = "User",
                             NormalizedName = "User"
@@ -135,71 +135,6 @@ namespace PlatePath.API.Migrations
                     b.HasIndex("RoleId");
 
                     b.ToTable("AspNetRoleClaims", (string)null);
-                });
-
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUser", b =>
-                {
-                    b.Property<string>("Id")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<int>("AccessFailedCount")
-                        .HasColumnType("int");
-
-                    b.Property<string>("ConcurrencyStamp")
-                        .IsConcurrencyToken()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Email")
-                        .HasMaxLength(256)
-                        .HasColumnType("nvarchar(256)");
-
-                    b.Property<bool>("EmailConfirmed")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("LockoutEnabled")
-                        .HasColumnType("bit");
-
-                    b.Property<DateTimeOffset?>("LockoutEnd")
-                        .HasColumnType("datetimeoffset");
-
-                    b.Property<string>("NormalizedEmail")
-                        .HasMaxLength(256)
-                        .HasColumnType("nvarchar(256)");
-
-                    b.Property<string>("NormalizedUserName")
-                        .HasMaxLength(256)
-                        .HasColumnType("nvarchar(256)");
-
-                    b.Property<string>("PasswordHash")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("PhoneNumber")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<bool>("PhoneNumberConfirmed")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("SecurityStamp")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<bool>("TwoFactorEnabled")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("UserName")
-                        .HasMaxLength(256)
-                        .HasColumnType("nvarchar(256)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("NormalizedEmail")
-                        .HasDatabaseName("EmailIndex");
-
-                    b.HasIndex("NormalizedUserName")
-                        .IsUnique()
-                        .HasDatabaseName("UserNameIndex")
-                        .HasFilter("[NormalizedUserName] IS NOT NULL");
-
-                    b.ToTable("AspNetUsers", (string)null);
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
@@ -283,6 +218,79 @@ namespace PlatePath.API.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
+            modelBuilder.Entity("PlatePath.API.Data.Models.ActivityLevels.ActivityLevel", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("ActivityLevel");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Name = "Sedentary"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Name = "LightlyActive"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            Name = "ModeratelyActive"
+                        },
+                        new
+                        {
+                            Id = 4,
+                            Name = "VeryActive"
+                        },
+                        new
+                        {
+                            Id = 5,
+                            Name = "ExtraActive"
+                        });
+                });
+
+            modelBuilder.Entity("PlatePath.API.Data.Models.Genders.Gender", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Genders");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Name = "Male"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Name = "Female"
+                        });
+                });
+
             modelBuilder.Entity("PlatePath.API.Data.Models.MealPlans.MealPlan", b =>
                 {
                     b.Property<int>("Id")
@@ -291,7 +299,12 @@ namespace PlatePath.API.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
+                    b.Property<string>("UserId")
+                        .HasColumnType("nvarchar(450)");
+
                     b.HasKey("Id");
+
+                    b.HasIndex("UserId");
 
                     b.ToTable("MealPlans");
                 });
@@ -348,6 +361,9 @@ namespace PlatePath.API.Migrations
                     b.Property<double>("Carbohydrates")
                         .HasColumnType("float");
 
+                    b.Property<string>("EdamamId")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<double>("EnergyKcal")
                         .HasColumnType("float");
 
@@ -361,9 +377,149 @@ namespace PlatePath.API.Migrations
                     b.Property<double>("Protein")
                         .HasColumnType("float");
 
+                    b.Property<string>("UserId")
+                        .HasColumnType("nvarchar(450)");
+
                     b.HasKey("Id");
 
+                    b.HasIndex("UserId");
+
                     b.ToTable("Recipes");
+                });
+
+            modelBuilder.Entity("PlatePath.API.Data.Models.Users.User", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<int>("AccessFailedCount")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ActivityLevelId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("Age")
+                        .HasColumnType("int");
+
+                    b.Property<string>("ConcurrencyStamp")
+                        .IsConcurrencyToken()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Email")
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
+
+                    b.Property<bool>("EmailConfirmed")
+                        .HasColumnType("bit");
+
+                    b.Property<int>("GenderId")
+                        .HasColumnType("int");
+
+                    b.Property<double?>("HeightCm")
+                        .HasColumnType("float");
+
+                    b.Property<bool>("LockoutEnabled")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTimeOffset?>("LockoutEnd")
+                        .HasColumnType("datetimeoffset");
+
+                    b.Property<double?>("NeededCalories")
+                        .HasColumnType("float");
+
+                    b.Property<double?>("NeededCarbs")
+                        .HasColumnType("float");
+
+                    b.Property<double?>("NeededFats")
+                        .HasColumnType("float");
+
+                    b.Property<double?>("NeededProtein")
+                        .HasColumnType("float");
+
+                    b.Property<string>("NormalizedEmail")
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
+
+                    b.Property<string>("NormalizedUserName")
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
+
+                    b.Property<string>("PasswordHash")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("PhoneNumber")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("PhoneNumberConfirmed")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("SecurityStamp")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("TwoFactorEnabled")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("UserName")
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
+
+                    b.Property<int>("WeightGoalId")
+                        .HasColumnType("int");
+
+                    b.Property<double?>("WeightKg")
+                        .HasColumnType("float");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ActivityLevelId");
+
+                    b.HasIndex("GenderId");
+
+                    b.HasIndex("NormalizedEmail")
+                        .HasDatabaseName("EmailIndex");
+
+                    b.HasIndex("NormalizedUserName")
+                        .IsUnique()
+                        .HasDatabaseName("UserNameIndex")
+                        .HasFilter("[NormalizedUserName] IS NOT NULL");
+
+                    b.HasIndex("WeightGoalId");
+
+                    b.ToTable("AspNetUsers", (string)null);
+                });
+
+            modelBuilder.Entity("PlatePath.API.Data.Models.WeightGoals.WeightGoal", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("WeightGoal");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Name = "LooseWeight"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Name = "MaintainWeight"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            Name = "GainWeight"
+                        });
                 });
 
             modelBuilder.Entity("DietLabelRecipe", b =>
@@ -422,7 +578,7 @@ namespace PlatePath.API.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
                 {
-                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", null)
+                    b.HasOne("PlatePath.API.Data.Models.Users.User", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -431,7 +587,7 @@ namespace PlatePath.API.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<string>", b =>
                 {
-                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", null)
+                    b.HasOne("PlatePath.API.Data.Models.Users.User", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -446,7 +602,7 @@ namespace PlatePath.API.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", null)
+                    b.HasOne("PlatePath.API.Data.Models.Users.User", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -455,11 +611,59 @@ namespace PlatePath.API.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
                 {
-                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", null)
+                    b.HasOne("PlatePath.API.Data.Models.Users.User", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("PlatePath.API.Data.Models.MealPlans.MealPlan", b =>
+                {
+                    b.HasOne("PlatePath.API.Data.Models.Users.User", null)
+                        .WithMany("MealPlans")
+                        .HasForeignKey("UserId");
+                });
+
+            modelBuilder.Entity("PlatePath.API.Data.Models.Recipes.Recipe", b =>
+                {
+                    b.HasOne("PlatePath.API.Data.Models.Users.User", null)
+                        .WithMany("Recipes")
+                        .HasForeignKey("UserId");
+                });
+
+            modelBuilder.Entity("PlatePath.API.Data.Models.Users.User", b =>
+                {
+                    b.HasOne("PlatePath.API.Data.Models.ActivityLevels.ActivityLevel", "ActivityLevel")
+                        .WithMany()
+                        .HasForeignKey("ActivityLevelId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("PlatePath.API.Data.Models.Genders.Gender", "Gender")
+                        .WithMany()
+                        .HasForeignKey("GenderId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("PlatePath.API.Data.Models.WeightGoals.WeightGoal", "WeightGoal")
+                        .WithMany()
+                        .HasForeignKey("WeightGoalId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("ActivityLevel");
+
+                    b.Navigation("Gender");
+
+                    b.Navigation("WeightGoal");
+                });
+
+            modelBuilder.Entity("PlatePath.API.Data.Models.Users.User", b =>
+                {
+                    b.Navigation("MealPlans");
+
+                    b.Navigation("Recipes");
                 });
 #pragma warning restore 612, 618
         }

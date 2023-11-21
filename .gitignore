@@ -9,3 +9,4 @@ node_modules
 *.lock
 *.v2
 /.vs/ProjectEvaluation
+*vs
