@@ -21,7 +21,7 @@ namespace PlatePath.API.Clients
             _cfg = cfg.Value;
         }
 
-        public async Task<MealPlanResponse?> GenerateMealPlan(string request)  // todo add request body
+        public async Task<MealPlanResponse?> GenerateMealPlan(MealPlanRequest request)  // todo add request body
         {
             //var retryPolicy = Policy
             //    .Handle<HttpRequestException>()
@@ -56,7 +56,7 @@ namespace PlatePath.API.Clients
             var httpClient = new HttpClient();
 
             HttpResponseMessage httpResponse = await policyWrap.ExecuteAsync(async () =>
-                 await httpClient.PostAsJsonAsync(StringifyURL(), new MealPlanResponse())); // todo add request body
+                 await httpClient.PostAsJsonAsync(StringifyURL(), request));
 
             MealPlanResponse? mealPlanResponse = null;
 

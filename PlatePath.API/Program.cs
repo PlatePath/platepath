@@ -6,6 +6,7 @@ using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using PlatePath.API.Clients;
 using PlatePath.API.Data;
+using PlatePath.API.Data.Models.Users;
 using PlatePath.API.Services;
 using PlatePath.API.Singleton;
 using System.Text;
@@ -25,7 +26,7 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlServer(connectionString));
 
 // Identity
-builder.Services.AddIdentity<IdentityUser, IdentityRole>()    
+builder.Services.AddIdentity<User, IdentityRole>()    
     .AddEntityFrameworkStores<ApplicationDbContext>()
     .AddDefaultTokenProviders();
 

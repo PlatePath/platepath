@@ -5,7 +5,7 @@ namespace PlatePath.API.Clients
 {
     public interface IEdamamClient
     {
-        Task<MealPlanResponse?> GenerateMealPlan(string request);
+        Task<MealPlanResponse?> GenerateMealPlan(MealPlanRequest request);
 
         Task<RecipeResponse?> GetRecipeInfoByURI(string request);
 

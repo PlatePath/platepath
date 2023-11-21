@@ -3,9 +3,11 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using PlatePath.API.Data.Models;
+using PlatePath.API.Data.Models.ActivityLevels;
 using PlatePath.API.Data.Models.Authentication;
 using PlatePath.API.Data.Models.Authentication.Login;
 using PlatePath.API.Data.Models.Authentication.SignUp;
+using PlatePath.API.Data.Models.Users;
 using PlatePath.API.Services;
 using PlatePath.API.Singleton;
 using System.IdentityModel.Tokens.Jwt;
@@ -18,12 +20,12 @@ namespace PlatePath.API.Controllers
     [Route("api/authenticate")]
     public class AuthenticationController : ControllerBase
     {
-        readonly UserManager<IdentityUser> _userManager;
+        readonly UserManager<User> _userManager;
         readonly RoleManager<IdentityRole> _roleManager;
         readonly ILogger<EdamamService> _logger;
         readonly Configuration _cfg;
 
-        public AuthenticationController(UserManager<IdentityUser> userManager,
+        public AuthenticationController(UserManager<User> userManager,
                                         RoleManager<IdentityRole> roleManager,
                                         ILogger<EdamamService> logger,
                                         IOptions<Configuration> cfg)
@@ -71,13 +73,39 @@ namespace PlatePath.API.Controllers
             if (userExists is not null)
                 return StatusCode(StatusCodes.Status409Conflict, new Response { Status = "Error", Message = "User already exists!" });
 
-            var user = new IdentityUser
+            //var weightGoal = _context.WeightGoals.Find(newUserDto.WeightGoalId);
+            //var activityLevel = _context.ActivityLevels.Find(newUserDto.ActivityLevelId);
+            //var gender = _context.Genders.Find(newUserDto.GenderId);
+
+            //// Create a new User object
+            //var user = new User
+            //{
+            //    Email = registerUser.Email,
+            //    SecurityStamp = Guid.NewGuid().ToString(),
+            //    UserName = registerUser.Username,
+            //    Age = newUserDto.Age,
+            //    HeightCm = newUserDto.HeightCm,
+            //    WeightKg = newUserDto.WeightKg,
+            //    NeededCalories = newUserDto.NeededCalories,
+            //    NeededFats = newUserDto.NeededFats,
+            //    NeededCarbs = newUserDto.NeededCarbs,
+            //    NeededProtein = newUserDto.NeededProtein,
+
+            //    // Set the WeightGoal, ActivityLevel, and Gender properties
+            //    WeightGoal = weightGoal,
+            //    ActivityLevel = activityLevel,
+            //    Gender = gender
+            //};
+
+            var user = new User
             {
                 Email = registerUser.Email,
                 SecurityStamp = Guid.NewGuid().ToString(),
                 UserName = registerUser.Username
             };
+
             var result = await _userManager.CreateAsync(user, registerUser.Password);
+
             if (!result.Succeeded)
             {
                 var error = result.Errors.FirstOrDefault()?.Description;
@@ -100,7 +128,7 @@ namespace PlatePath.API.Controllers
             if (userExists is not null)
                 return StatusCode(StatusCodes.Status409Conflict, new Response { Status = "Error", Message = "User already exists!" });
 
-            var user = new IdentityUser
+            var user = new User
             {
                 Email = registerAdmin.Email,
                 SecurityStamp = Guid.NewGuid().ToString(),

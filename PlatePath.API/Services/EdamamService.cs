@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.Options;
 using PlatePath.API.Clients;
+using PlatePath.API.Data.Models.MealPlans;
 using PlatePath.API.Singleton;
 
 namespace PlatePath.API.Services
@@ -16,12 +17,12 @@ namespace PlatePath.API.Services
             _cfg = cfg.Value;
         }
 
-        public async Task<string> GenerateMealPlan() //TODO add params
+        public async Task<string> GenerateMealPlan(MealPlanRequest request) //TODO add params
         {
             //TODO struct edamam request for meal plan from params
             var edamamRequest = "";
 
-            var edamamResponse = await _edamamClient.GenerateMealPlan(edamamRequest);
+            var edamamResponse = await _edamamClient.GenerateMealPlan(request);
 
             //TODO get the mealURIs from the response and call the next edamam api
 
