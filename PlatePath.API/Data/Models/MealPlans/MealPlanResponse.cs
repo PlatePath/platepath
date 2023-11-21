@@ -7,17 +7,24 @@ namespace PlatePath.API.Data.Models.MealPlans;
 /// </summary>
 public class MealPlanResponse
 {
-    public string? Status { get; set; }
-    public Selection[]? Selection { get; set; }
+    public string? status { get; set; }
+    public List<Selection> selections { get; set; }
 }
 
 public class Selection
 {
-    public Section? Sections { get; set; }
+    public ResponseSections sections { get; set; }
 }
 
-public class Section
+public class ResponseSections
 {
-    public string? AssignedUrl { get; set; }
-    public Section? ChildSection { get; set; }
+    public ResponseMeal Meal1 { get; set; }
+    public ResponseMeal Meal2 { get; set; }
+    public ResponseMeal Meal3 { get; set; }
+    public ResponseMeal Meal4 { get; set; }
+    public ResponseMeal Meal5 { get; set; }
+}
+
+public class ResponseMeal
+{
 }

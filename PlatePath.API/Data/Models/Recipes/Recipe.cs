@@ -11,6 +11,8 @@ namespace PlatePath.API.Data.Models.Recipes
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
         
+        public string? EdamamId { get; set; }
+        
         public string Name { get; set; }
         
         public double EnergyKcal { get; set; }
