@@ -99,6 +99,8 @@ builder.Services.AddTransient<IForumService, ForumService>();
 builder.Services.AddTransient<IProfileService, ProfileService>();
 builder.Services.AddTransient<IEdamamClient, EdamamClient>();
 
+builder.Services.AddHttpContextAccessor();
+
 var app = builder.Build();
 
 using (var scope = app.Services.CreateScope())

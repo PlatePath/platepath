@@ -12,13 +12,11 @@ namespace PlatePath.API.Clients
 {
     public class EdamamClient : IEdamamClient
     {
-        readonly IHttpClientFactory _httpClientFactory;
         readonly ILogger<EdamamService> _logger;
         readonly Configuration _cfg;
 
-        public EdamamClient(IHttpClientFactory httpClientFactory, ILogger<EdamamService> logger, IOptions<Configuration> cfg)
+        public EdamamClient(ILogger<EdamamService> logger, IOptions<Configuration> cfg)
         {
-            _httpClientFactory = httpClientFactory;
             _logger = logger;
             _cfg = cfg.Value;
         }
@@ -46,6 +44,7 @@ namespace PlatePath.API.Clients
             var retryPolicy = HttpPolicyExtensions
                 .HandleTransientHttpError()
                 .OrResult(response => response.StatusCode == HttpStatusCode.NotFound)
+                //.Retry(response  => _logger.LogError($"GenerateMealPlan: Retry {retryCount} due to {exception.Message} \r\n Request: {request}"))
                 .WaitAndRetryAsync(2, retryAttempt => TimeSpan.FromSeconds(Math.Pow(2, retryAttempt)));
 
             var circuitBreakerPolicy = HttpPolicyExtensions
@@ -54,7 +53,7 @@ namespace PlatePath.API.Clients
 
             var policyWrap = Policy.WrapAsync(retryPolicy, circuitBreakerPolicy);
 
-            var httpClient = PrepareClient();
+            var httpClient = new HttpClient();
 
             HttpResponseMessage httpResponse = await policyWrap.ExecuteAsync(async () =>
                  await httpClient.PostAsJsonAsync(StringifyURL(), new MealPlanResponse())); // todo add request body
@@ -84,7 +83,7 @@ namespace PlatePath.API.Clients
 
             var policyWrap = Policy.WrapAsync(retryPolicy, circuitBreakerPolicy);
 
-            var httpClient = PrepareClient();
+            var httpClient = new HttpClient();
 
             HttpResponseMessage httpResponse = await policyWrap.ExecuteAsync(async () =>
                  await httpClient.PostAsJsonAsync(StringifyURL(), new RecipeResponse()));  // todo add request body
@@ -114,7 +113,7 @@ namespace PlatePath.API.Clients
 
             var policyWrap = Policy.WrapAsync(retryPolicy, circuitBreakerPolicy);
 
-            var httpClient = PrepareClient();
+            var httpClient = new HttpClient();
 
             HttpResponseMessage httpResponse = await policyWrap.ExecuteAsync(async () =>
                  await httpClient.PostAsJsonAsync(StringifyURL(), new RecipeResponse()));  // todo add request body
@@ -145,7 +144,7 @@ namespace PlatePath.API.Clients
 
             var policyWrap = Policy.WrapAsync(retryPolicy, circuitBreakerPolicy);
 
-            var httpClient = PrepareClient();
+            var httpClient = new HttpClient();
 
             //HttpResponseMessage httpResponse = await policyWrap.ExecuteAsync(async () =>
             //     await httpClient.PostAsJsonAsync(StringifyURL(), new RecipeResponse()));  // todo add request body
@@ -160,11 +159,6 @@ namespace PlatePath.API.Clients
             return "";
 
             //string Stringify() => $"{_cfg.EdamamNutrition}{request}&app_id={_cfg.EdamamAppID}&app_key={_cfg.EdamamAppKey}";
-        }
-
-        public virtual HttpClient PrepareClient()
-        {
-            return _httpClientFactory.CreateClient();
         }
     }
 }
