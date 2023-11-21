@@ -10,7 +10,7 @@ public class Plan
 {
     public Accept accept { get; set; }
     public Fit fit { get; set; }
-    public ResponseSections sections { get; set; }
+    public RequestSections sections { get; set; }
 }
 
 public class Accept
