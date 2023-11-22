@@ -12,8 +12,6 @@ public class Comment
     public int PostId { get; set; }
     
     public string? Text { get; set; }
-
-    public List<Reply> Replies { get; set; } = new();
     
     // link this to the UserId that made the comment
 }
