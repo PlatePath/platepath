@@ -13,5 +13,9 @@ public class Comment
     
     public int UserId { get; set; }
     
+    public int ParentCommentId { get; set; }
+
+    public List<Comment> ChildComments { get; set; } = new();
+    
     public string? Text { get; set; }
 }
