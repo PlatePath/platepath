@@ -16,6 +16,10 @@ public class Comment
     public int ParentCommentId { get; set; }
 
     public List<Comment> ChildComments { get; set; } = new();
+
+    public List<Like> Likes { get; set; } = new();
+    
+    public int NumberOfLikes { get; set; }
     
     public string? Text { get; set; }
 }
