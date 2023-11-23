@@ -14,9 +14,9 @@ public class Comment
     
     public User User { get; set; }
     
-    public int ParentCommentId { get; set; }
+    public Comment? ParentComment { get; set; }
 
-    public List<Comment> ChildComments { get; set; } = new();
+    public ICollection<Comment> ChildComments { get; set; } = new List<Comment>();
     
     public List<Like> Likes { get; set; } = new();
 
