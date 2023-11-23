@@ -12,11 +12,11 @@ public class Post
     
     public int UserId { get; set; }
     
-    public int RecipeId { get; set; }
-    
     public List<Comment> Comments { get; set; } = new();
 
     public List<Like> Likes { get; set; } = new();
+    
+    public Recipe Recipe { get; set; }
 
     public int NumberOfLikes => Likes.Count();
     

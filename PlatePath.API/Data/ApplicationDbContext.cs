@@ -33,8 +33,14 @@ namespace PlatePath.API.Data
 
             builder.Entity<Comment>()
                 .HasOne<Post>()
-                .WithMany(p => p.Comments)
-                .HasForeignKey(c => c.PostId)
+                .WithMany(e => e.Comments)
+                .HasForeignKey(e => e.PostId)
+                .OnDelete(DeleteBehavior.NoAction);
+
+            builder.Entity<Post>()
+                .HasOne(e => e.Recipe)
+                .WithOne(e => e.Post)
+                .HasForeignKey<Recipe>("PostId")
                 .OnDelete(DeleteBehavior.NoAction);
         }
 

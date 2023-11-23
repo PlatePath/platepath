@@ -29,5 +29,7 @@ namespace PlatePath.API.Data.Models.Recipes
         public List<Ingredient> Ingredients { get; set; } = new();
 
         public List<MealPlan> MealPlans { get; set; } = new();
+        
+        public Post? Post { get; set; }
     }
 }
