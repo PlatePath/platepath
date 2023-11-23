@@ -30,6 +30,12 @@ namespace PlatePath.API.Data
             SeedGenders(builder);
             SeedActivityLevels(builder);
             SeedWeightGoals(builder);
+
+            builder.Entity<Comment>()
+                .HasOne<Post>()
+                .WithMany(p => p.Comments)
+                .HasForeignKey(c => c.PostId)
+                .OnDelete(DeleteBehavior.NoAction);
         }
 
         public DbSet<Recipe> Recipes { get; set; }

@@ -24,8 +24,6 @@ namespace PlatePath.API.Data.Models.Recipes
         
         public double Protein { get; set; }
         
-        public int PostId { get; set; }
-        
         public List<DietLabel> DietLabels { get; set; } = new();
         
         public List<Ingredient> Ingredients { get; set; } = new();

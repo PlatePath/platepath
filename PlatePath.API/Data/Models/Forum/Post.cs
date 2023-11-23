@@ -12,6 +12,8 @@ public class Post
     
     public int UserId { get; set; }
     
+    public int RecipeId { get; set; }
+    
     public List<Comment> Comments { get; set; } = new();
 
     public List<Like> Likes { get; set; } = new();
@@ -21,6 +23,4 @@ public class Post
     public string? Title { get; set; }
 
     public string? Description { get; set; }
-    
-    public Recipe Recipe { get; set; }
 }

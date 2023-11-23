@@ -32,7 +32,5 @@ namespace PlatePath.API.Data.Models.Users
         public double? NeededCarbs { get; set; }
 
         public double? NeededProtein { get; set; }
-
     }
-
 }
