@@ -1,5 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using PlatePath.API.Data.Models.Recipes;
 
 namespace PlatePath.API.Data.Models.Forum;
 
@@ -21,7 +22,5 @@ public class Post
 
     public string? Description { get; set; }
     
-    /*public Recipe Recipe { get; set; }*/ // connect this to a recipe
-
-    // link this to the UserId that made the post
+    public Recipe Recipe { get; set; }
 }

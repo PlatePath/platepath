@@ -1,5 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using PlatePath.API.Data.Models.Forum;
 using PlatePath.API.Data.Models.MealPlans;
 
 
@@ -22,6 +23,8 @@ namespace PlatePath.API.Data.Models.Recipes
         public double Fats { get; set; }
         
         public double Protein { get; set; }
+        
+        public Post Post { get; set; }
         
         public List<DietLabel> DietLabels { get; set; } = new();
         
