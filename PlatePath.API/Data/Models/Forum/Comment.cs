@@ -1,5 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using PlatePath.API.Data.Models.Users;
 
 namespace PlatePath.API.Data.Models.Forum;
 
@@ -11,12 +12,12 @@ public class Comment
     
     public int PostId { get; set; }
     
-    public int UserId { get; set; }
-    
     public int ParentCommentId { get; set; }
+    
+    public User User { get; set; }
 
     public List<Comment> ChildComments { get; set; } = new();
-
+    
     public List<Like> Likes { get; set; } = new();
 
     public int NumberOfLikes => Likes.Count();

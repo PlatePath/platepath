@@ -16,9 +16,9 @@ namespace PlatePath.API.Data.Models.Users
         
         public ICollection<Post> Posts { get; set; } = new List<Post>();
         
-        /*public ICollection<Comment> Comments { get; set; } = new List<Comment>();
+        public ICollection<Comment> Comments { get; set; } = new List<Comment>();
         
-        public ICollection<Like> Likes { get; set; } = new List<Like>();*/
+        public ICollection<Like> Likes { get; set; } = new List<Like>();
         
         public Gender Gender { get; set; }
 
