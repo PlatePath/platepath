@@ -14,8 +14,8 @@ public class Post
     public List<Comment> Comments { get; set; } = new();
 
     public List<Like> Likes { get; set; } = new();
-    
-    public int NumberOfLikes { get; set; }
+
+    public int NumberOfLikes => Likes.Count();
     
     public string? Title { get; set; }
 

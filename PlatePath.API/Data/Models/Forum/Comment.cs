@@ -18,8 +18,8 @@ public class Comment
     public List<Comment> ChildComments { get; set; } = new();
 
     public List<Like> Likes { get; set; } = new();
-    
-    public int NumberOfLikes { get; set; }
+
+    public int NumberOfLikes => Likes.Count();
     
     public string? Text { get; set; }
 }
