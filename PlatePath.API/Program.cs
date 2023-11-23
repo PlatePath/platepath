@@ -1,8 +1,14 @@
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
+using Microsoft.OpenApi.Models;
+using PlatePath.API.Clients;
 using PlatePath.API.Data;
+using PlatePath.API.Data.Models.Users;
+using PlatePath.API.Services;
+using PlatePath.API.Singleton;
 using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -20,7 +26,7 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlServer(connectionString));
 
 // Identity
-builder.Services.AddIdentity<IdentityUser, IdentityRole>()    
+builder.Services.AddIdentity<User, IdentityRole>()    
     .AddEntityFrameworkStores<ApplicationDbContext>()
     .AddDefaultTokenProviders();
 
@@ -43,16 +49,58 @@ builder.Services.AddAuthentication(options =>
         ValidateAudience = true,
         ValidateLifetime = true,
         ValidateIssuerSigningKey = true,
-        ValidAudience = configuration["JWT:ValidAudience"],
-        ValidIssuer = configuration["JWT:ValidIssuer"],
-        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["JWT:Secret"]))
+        ValidAudience = configuration["Configuration:JWTConfig:ValidAudience"],
+        ValidIssuer = configuration["Configuration:JWTConfig:ValidIssuer"],
+        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["Configuration:JWTConfig:Secret"]))
     };
 });
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+builder.Services.AddSwaggerGen(c => {
+    c.SwaggerDoc("v1", new OpenApiInfo
+    {
+        Title = "JWTToken_Auth_API",
+        Version = "v1"
+    });
+    c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme()
+    {
+        Name = "Authorization",
+        Type = SecuritySchemeType.ApiKey,
+        Scheme = "Bearer",
+        BearerFormat = "JWT",
+        In = ParameterLocation.Header,
+        Description = "JWT Bearer Authorization header. \r\n\r\n Enter 'Bearer' then insert the token. \r\n\r\n Example: \"Bearer 1safsfsdfdfd\"",
+    });
+    c.AddSecurityRequirement(new OpenApiSecurityRequirement {
+        {
+            new OpenApiSecurityScheme {
+                Reference = new OpenApiReference {
+                    Type = ReferenceType.SecurityScheme,
+                        Id = "Bearer"
+                }
+            },
+            new string[] {}
+        }
+    });
+});
+
+builder.Services.AddLogging(builder =>
+{
+    builder.AddEventLog();
+});
+
+builder.Services.Configure<Configuration>(builder.Configuration.GetSection("Configuration"));
+builder.Configuration.AddJsonFile("appsettings.json");
+
+builder.Services.AddTransient<IAdminService, AdminService>();
+builder.Services.AddTransient<IEdamamService, EdamamService>();
+builder.Services.AddTransient<IForumService, ForumService>();
+builder.Services.AddTransient<IProfileService, ProfileService>();
+builder.Services.AddTransient<IEdamamClient, EdamamClient>();
+
+builder.Services.AddHttpContextAccessor();
 
 var app = builder.Build();
 
@@ -77,6 +125,8 @@ app.UseAuthorization();
 app.UseAuthentication();
 
 app.MapControllers();
+
+app.UseStatusCodePages();
 
 
 app.Run();

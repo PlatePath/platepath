@@ -1,11 +1,15 @@
-﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using PlatePath.API.Data.Models;
+using PlatePath.API.Data.Models.ActivityLevels;
 using PlatePath.API.Data.Models.Authentication;
 using PlatePath.API.Data.Models.Authentication.Login;
 using PlatePath.API.Data.Models.Authentication.SignUp;
+using PlatePath.API.Data.Models.Users;
+using PlatePath.API.Services;
+using PlatePath.API.Singleton;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
@@ -16,17 +20,20 @@ namespace PlatePath.API.Controllers
     [Route("api/authenticate")]
     public class AuthenticationController : ControllerBase
     {
-        private readonly UserManager<IdentityUser> _userManager;
-        private readonly RoleManager<IdentityRole> _roleManager;
-        private readonly IConfiguration _configuration;
+        readonly UserManager<User> _userManager;
+        readonly RoleManager<IdentityRole> _roleManager;
+        readonly ILogger<EdamamService> _logger;
+        readonly Configuration _cfg;
 
-        public AuthenticationController(UserManager<IdentityUser> userManager,
+        public AuthenticationController(UserManager<User> userManager,
                                         RoleManager<IdentityRole> roleManager,
-                                        IConfiguration configuration)
+                                        ILogger<EdamamService> logger,
+                                        IOptions<Configuration> cfg)
         {
             _userManager = userManager;
             _roleManager = roleManager;
-            _configuration = configuration;
+            _logger = logger;
+            _cfg = cfg.Value;
         }
 
         [HttpPost("login")]
@@ -66,13 +73,39 @@ namespace PlatePath.API.Controllers
             if (userExists is not null)
                 return StatusCode(StatusCodes.Status409Conflict, new Response { Status = "Error", Message = "User already exists!" });
 
-            var user = new IdentityUser
+            //var weightGoal = _context.WeightGoals.Find(newUserDto.WeightGoalId);
+            //var activityLevel = _context.ActivityLevels.Find(newUserDto.ActivityLevelId);
+            //var gender = _context.Genders.Find(newUserDto.GenderId);
+
+            //// Create a new User object
+            //var user = new User
+            //{
+            //    Email = registerUser.Email,
+            //    SecurityStamp = Guid.NewGuid().ToString(),
+            //    UserName = registerUser.Username,
+            //    Age = newUserDto.Age,
+            //    HeightCm = newUserDto.HeightCm,
+            //    WeightKg = newUserDto.WeightKg,
+            //    NeededCalories = newUserDto.NeededCalories,
+            //    NeededFats = newUserDto.NeededFats,
+            //    NeededCarbs = newUserDto.NeededCarbs,
+            //    NeededProtein = newUserDto.NeededProtein,
+
+            //    // Set the WeightGoal, ActivityLevel, and Gender properties
+            //    WeightGoal = weightGoal,
+            //    ActivityLevel = activityLevel,
+            //    Gender = gender
+            //};
+
+            var user = new User
             {
                 Email = registerUser.Email,
                 SecurityStamp = Guid.NewGuid().ToString(),
                 UserName = registerUser.Username
             };
+
             var result = await _userManager.CreateAsync(user, registerUser.Password);
+
             if (!result.Succeeded)
             {
                 var error = result.Errors.FirstOrDefault()?.Description;
@@ -88,14 +121,14 @@ namespace PlatePath.API.Controllers
             return Ok(new Response { Status = "Success", Message = "User created successfully!" });
         }
 
-        [HttpPost("register-admin")]  
+        [HttpPost("register-admin")]
         public async Task<IActionResult> RegisterAdmin([FromBody] RegisterUser registerAdmin)
         {
             var userExists = await _userManager.FindByNameAsync(registerAdmin.Username);
             if (userExists is not null)
                 return StatusCode(StatusCodes.Status409Conflict, new Response { Status = "Error", Message = "User already exists!" });
 
-            var user = new IdentityUser
+            var user = new User
             {
                 Email = registerAdmin.Email,
                 SecurityStamp = Guid.NewGuid().ToString(),
@@ -122,11 +155,11 @@ namespace PlatePath.API.Controllers
 
         private JwtSecurityToken GetToken(List<Claim> authClaims)
         {
-            var authSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["JWT:Secret"]));
+            var authSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_cfg.JWTConfig.Secret));
 
             var token = new JwtSecurityToken(
-                issuer: _configuration["JWT:ValidIssuer"],
-                audience: _configuration["JWT:ValidAudience"],
+                issuer: _cfg.JWTConfig.ValidIssuer,
+                audience: _cfg.JWTConfig.ValidAudience,
                 expires: DateTime.Now.AddHours(1),
                 claims: authClaims,
                 signingCredentials: new SigningCredentials(authSigningKey, SecurityAlgorithms.HmacSha256)

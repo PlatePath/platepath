@@ -13,5 +13,11 @@ namespace PlatePath.API.Data.Models.Authentication.SignUp
 
         [Required(ErrorMessage = "Password is required")]
         public string? Password { get; set; }
+
+        public int ActivityLevel { get; set; }
+
+        public int Gender { get; set; }
+
+        public int WeightGoal { get; set; }
     }
 }
