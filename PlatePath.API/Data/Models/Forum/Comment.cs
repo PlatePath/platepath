@@ -21,5 +21,5 @@ public class Comment
 
     public int NumberOfLikes => Likes.Count();
     
-    public string? Text { get; set; }
+    public string Text { get; set; }
 }
