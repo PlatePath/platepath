@@ -32,9 +32,9 @@ namespace PlatePath.API.Data
             SeedWeightGoals(builder);
 
             builder.Entity<Comment>()
-                .HasOne<Post>()
+                .HasOne(e => e.Post)
                 .WithMany(e => e.Comments)
-                .HasForeignKey(e => e.PostId)
+                .HasForeignKey("PostId")
                 .OnDelete(DeleteBehavior.NoAction);
 
             builder.Entity<Post>()
