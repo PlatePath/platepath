@@ -15,9 +15,9 @@ public class Post
     
     public Recipe Recipe { get; set; }
     
-    public List<Comment> Comments { get; set; } = new();
+    public ICollection<Comment> Comments { get; set; } = new List<Comment>();
 
-    public List<Like> Likes { get; set; } = new();
+    public ICollection<Like> Likes { get; set; } = new List<Like>();
 
     public int NumberOfLikes => Likes.Count();
     

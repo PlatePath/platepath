@@ -12,6 +12,14 @@ namespace PlatePath.API.Data.Models.Recipes
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
         
+        public Post? Post { get; set; }
+        
+        public ICollection<DietLabel> DietLabels { get; set; } = new List<DietLabel>();
+        
+        public ICollection<Ingredient> Ingredients { get; set; } = new List<Ingredient>();
+
+        public ICollection<MealPlan> MealPlans { get; set; } = new List<MealPlan>();
+        
         public string? EdamamId { get; set; }
         
         public string Name { get; set; }
@@ -23,13 +31,5 @@ namespace PlatePath.API.Data.Models.Recipes
         public double Fats { get; set; }
         
         public double Protein { get; set; }
-        
-        public List<DietLabel> DietLabels { get; set; } = new();
-        
-        public List<Ingredient> Ingredients { get; set; } = new();
-
-        public List<MealPlan> MealPlans { get; set; } = new();
-        
-        public Post? Post { get; set; }
     }
 }

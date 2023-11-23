@@ -18,7 +18,7 @@ public class Comment
 
     public ICollection<Comment> ChildComments { get; set; } = new List<Comment>();
     
-    public List<Like> Likes { get; set; } = new();
+    public ICollection<Like> Likes { get; set; } = new List<Like>();
 
     public int NumberOfLikes => Likes.Count();
     

@@ -10,6 +10,6 @@ namespace PlatePath.API.Data.Models.MealPlans
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
 
-        public List<Recipe> Meals { get; set; } = new();
+        public ICollection<Recipe> Meals { get; set; } = new List<Recipe>();
     }    
 }

@@ -10,6 +10,12 @@ namespace PlatePath.API.Data.Models.Users
 {
     public class User : IdentityUser
     {
+        public Gender Gender { get; set; }
+
+        public ActivityLevel ActivityLevel { get; set; }
+
+        public WeightGoal WeightGoal { get; set; }
+        
         public ICollection<MealPlan> MealPlans { get; init; } = new List<MealPlan>();
 
         public ICollection<Recipe> Recipes { get; set; } = new List<Recipe>();
@@ -19,12 +25,6 @@ namespace PlatePath.API.Data.Models.Users
         public ICollection<Comment> Comments { get; set; } = new List<Comment>();
         
         public ICollection<Like> Likes { get; set; } = new List<Like>();
-        
-        public Gender Gender { get; set; }
-
-        public ActivityLevel ActivityLevel { get; set; }
-
-        public WeightGoal WeightGoal { get; set; }
 
         public int? Age { get; set; }
 
