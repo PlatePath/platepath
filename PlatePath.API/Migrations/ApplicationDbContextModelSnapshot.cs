@@ -34,7 +34,7 @@ namespace PlatePath.API.Migrations
 
                     b.HasIndex("RecipesId");
 
-                    b.ToTable("DietLabelRecipe");
+                    b.ToTable("DietLabelRecipe", (string)null);
                 });
 
             modelBuilder.Entity("IngredientRecipe", b =>
@@ -49,7 +49,7 @@ namespace PlatePath.API.Migrations
 
                     b.HasIndex("RecipesId");
 
-                    b.ToTable("IngredientRecipe");
+                    b.ToTable("IngredientRecipe", (string)null);
                 });
 
             modelBuilder.Entity("MealPlanRecipe", b =>
@@ -64,7 +64,7 @@ namespace PlatePath.API.Migrations
 
                     b.HasIndex("MealsId");
 
-                    b.ToTable("MealPlanRecipe");
+                    b.ToTable("MealPlanRecipe", (string)null);
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -230,7 +230,7 @@ namespace PlatePath.API.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("ActivityLevel");
+                    b.ToTable("ActivityLevel", (string)null);
 
                     b.HasData(
                         new
@@ -274,7 +274,7 @@ namespace PlatePath.API.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Genders");
+                    b.ToTable("Genders", (string)null);
 
                     b.HasData(
                         new
@@ -304,7 +304,7 @@ namespace PlatePath.API.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("MealPlans");
+                    b.ToTable("MealPlans", (string)null);
                 });
 
             modelBuilder.Entity("PlatePath.API.Data.Models.Recipes.DietLabel", b =>
@@ -321,7 +321,7 @@ namespace PlatePath.API.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("DietLabels");
+                    b.ToTable("DietLabels", (string)null);
                 });
 
             modelBuilder.Entity("PlatePath.API.Data.Models.Recipes.Ingredient", b =>
@@ -345,7 +345,7 @@ namespace PlatePath.API.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Ingredients");
+                    b.ToTable("Ingredients", (string)null);
                 });
 
             modelBuilder.Entity("PlatePath.API.Data.Models.Recipes.Recipe", b =>
@@ -382,7 +382,7 @@ namespace PlatePath.API.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Recipes");
+                    b.ToTable("Recipes", (string)null);
                 });
 
             modelBuilder.Entity("PlatePath.API.Data.Models.Users.User", b =>
@@ -500,7 +500,7 @@ namespace PlatePath.API.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("WeightGoal");
+                    b.ToTable("WeightGoal", (string)null);
 
                     b.HasData(
                         new

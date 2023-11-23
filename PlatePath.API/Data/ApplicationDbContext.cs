@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using PlatePath.API.Data.Models.ActivityLevels;
 using PlatePath.API.Data.Models.Authentication;
+using PlatePath.API.Data.Models.Forum;
 using PlatePath.API.Data.Models.Genders;
 using PlatePath.API.Data.Models.MealPlans;
 using PlatePath.API.Data.Models.Recipes;
@@ -44,6 +45,13 @@ namespace PlatePath.API.Data
         public DbSet<ActivityLevel> ActivityLevels { get; set; }
 
         public DbSet<ActivityLevel> WeightGoals { get; set; }
+        
+        public DbSet<Post> Posts { get; set; }
+        
+        public DbSet<Comment> Comments { get; set; }
+        
+        public DbSet<Like> Likes { get; set; }
+        
 
         private static void SeedRoles(ModelBuilder builder, IConfiguration configuration)
         {
