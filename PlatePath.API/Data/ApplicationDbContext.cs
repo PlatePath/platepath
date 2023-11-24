@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using PlatePath.API.Data.Models.ActivityLevels;
 using PlatePath.API.Data.Models.Authentication;
+using PlatePath.API.Data.Models.Forum;
 using PlatePath.API.Data.Models.Genders;
 using PlatePath.API.Data.Models.MealPlans;
 using PlatePath.API.Data.Models.Recipes;
@@ -29,6 +30,18 @@ namespace PlatePath.API.Data
             SeedGenders(builder);
             SeedActivityLevels(builder);
             SeedWeightGoals(builder);
+
+            builder.Entity<Comment>()
+                .HasOne(e => e.Post)
+                .WithMany(e => e.Comments)
+                .HasForeignKey("PostId")
+                .OnDelete(DeleteBehavior.NoAction);
+
+            builder.Entity<Post>()
+                .HasOne(e => e.Recipe)
+                .WithOne(e => e.Post)
+                .HasForeignKey<Recipe>("PostId")
+                .OnDelete(DeleteBehavior.NoAction);
         }
 
         public DbSet<Recipe> Recipes { get; set; }
@@ -44,6 +57,13 @@ namespace PlatePath.API.Data
         public DbSet<ActivityLevel> ActivityLevels { get; set; }
 
         public DbSet<ActivityLevel> WeightGoals { get; set; }
+        
+        public DbSet<Post> Posts { get; set; }
+        
+        public DbSet<Comment> Comments { get; set; }
+        
+        public DbSet<Like> Likes { get; set; }
+        
 
         private static void SeedRoles(ModelBuilder builder, IConfiguration configuration)
         {

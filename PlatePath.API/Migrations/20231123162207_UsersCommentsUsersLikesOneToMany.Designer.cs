@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using PlatePath.API.Data;
 
@@ -11,9 +12,10 @@ using PlatePath.API.Data;
 namespace PlatePath.API.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20231123162207_UsersCommentsUsersLikesOneToMany")]
+    partial class UsersCommentsUsersLikesOneToMany
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -96,14 +98,14 @@ namespace PlatePath.API.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "2eb482ff-adf2-41a4-a050-d0f27e4d6b19",
+                            Id = "bbfa668d-b7d2-409a-8352-4539abf9f7e8",
                             ConcurrencyStamp = "1",
                             Name = "Admin",
                             NormalizedName = "Admin"
                         },
                         new
                         {
-                            Id = "b9e94be5-9904-478e-a440-1d91ccd04aef",
+                            Id = "33af4782-e203-4f4b-be37-62dd545cf0a9",
                             ConcurrencyStamp = "2",
                             Name = "User",
                             NormalizedName = "User"
@@ -268,7 +270,10 @@ namespace PlatePath.API.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
-                    b.Property<int?>("ParentCommentId")
+                    b.Property<int?>("CommentId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ParentCommentId")
                         .HasColumnType("int");
 
                     b.Property<int>("PostId")
@@ -283,7 +288,7 @@ namespace PlatePath.API.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("ParentCommentId");
+                    b.HasIndex("CommentId");
 
                     b.HasIndex("PostId");
 
@@ -709,11 +714,11 @@ namespace PlatePath.API.Migrations
 
             modelBuilder.Entity("PlatePath.API.Data.Models.Forum.Comment", b =>
                 {
-                    b.HasOne("PlatePath.API.Data.Models.Forum.Comment", "ParentComment")
+                    b.HasOne("PlatePath.API.Data.Models.Forum.Comment", null)
                         .WithMany("ChildComments")
-                        .HasForeignKey("ParentCommentId");
+                        .HasForeignKey("CommentId");
 
-                    b.HasOne("PlatePath.API.Data.Models.Forum.Post", "Post")
+                    b.HasOne("PlatePath.API.Data.Models.Forum.Post", null)
                         .WithMany("Comments")
                         .HasForeignKey("PostId")
                         .OnDelete(DeleteBehavior.NoAction)
@@ -723,22 +728,18 @@ namespace PlatePath.API.Migrations
                         .WithMany("Comments")
                         .HasForeignKey("UserId");
 
-                    b.Navigation("ParentComment");
-
-                    b.Navigation("Post");
-
                     b.Navigation("User");
                 });
 
             modelBuilder.Entity("PlatePath.API.Data.Models.Forum.Like", b =>
                 {
-                    b.HasOne("PlatePath.API.Data.Models.Forum.Comment", "Comment")
+                    b.HasOne("PlatePath.API.Data.Models.Forum.Comment", null)
                         .WithMany("Likes")
                         .HasForeignKey("CommentId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("PlatePath.API.Data.Models.Forum.Post", "Post")
+                    b.HasOne("PlatePath.API.Data.Models.Forum.Post", null)
                         .WithMany("Likes")
                         .HasForeignKey("PostId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -747,10 +748,6 @@ namespace PlatePath.API.Migrations
                     b.HasOne("PlatePath.API.Data.Models.Users.User", "User")
                         .WithMany("Likes")
                         .HasForeignKey("UserId");
-
-                    b.Navigation("Comment");
-
-                    b.Navigation("Post");
 
                     b.Navigation("User");
                 });
