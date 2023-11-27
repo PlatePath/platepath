@@ -1,6 +1,4 @@
 ﻿using PlatePath.API.Data;
-using PlatePath.API.Data.Models.Forum;
-using PlatePath.API.Data.Models.Users;
 
 namespace PlatePath.API.Services;
 
@@ -13,40 +11,53 @@ public class AdminService : IAdminService
         this.dbContext = dbContext;
     }
     
-    public void BanUser(int userId)
+    public bool BanUser(int userId)
     {
-        User? user = dbContext.Users.Find(userId);
+        var user = dbContext.Users.Find(userId);
         if (user == null)
         {
-            // logic for user not found
-            return;
+            return false;
         }
         user.IsBanned = true;
         dbContext.Users.Update(user);
         dbContext.SaveChanges();
+        return true;
     }
 
-    public void DeleteForumPost(int postId)
+    public bool UnbanUser(int userId)
     {
-        Post? post = dbContext.Posts.Find(postId);
+        var user = dbContext.Users.Find(userId);
+        if (user == null)
+        {
+            return false;
+        }
+        user.IsBanned = false;
+        dbContext.Users.Update(user);
+        dbContext.SaveChanges();
+        return true;
+    }
+
+    public bool DeleteForumPost(int postId)
+    {
+        var post = dbContext.Posts.Find(postId);
         if (post == null)
         {
-            // logic for post not found
-            return;
+            return false;
         }
         dbContext.Posts.Remove(post);
         dbContext.SaveChanges();
+        return true;
     }
 
-    public void DeleteComment(int commentId)
+    public bool DeleteComment(int commentId)
     {
-        Comment? comment = dbContext.Comments.Find(commentId);
+        var comment = dbContext.Comments.Find(commentId);
         if (comment == null)
         {
-            // logic for comment not found
-            return;
+            return false;
         }
         dbContext.Comments.Remove(comment);
         dbContext.SaveChanges();
+        return true;
     }
 }
