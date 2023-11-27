@@ -6,5 +6,5 @@ public interface IAdminService
 
     void DeleteForumPost(int postId);
 
-    void DeletePostComment(int postId, int commentId);
+    void DeleteComment(int commentId);
 }
