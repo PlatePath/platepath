@@ -1,4 +1,5 @@
 ﻿using PlatePath.API.Data;
+using PlatePath.API.Data.Models.Forum;
 using PlatePath.API.Data.Models.Users;
 
 namespace PlatePath.API.Services;
@@ -20,16 +21,32 @@ public class AdminService : IAdminService
             // logic for user not found
             return;
         }
-        
+        user.IsBanned = true;
+        dbContext.Users.Update(user);
+        dbContext.SaveChanges();
     }
 
     public void DeleteForumPost(int postId)
     {
-        throw new NotImplementedException();
+        Post? post = dbContext.Posts.Find(postId);
+        if (post == null)
+        {
+            // logic for post not found
+            return;
+        }
+        dbContext.Posts.Remove(post);
+        dbContext.SaveChanges();
     }
 
-    public void DeletePostComment(int postId, int commentId)
+    public void DeleteComment(int commentId)
     {
-        throw new NotImplementedException();
+        Comment? comment = dbContext.Comments.Find(commentId);
+        if (comment == null)
+        {
+            // logic for comment not found
+            return;
+        }
+        dbContext.Comments.Remove(comment);
+        dbContext.SaveChanges();
     }
 }
