@@ -18,8 +18,9 @@ public class AdminService : IAdminService
         if (user == null)
         {
             // logic for user not found
+            return;
         }
-        // ban the user and maybe return it?
+        
     }
 
     public void DeleteForumPost(int postId)
