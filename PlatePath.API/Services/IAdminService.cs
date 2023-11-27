@@ -1,5 +1,8 @@
 ﻿namespace PlatePath.API.Services;
 
+/// <summary>
+/// Contains admin methods for banning users and deleting forum posts and comments.
+/// </summary>
 public interface IAdminService
 {
     /// <summary>
