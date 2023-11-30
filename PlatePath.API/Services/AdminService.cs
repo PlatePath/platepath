@@ -11,7 +11,7 @@ public class AdminService : IAdminService
         this.dbContext = dbContext;
     }
     
-    public bool BanUser(int userId)
+    public bool BanUser(string userId)
     {
         var user = dbContext.Users.Find(userId);
         if (user == null)
@@ -24,7 +24,7 @@ public class AdminService : IAdminService
         return true;
     }
 
-    public bool UnbanUser(int userId)
+    public bool UnbanUser(string userId)
     {
         var user = dbContext.Users.Find(userId);
         if (user == null)

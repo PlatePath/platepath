@@ -10,14 +10,14 @@ public interface IAdminService
     /// </summary>
     /// <param name="userId">the id of the user.</param>
     /// <returns>true if the user was successfully banned, false if the user was not found.</returns>
-    bool BanUser(int userId);
+    bool BanUser(string userId);
 
     /// <summary>
     /// Unbans the user with the given userId, setting its IsBanned state to false.
     /// </summary>
     /// <param name="userId">the id of the user.</param>
     /// <returns>true if the user was successfully unbanned, false if the user was not found.</returns>
-    bool UnbanUser(int userId);
+    bool UnbanUser(string userId);
 
     /// <summary>
     /// Deletes the forum post with the given id.
