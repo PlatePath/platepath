@@ -76,7 +76,7 @@ const Login = () => {
             </Button>
             <Typography
               component={Link}
-              to="login"
+              to="/register"
               sx={{
                 ml: "auto",
                 mt: "3px",
