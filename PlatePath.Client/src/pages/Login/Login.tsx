@@ -7,7 +7,7 @@ const Half = styled("div")`
 `;
 
 //TODO!: Separate into different components and apply theme
-const Register = () => {
+const Login = () => {
   return (
     <BoxContainer>
       <Half sx={{ background: "#8DC63F" }}>
@@ -47,7 +47,7 @@ const Register = () => {
                 lineHeight: "100%",
               }}
             >
-              Welcome!
+              Welcome Back!
             </Typography>
             <Typography
               sx={{
@@ -56,12 +56,10 @@ const Register = () => {
                 mb: "11px",
               }}
             >
-              Register to get started
+              Login to get started
             </Typography>
             <Columns gap="30px" mt="50px" mb="30px">
               <TextField id="email" label="Email Address" />
-              <TextField id="name" label="Name" />
-              <TextField id="password1" label="Password" />
               <TextField id="password2" label="Repeat Password" />
             </Columns>
             <Button
@@ -74,11 +72,11 @@ const Register = () => {
                 textTransform: "none",
               }}
             >
-              Register
+              Login
             </Button>
             <Typography
               component={Link}
-              to="/login"
+              to="/register"
               sx={{
                 ml: "auto",
                 mt: "3px",
@@ -86,7 +84,7 @@ const Register = () => {
                 fontStyle: "italic",
               }}
             >
-              or login with your account
+              or register
             </Typography>
             <BoxContainer
               sx={{
@@ -120,4 +118,4 @@ const Register = () => {
     </BoxContainer>
   );
 };
-export default Register;
+export default Login;

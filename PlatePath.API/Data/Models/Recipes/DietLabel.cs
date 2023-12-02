@@ -9,9 +9,9 @@ namespace PlatePath.API.Data.Models.Recipes
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
         
-        public string Name { get; set; }
+        public ICollection<Recipe> Recipes { get; set; } = new List<Recipe>();
         
-        public List<Recipe> Recipes { get; set; } = new();
+        public string Name { get; set; }
     }
 }
 
