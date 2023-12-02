@@ -14,6 +14,8 @@ namespace PlatePath.API.Data.Models.Authentication.Login
         public LoginResponse() { }
         public LoginResponse(ErrorCode error) : base(error) { }
 
+        public string? UserId { get; set; }
+
         public string? Token { get; set; }
 
         public DateTime? Expiration { get; set; }

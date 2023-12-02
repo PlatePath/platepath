@@ -1,6 +1,5 @@
-﻿namespace PlatePath.API.Services
+﻿namespace PlatePath.API.Services;
+
+public interface IForumService
 {
-    public interface IForumService
-    {
-    }
 }

@@ -12,6 +12,12 @@ namespace PlatePath.API.Data.Models.Authentication.SignUp
 
         public string Password { get; set; }
 
+        public int? Age { get; set; }
+
+        public double? HeightCm { get; set; }
+
+        public double? WeightKg { get; set; }
+
         public int ActivityLevel { get; set; }
 
         public int Gender { get; set; }

@@ -36,11 +36,19 @@ public class ENERCKCAL
 
 public class RequestSections
 {
-    public RequestMeal Meal1 { get; set; }
-    public RequestMeal Meal2 { get; set; }
-    public RequestMeal Meal3 { get; set; }
-    public RequestMeal Meal4 { get; set; }
-    public RequestMeal Meal5 { get; set; }
+    public RequestSections(int mealsNumber)
+    {
+        for (int i = 1; i <= mealsNumber; i++)
+        {
+            GetType().GetProperty($"Meal{i}")?.SetValue(this, new RequestMeal());
+        }
+    }
+
+    public RequestMeal? Meal1 { get; set; }
+    public RequestMeal? Meal2 { get; set; }
+    public RequestMeal? Meal3 { get; set; }
+    public RequestMeal? Meal4 { get; set; }
+    public RequestMeal? Meal5 { get; set; }
 }
 
 public class RequestMeal

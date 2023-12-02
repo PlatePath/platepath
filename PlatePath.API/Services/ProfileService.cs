@@ -2,7 +2,8 @@
 using PlatePath.API.Data.Models.ActivityLevels;
 using PlatePath.API.Data.Models.Profile;
 using PlatePath.API.Enums;
-using PlatePath.API.Services;
+
+namespace PlatePath.API.Services;
 
 public class ProfileService : IProfileService
 {
