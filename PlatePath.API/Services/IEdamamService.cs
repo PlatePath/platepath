@@ -4,6 +4,6 @@ namespace PlatePath.API.Services
 {
     public interface IEdamamService
     {
-        Task<string> GenerateMealPlan(MealPlanRequest request);
+        Task<GenerateMealPlanResponse> GenerateMealPlan(GenerateMealPlanRequest request);
     }
 }

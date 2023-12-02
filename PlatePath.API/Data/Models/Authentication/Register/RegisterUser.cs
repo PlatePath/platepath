@@ -1,18 +1,16 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using PlatePath.API.Singleton;
+using System.ComponentModel.DataAnnotations;
 
 namespace PlatePath.API.Data.Models.Authentication.SignUp
 {
-    public class RegisterUser
+    public record RegisterRequest
     {
-        [Required(ErrorMessage = "User Name is required")]
-        public string? Username { get; set; }
+        public string Username { get; set; }
 
         [EmailAddress]
-        [Required(ErrorMessage = "Email is required")]
-        public string? Email { get; set; }
+        public string Email { get; set; }
 
-        [Required(ErrorMessage = "Password is required")]
-        public string? Password { get; set; }
+        public string Password { get; set; }
 
         public int ActivityLevel { get; set; }
 
@@ -20,4 +18,10 @@ namespace PlatePath.API.Data.Models.Authentication.SignUp
 
         public int WeightGoal { get; set; }
     }
-}
+
+    public record RegisterResponse : BaseResponse
+    {
+        public RegisterResponse() { }
+        public RegisterResponse(ErrorCode error) : base(error) { }
+    }
+};

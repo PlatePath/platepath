@@ -1,13 +1,21 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using PlatePath.API.Singleton;
 
 namespace PlatePath.API.Data.Models.Authentication.Login
 {
-    public class LoginUser
+    public record LoginRequest
     {
-        [Required(ErrorMessage = "User Name is required")]
         public string? Username { get; set; }
 
-        [Required(ErrorMessage = "Password is required")]
         public string? Password { get; set; }
+    }
+
+    public record LoginResponse : BaseResponse
+    {
+        public LoginResponse() { }
+        public LoginResponse(ErrorCode error) : base(error) { }
+
+        public string? Token { get; set; }
+
+        public DateTime? Expiration { get; set; }
     }
 }

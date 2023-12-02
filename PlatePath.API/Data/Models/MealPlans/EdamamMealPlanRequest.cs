@@ -1,6 +1,6 @@
 namespace PlatePath.API.Data.Models.MealPlans;
 
-public class MealPlanRequest
+public class EdamamMealPlanRequest
 {
     public int size { get; set; }
     public Plan plan { get; set; }
@@ -30,8 +30,8 @@ public class Fit
 
 public class ENERCKCAL
 {
-    public int min { get; set; }
-    public int max { get; set; }
+    public double min { get; set; }
+    public double max { get; set; }
 }
 
 public class RequestSections

@@ -71,7 +71,8 @@ builder.Services.AddSwaggerGen(c => {
         Scheme = "Bearer",
         BearerFormat = "JWT",
         In = ParameterLocation.Header,
-        Description = "JWT Bearer Authorization header. \r\n\r\n Enter 'Bearer' then insert the token. \r\n\r\n Example: \"Bearer 1safsfsdfdfd\"",
+        Description = "JWT Bearer Authorization header. \r\n\r\n Enter 'Bearer' then insert the token. \r\n\r\n " +
+                      "Example: \"Bearer 1safsfsdfdfd\"",
     });
     c.AddSecurityRequirement(new OpenApiSecurityRequirement {
         {
@@ -97,8 +98,9 @@ builder.Configuration.AddJsonFile("appsettings.json");
 builder.Services.AddTransient<IAdminService, AdminService>();
 builder.Services.AddTransient<IEdamamService, EdamamService>();
 builder.Services.AddTransient<IForumService, ForumService>();
-builder.Services.AddTransient<IProfileService, ProfileService>();
+builder.Services.AddTransient<IAuthService, AuthService>();
 builder.Services.AddTransient<IEdamamClient, EdamamClient>();
+builder.Services.AddTransient<IProfileService, ProfileService>();
 
 builder.Services.AddHttpContextAccessor();
 
