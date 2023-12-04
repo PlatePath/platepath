@@ -1,9 +1,8 @@
 ﻿using PlatePath.API.Data.Models.Profile;
 
-namespace PlatePath.API.Services
+namespace PlatePath.API.Services;
+
+public interface IProfileService
 {
-    public interface IProfileService
-    {
-        NutritionCalculationResult CalculateNutrition(string userId);
-    }
+    NutritionCalculationResult CalculateNutrition(string userId);
 }

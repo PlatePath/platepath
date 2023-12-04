@@ -1,9 +1,8 @@
 ﻿using PlatePath.API.Data.Models.MealPlans;
 
-namespace PlatePath.API.Services
+namespace PlatePath.API.Services;
+
+public interface IEdamamService
 {
-    public interface IEdamamService
-    {
-        Task<string> GenerateMealPlan(MealPlanRequest request);
-    }
+    Task<GenerateMealPlanResponse> GenerateMealPlan(string userId, GenerateMealPlanRequest request);
 }

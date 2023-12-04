@@ -54,9 +54,9 @@ namespace PlatePath.API.Data
 
         public DbSet<Gender> Genders { get; set; }
 
-        public DbSet<ActivityLevel> ActivityLevels { get; set; }
+        public DbSet<ActivityLevel> ActivityLevel { get; set; }
 
-        public DbSet<ActivityLevel> WeightGoals { get; set; }
+        public DbSet<WeightGoal> WeightGoal { get; set; }
         
         public DbSet<Post> Posts { get; set; }
         
@@ -114,5 +114,7 @@ namespace PlatePath.API.Data
                         })
                         .ToList());
         }
+
+
     }
 }

@@ -5,7 +5,7 @@ namespace PlatePath.API.Data.Models.MealPlans;
 /// Documentation: https://developer.edamam.com/edamam-docs-meal-planner-api
 /// The response is essentially a tree of sections with an optional assigned url to them.
 /// </summary>
-public class MealPlanResponse
+public class EdamamMealPlanResponse
 {
     public string? status { get; set; }
     public List<Selection> selection { get; set; }

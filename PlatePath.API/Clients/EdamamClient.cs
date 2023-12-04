@@ -21,7 +21,7 @@ namespace PlatePath.API.Clients
             _cfg = cfg.Value;
         }
 
-        public async Task<MealPlanResponse?> GenerateMealPlan(MealPlanRequest request)  // todo add request body
+        public async Task<EdamamMealPlanResponse?> GenerateMealPlan(EdamamMealPlanRequest request)  // todo add request body
         {
             //var retryPolicy = Policy
             //    .Handle<HttpRequestException>()
@@ -58,11 +58,11 @@ namespace PlatePath.API.Clients
             HttpResponseMessage httpResponse = await policyWrap.ExecuteAsync(async () =>
                  await httpClient.PostAsJsonAsync(StringifyURL(), request));
 
-            MealPlanResponse? mealPlanResponse = null;
+            EdamamMealPlanResponse? mealPlanResponse = null;
 
             if (httpResponse.IsSuccessStatusCode)
             {
-                mealPlanResponse = await httpResponse.Content.ReadFromJsonAsync<MealPlanResponse>();
+                mealPlanResponse = await httpResponse.Content.ReadFromJsonAsync<EdamamMealPlanResponse>();
             }
 
             return mealPlanResponse;

@@ -3,7 +3,9 @@ using PlatePath.API.Data.Models.ActivityLevels;
 using PlatePath.API.Data.Models.Profile;
 using PlatePath.API.Enums;
 
-public class ProfileService
+namespace PlatePath.API.Services;
+
+public class ProfileService : IProfileService
 {
     private readonly ApplicationDbContext _context;
 

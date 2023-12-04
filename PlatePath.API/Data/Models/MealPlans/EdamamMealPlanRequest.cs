@@ -1,6 +1,6 @@
 namespace PlatePath.API.Data.Models.MealPlans;
 
-public class MealPlanRequest
+public class EdamamMealPlanRequest
 {
     public int size { get; set; }
     public Plan plan { get; set; }
@@ -30,17 +30,25 @@ public class Fit
 
 public class ENERCKCAL
 {
-    public int min { get; set; }
-    public int max { get; set; }
+    public double min { get; set; }
+    public double max { get; set; }
 }
 
 public class RequestSections
 {
-    public RequestMeal Meal1 { get; set; }
-    public RequestMeal Meal2 { get; set; }
-    public RequestMeal Meal3 { get; set; }
-    public RequestMeal Meal4 { get; set; }
-    public RequestMeal Meal5 { get; set; }
+    public RequestSections(int mealsNumber)
+    {
+        for (int i = 1; i <= mealsNumber; i++)
+        {
+            GetType().GetProperty($"Meal{i}")?.SetValue(this, new RequestMeal());
+        }
+    }
+
+    public RequestMeal? Meal1 { get; set; }
+    public RequestMeal? Meal2 { get; set; }
+    public RequestMeal? Meal3 { get; set; }
+    public RequestMeal? Meal4 { get; set; }
+    public RequestMeal? Meal5 { get; set; }
 }
 
 public class RequestMeal
