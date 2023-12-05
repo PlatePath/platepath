@@ -24,12 +24,12 @@ public class ForumService : IForumService
         throw new NotImplementedException();
     }
 
-    public Like LikePost(int userId, int postId)
+    public Like LikePost(string userId, int postId)
     {
         throw new NotImplementedException();
     }
 
-    public Like LikeComment(int userId, int commentId)
+    public Like LikeComment(string userId, int commentId)
     {
         throw new NotImplementedException();
     }

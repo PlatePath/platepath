@@ -5,16 +5,16 @@ namespace PlatePath.API.Services;
 public interface IForumService
 {
     List<Post> GetPosts(int page, int itemsPerPage);
-    
+
     List<Comment> GetPostComments(int postId);
 
     List<Like> GetPostLikes(int postId);
 
     List<Like> GetCommentLikes(int commentId);
 
-    Like LikePost(int userId, int postId);
+    Like LikePost(string userId, int postId);
 
-    Like LikeComment(int userId, int commentId);
+    Like LikeComment(string userId, int commentId);
 
     Post CreatePost(Post post);
 
