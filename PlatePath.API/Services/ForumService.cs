@@ -24,32 +24,32 @@ public class ForumService : IForumService
         throw new NotImplementedException();
     }
 
-    public Like LikePost(string userId, int postId)
+    public bool LikePost(string userId, int postId)
     {
         throw new NotImplementedException();
     }
 
-    public Like LikeComment(string userId, int commentId)
+    public bool LikeComment(string userId, int commentId)
     {
         throw new NotImplementedException();
     }
 
-    public Post CreatePost(Post post)
+    public bool CreatePost(Post post)
     {
         throw new NotImplementedException();
     }
 
-    public Post EditPost(int postId, Post post)
+    public bool EditPost(int postId, Post post)
     {
         throw new NotImplementedException();
     }
 
-    public Comment CreateComment(Comment comment)
+    public bool CreateComment(Comment comment)
     {
         throw new NotImplementedException();
     }
 
-    public Comment EditComment(int commentId, Comment comment)
+    public bool EditComment(int commentId, Comment comment)
     {
         throw new NotImplementedException();
     }

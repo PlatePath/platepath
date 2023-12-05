@@ -12,15 +12,15 @@ public interface IForumService
 
     List<Like> GetCommentLikes(int commentId);
 
-    Like LikePost(string userId, int postId);
+    bool LikePost(String userId, int postId);
 
-    Like LikeComment(string userId, int commentId);
+    bool LikeComment(String userId, int commentId);
 
-    Post CreatePost(Post post);
+    bool CreatePost(Post post);
 
-    Post EditPost(int postId, Post post);
+    bool EditPost(int postId, Post post);
 
-    Comment CreateComment(Comment comment);
+    bool CreateComment(Comment comment);
 
-    Comment EditComment(int commentId, Comment comment);
+    bool EditComment(int commentId, Comment comment);
 }
