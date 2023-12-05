@@ -1,7 +1,8 @@
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.Azure.Storage;
+using Microsoft.Azure.Storage.Blob;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using PlatePath.API.Clients;
@@ -26,7 +27,7 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlServer(connectionString));
 
 // Identity
-builder.Services.AddIdentity<User, IdentityRole>()    
+builder.Services.AddIdentity<User, IdentityRole>()
     .AddEntityFrameworkStores<ApplicationDbContext>()
     .AddDefaultTokenProviders();
 
@@ -58,7 +59,8 @@ builder.Services.AddAuthentication(options =>
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen(c => {
+builder.Services.AddSwaggerGen(c =>
+{
     c.SwaggerDoc("v1", new OpenApiInfo
     {
         Title = "PlatePath.API",
@@ -101,6 +103,18 @@ builder.Services.AddTransient<IForumService, ForumService>();
 builder.Services.AddTransient<IAuthService, AuthService>();
 builder.Services.AddTransient<IEdamamClient, EdamamClient>();
 builder.Services.AddTransient<IProfileService, ProfileService>();
+
+// Load the connection string (ensure it's in your configuration - appsettings.json or environment variable)
+string storageConnectionString = builder.Configuration.GetConnectionString("AzureStorage");
+CloudStorageAccount storageAccount = CloudStorageAccount.Parse(storageConnectionString);
+CloudBlobClient blobClient = storageAccount.CreateCloudBlobClient();
+CloudBlobContainer container = blobClient.GetContainerReference("platepathblobs");
+
+// Ensure the container exists
+container.CreateIfNotExistsAsync().Wait();
+
+builder.Services.AddSingleton(container);
+builder.Services.AddScoped<IBlobStorageService, BlobStorageService>();
 
 builder.Services.AddHttpContextAccessor();
 
