@@ -1,4 +1,6 @@
-﻿namespace PlatePath.API.Data.Models.Recipes;
+﻿using PlatePath.API.Data.Models.Recipes;
+
+namespace PlatePath.API.Data.Models.Recipes;
 
 /// <summary>
 /// Maps a response from Edamam's recipe search API (/api/recipes/v2).
@@ -92,14 +94,6 @@ public class NutrientsInfo
     public Nutrient[]? Nutrients { get; set; }
 }
 
-public class Nutrient
-{
-    public string? Name { get; set; } // not exactly like in the response, has to be decided how to store this
-    public string? Label { get; set; }
-    public double Quantity { get; set; }
-    public string? Unit { get; set; }
-}
-
 public class Digest
 {
     public DigestEntry? DigestEntry { get; set; }
@@ -115,4 +109,33 @@ public class DigestEntry
     public double Daily { get; set; }
     public string? Unit { get; set; }
     public Digest? Sub { get; set; }
+}
+
+public class RecipeSearchResponse
+{
+    public RecipeBody recipe { get; set; }
+}
+
+public class RecipeBody
+{
+    public string label { get; set; }
+    public string image { get; set; }
+    public List<string> ingredientLines { get; set; }
+    public double calories { get; set; }
+    public TotalNutrients totalNutrients { get; set; }
+}
+
+public class TotalNutrients
+{
+    public Nutrient ENERC_KCAL { get; set; }
+    public Nutrient FAT { get; set; }
+    public Nutrient CHOCDF { get; set; }
+    public Nutrient PROCNT { get; set; }
+}
+
+public class Nutrient
+{
+    public string? label { get; set; }
+    public double quantity { get; set; }
+    public string? unit { get; set; }
 }

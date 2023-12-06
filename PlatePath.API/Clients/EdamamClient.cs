@@ -6,7 +6,12 @@ using PlatePath.API.Services;
 using PlatePath.API.Singleton;
 using Polly;
 using Polly.Extensions.Http;
+using Polly.Wrap;
 using System.Net;
+using System.Net.Http.Headers;
+using System.Text;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 
 namespace PlatePath.API.Clients
 {
@@ -23,46 +28,29 @@ namespace PlatePath.API.Clients
 
         public async Task<EdamamMealPlanResponse?> GenerateMealPlan(EdamamMealPlanRequest request)  // todo add request body
         {
-            //var retryPolicy = Policy
-            //    .Handle<HttpRequestException>()
-            //    .Retry(2, (exception, retryCount) =>
-            //    {
-            //        _logger.LogError($"GenerateMealPlan: Retry {retryCount} due to {exception.Message} \r\n Request: {request}");
-            //    });
+            AsyncPolicyWrap<HttpResponseMessage> policyWrap = GetPollyWrap();
 
-            //var client = new HttpClient();
+            var options = new JsonSerializerOptions
+            {
+                DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull
+            };
 
-            //var result = await retryPolicy.ExecuteAsync(async () =>
-            //{
-            //    var response = await client.PostAsync(url, requestMessage);
-
-            //    response.EnsureSuccessStatusCode();
-
-            //    return await response.Content.ReadAsStringAsync();
-            //});
-
-            var retryPolicy = HttpPolicyExtensions
-                .HandleTransientHttpError()
-                .OrResult(response => response.StatusCode == HttpStatusCode.NotFound)
-                //.Retry(response  => _logger.LogError($"GenerateMealPlan: Retry {retryCount} due to {exception.Message} \r\n Request: {request}"))
-                .WaitAndRetryAsync(2, retryAttempt => TimeSpan.FromSeconds(Math.Pow(2, retryAttempt)));
-
-            var circuitBreakerPolicy = HttpPolicyExtensions
-                .HandleTransientHttpError()
-                .CircuitBreakerAsync(5, TimeSpan.FromSeconds(30));
-
-            var policyWrap = Policy.WrapAsync(retryPolicy, circuitBreakerPolicy);
+            var reqSerialized = JsonSerializer.Serialize(request, options);
 
             var httpClient = new HttpClient();
 
-            HttpResponseMessage httpResponse = await policyWrap.ExecuteAsync(async () =>
-                 await httpClient.PostAsJsonAsync(StringifyURL(), request));
+            AuthenticateEdamamBasicAuth(httpClient);
+
+            var content = new StringContent(reqSerialized, Encoding.UTF8, "application/json");
+
+            HttpResponseMessage httpResponsePolly = await policyWrap.ExecuteAsync(async () =>
+                 await httpClient.PostAsync(StringifyURL(), content));
 
             EdamamMealPlanResponse? mealPlanResponse = null;
 
-            if (httpResponse.IsSuccessStatusCode)
+            if (httpResponsePolly.IsSuccessStatusCode)
             {
-                mealPlanResponse = await httpResponse.Content.ReadFromJsonAsync<EdamamMealPlanResponse>();
+                mealPlanResponse = await httpResponsePolly.Content.ReadFromJsonAsync<EdamamMealPlanResponse>();
             }
 
             return mealPlanResponse;
@@ -72,16 +60,12 @@ namespace PlatePath.API.Clients
 
         public async Task<RecipeResponse?> GetRecipeInfoByURI(string request)  // todo add request body
         {
-            var retryPolicy = HttpPolicyExtensions
-                .HandleTransientHttpError()
-                .OrResult(response => response.StatusCode == HttpStatusCode.NotFound)
-                .WaitAndRetryAsync(2, retryAttempt => TimeSpan.FromSeconds(Math.Pow(2, retryAttempt)));
+            AsyncPolicyWrap<HttpResponseMessage> policyWrap = GetPollyWrap();
 
-            var circuitBreakerPolicy = HttpPolicyExtensions
-                .HandleTransientHttpError()
-                .CircuitBreakerAsync(5, TimeSpan.FromSeconds(30));
-
-            var policyWrap = Policy.WrapAsync(retryPolicy, circuitBreakerPolicy);
+            var options = new JsonSerializerOptions
+            {
+                DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull
+            };
 
             var httpClient = new HttpClient();
 
@@ -97,52 +81,46 @@ namespace PlatePath.API.Clients
 
             return recipeResponse;
 
-            string StringifyURL() => $"{_cfg.EdamamRecipeSearchURI}{request}&app_id={_cfg.EdamamAppID}&app_key={_cfg.EdamamAppKey}";
+            string StringifyURL() => $"{_cfg.EdamamRecipeSearchURI}/{request}&app_id={_cfg.EdamamAppID}&app_key={_cfg.EdamamAppKey}";
         }
 
-        public async Task<RecipeResponse?> GetRecipeInfo(string request)  // todo add request body
+        public async Task<RecipeSearchResponse?> GetRecipeInfo(string request)  // todo add request body
         {
-            var retryPolicy = HttpPolicyExtensions
-                .HandleTransientHttpError()
-                .OrResult(response => response.StatusCode == HttpStatusCode.NotFound)
-                .WaitAndRetryAsync(2, retryAttempt => TimeSpan.FromSeconds(Math.Pow(2, retryAttempt)));
+            AsyncPolicyWrap<HttpResponseMessage> policyWrap = GetPollyWrap();
 
-            var circuitBreakerPolicy = HttpPolicyExtensions
-                .HandleTransientHttpError()
-                .CircuitBreakerAsync(5, TimeSpan.FromSeconds(30));
-
-            var policyWrap = Policy.WrapAsync(retryPolicy, circuitBreakerPolicy);
+            var options = new JsonSerializerOptions
+            {
+                DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull
+            };
 
             var httpClient = new HttpClient();
 
-            HttpResponseMessage httpResponse = await policyWrap.ExecuteAsync(async () =>
-                 await httpClient.PostAsJsonAsync(StringifyURL(), new RecipeResponse()));  // todo add request body
+            AuthenticateEdamamRecipeAuth(httpClient);
 
-            RecipeResponse? recipeResponse = null;
+            HttpResponseMessage httpResponse = await policyWrap.ExecuteAsync(async () =>
+                 await httpClient.GetAsync(StringifyURL()));
+
+            RecipeSearchResponse? recipeResponse = null;
 
             if (httpResponse.IsSuccessStatusCode)
             {
-                recipeResponse = await httpResponse.Content.ReadFromJsonAsync<RecipeResponse>();
+                recipeResponse = await httpResponse.Content.ReadFromJsonAsync<RecipeSearchResponse>();
             }
 
             return recipeResponse;
 
-            string StringifyURL() => $"{_cfg.EdamamRecipeSearch}{request}&app_id={_cfg.EdamamAppID}&app_key={_cfg.EdamamAppKey}";
+            string StringifyURL() => $"{_cfg.EdamamRecipeSearch}/{request}?type=public&app_id={_cfg.EdamamAppID}&app_key={_cfg.EdamamAppKey}";
         }
 
         //TODO
         public async Task<string?> GetNutritionData(string request)
         {
-            var retryPolicy = HttpPolicyExtensions
-                .HandleTransientHttpError()
-                .OrResult(response => response.StatusCode == HttpStatusCode.NotFound)
-                .WaitAndRetryAsync(2, retryAttempt => TimeSpan.FromSeconds(Math.Pow(2, retryAttempt)));
+            AsyncPolicyWrap<HttpResponseMessage> policyWrap = GetPollyWrap();
 
-            var circuitBreakerPolicy = HttpPolicyExtensions
-                .HandleTransientHttpError()
-                .CircuitBreakerAsync(5, TimeSpan.FromSeconds(30));
-
-            var policyWrap = Policy.WrapAsync(retryPolicy, circuitBreakerPolicy);
+            var options = new JsonSerializerOptions
+            {
+                DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull
+            };
 
             var httpClient = new HttpClient();
 
@@ -159,6 +137,42 @@ namespace PlatePath.API.Clients
             return "";
 
             //string Stringify() => $"{_cfg.EdamamNutrition}{request}&app_id={_cfg.EdamamAppID}&app_key={_cfg.EdamamAppKey}";
+        }
+
+        void AuthenticateEdamamBasicAuth(HttpClient httpClient)
+        {
+            var authenticationString = $"{_cfg.EdamamAppID}:{_cfg.EdamamAppKey}";
+            var base64EncodedAuthenticationString = Convert.ToBase64String(Encoding.ASCII.GetBytes(authenticationString));
+
+            httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Basic", base64EncodedAuthenticationString);
+            httpClient.DefaultRequestHeaders.Add("Edamam-Account-User", _cfg.EdamamAccountUser);
+        }
+
+        void AuthenticateEdamamRecipeAuth(HttpClient httpClient)
+        {
+            var authenticationString = $"{_cfg.EdamamAppID}:{_cfg.EdamamAppKey}";
+            var base64EncodedAuthenticationString = Convert.ToBase64String(Encoding.ASCII.GetBytes(authenticationString));
+
+            httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Basic", base64EncodedAuthenticationString);
+            httpClient.DefaultRequestHeaders.Add("Accept", "application/json");
+            httpClient.DefaultRequestHeaders.Add("Edamam-Account-User", _cfg.EdamamAccountUser);
+            httpClient.DefaultRequestHeaders.Add("Accept-Language","en");
+        }
+
+        static AsyncPolicyWrap<HttpResponseMessage> GetPollyWrap()
+        {
+            var retryPolicy = HttpPolicyExtensions
+                .HandleTransientHttpError()
+                .OrResult(response => response.StatusCode == HttpStatusCode.NotFound)
+                //.Retry(response  => _logger.LogError($"GenerateMealPlan: Retry {retryCount} due to {exception.Message} \r\n Request: {request}"))
+                .WaitAndRetryAsync(2, retryAttempt => TimeSpan.FromSeconds(Math.Pow(2, retryAttempt)));
+
+            var circuitBreakerPolicy = HttpPolicyExtensions
+                .HandleTransientHttpError()
+                .CircuitBreakerAsync(5, TimeSpan.FromSeconds(30));
+
+            var policyWrap = Policy.WrapAsync(retryPolicy, circuitBreakerPolicy);
+            return policyWrap;
         }
     }
 }
