@@ -2,6 +2,7 @@
 using PlatePath.API.Data.Models.ActivityLevels;
 using PlatePath.API.Data.Models.Profile;
 using PlatePath.API.Enums;
+using PlatePath.API.Models.InputModels.User;
 
 namespace PlatePath.API.Services;
 
@@ -12,6 +13,25 @@ public class ProfileService : IProfileService
     public ProfileService(ApplicationDbContext context)
     {
         _context = context;
+    }
+
+    public bool SetUserPersonalData(UserPersonalDataInputModel request, string userId)
+    {
+        var user = _context.Users.Find(userId);
+
+        if (user == null)
+        {
+            return false;
+        }
+
+        user.Age = request.Age;
+        user.WeightKg = request.WeightKg;
+        user.HeightCm = request.HeightCm;
+        user.Gender = _context.Genders.Where(x => x.Name == request.Gender).First();
+        user.ActivityLevel = _context.ActivityLevel.Where(x => x.Name == request.ActivityLevel).First();
+        user.WeightGoal = _context.WeightGoal.Where(x => x.Name == request.WeightGoal).First();
+
+        return _context.SaveChanges() > 0;
     }
 
     public NutritionCalculationResult CalculateNutrition(string userId)
@@ -86,4 +106,6 @@ public class ProfileService : IProfileService
     {
         return Enum.TryParse(weightGoalName, out WeightGoalEnum weightGoal) ? weightGoal : WeightGoalEnum.MaintainWeight;
     }
+
+
 }

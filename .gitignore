@@ -10,3 +10,5 @@ node_modules
 *.v2
 /.vs/ProjectEvaluation
 *vs
+.vs/
+platepath/.vs
