@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using PlatePath.API.Data.Models.Profile;
 using PlatePath.API.Models.InputModels.User;
 using PlatePath.API.Services;
 using System.Security.Claims;
@@ -21,7 +22,7 @@ namespace PlatePath.API.Controllers
 
         [HttpPost("setPersonalData")]
         [Authorize(Roles = "User")]
-        public async Task<IActionResult> SetPersonalData([FromBody] UserPersonalDataInputModel request)
+        public async Task<IActionResult> SetPersonalData([FromBody] UserPersonalDataModel request)
         {
             if (!ModelState.IsValid)
             {
@@ -42,6 +43,24 @@ namespace PlatePath.API.Controllers
             return Ok(isSaved);
         }
 
+        [HttpPost("getPersonalData")]
+        [Authorize(Roles = "User")]
+        public async Task<IActionResult> GetPersonalData()
+        {
+            var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            if (userId is null)
+                return BadRequest();
+
+            var personalData = _profileService.GetUserPersonalData(userId);
+
+            if (personalData == null)
+            {
+                return StatusCode(500);
+            }
+
+            return Ok(personalData);
+        }
+
         [HttpGet("getNeededNutrition")]
         [Authorize(Roles = "User")]
         public async Task<IActionResult> GetNeededNutrition()
@@ -50,7 +69,16 @@ namespace PlatePath.API.Controllers
             if (userId is null)
                 return BadRequest();
 
-            var nutritionData = _profileService.CalculateNutrition(userId);
+            NutritionCalculationResult nutritionData = null;
+
+            try
+            {
+                nutritionData = _profileService.CalculateNutrition(userId);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
 
             return Ok(nutritionData);
         }

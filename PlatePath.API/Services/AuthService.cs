@@ -1,15 +1,15 @@
 ﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.Extensions.Options;
+using Microsoft.IdentityModel.Tokens;
 using PlatePath.API.Data;
-using PlatePath.API.Data.Models.Authentication.SignUp;
-using PlatePath.API.Data.Models.Authentication.Login;
 using PlatePath.API.Data.Models.Authentication;
+using PlatePath.API.Data.Models.Authentication.Login;
+using PlatePath.API.Data.Models.Authentication.SignUp;
 using PlatePath.API.Data.Models.Users;
 using PlatePath.API.Singleton;
-using System.Security.Claims;
-using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
 using System.Text;
-using Microsoft.Extensions.Options;
 
 namespace PlatePath.API.Services;
 

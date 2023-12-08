@@ -7,5 +7,7 @@ public interface IProfileService
 {
     NutritionCalculationResult CalculateNutrition(string userId);
 
-    bool SetUserPersonalData(UserPersonalDataInputModel request, string userId);
+    bool SetUserPersonalData(UserPersonalDataModel request, string userId);
+
+    UserPersonalDataModel GetUserPersonalData(string userId);
 }

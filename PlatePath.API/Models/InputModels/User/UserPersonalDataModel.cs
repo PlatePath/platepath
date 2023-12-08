@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace PlatePath.API.Models.InputModels.User
 {
-    public record UserPersonalDataInputModel
+    public record UserPersonalDataModel
     {
         [Required]
         public int Age { get; set; }
