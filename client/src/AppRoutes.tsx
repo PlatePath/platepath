@@ -4,6 +4,7 @@ import Register from "./pages/Register/Register";
 import Login from "./pages/Login/Login";
 import MainLayout from "./components/MainLayout/MainLayout";
 import Plans from "./pages/Plans/Plans";
+import Profile from "./pages/Profile/Profile";
 
 const AppRoutes = () => {
   return (
@@ -13,6 +14,14 @@ const AppRoutes = () => {
         element={
           <MainLayout>
             <BoxContainer>Dashboard</BoxContainer>
+          </MainLayout>
+        }
+      />
+      <Route
+        path="/profile"
+        element={
+          <MainLayout>
+            <Profile />
           </MainLayout>
         }
       />
@@ -27,6 +36,7 @@ const AppRoutes = () => {
       />
       <Route path="/register" element={<Register />} />
       <Route path="/login" element={<Login />} />
+      <Route path="*" element={<MainLayout>No matches</MainLayout>} />
     </Routes>
   );
 };
