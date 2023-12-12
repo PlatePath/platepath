@@ -6,8 +6,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="28d31172-d20b-4f02-bd11-5783c6559131" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/../PlatePath.Client/src/AppRoutes.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/../PlatePath.Client/src/AppRoutes.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../PlatePath.Client/src/components/styled/reset.css" beforeDir="false" afterPath="$PROJECT_DIR$/../PlatePath.Client/src/components/styled/reset.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../client/src/AppRoutes.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/../client/src/AppRoutes.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../client/src/components/styled/reset.css" beforeDir="false" afterPath="$PROJECT_DIR$/../client/src/components/styled/reset.css" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -36,7 +36,7 @@
 }]]></component>
   <component name="RunManager" selected=".NET Launch Settings Profile.PlatePath.API">
     <configuration name="PlatePath.API" type="LaunchSettings" factoryName=".NET Launch Settings Profile">
-      <option name="LAUNCH_PROFILE_PROJECT_FILE_PATH" value="$PROJECT_DIR$/PlatePath.API.csproj" />
+      <option name="LAUNCH_PROFILE_PROJECT_FILE_PATH" value="$PROJECT_DIR$/api.csproj" />
       <option name="LAUNCH_PROFILE_TFM" value="net6.0" />
       <option name="LAUNCH_PROFILE_NAME" value="PlatePath.API" />
       <option name="USE_EXTERNAL_CONSOLE" value="0" />
@@ -51,7 +51,7 @@
       </method>
     </configuration>
     <configuration name="PlatePath.API: IIS Express" type="LaunchSettings" factoryName=".NET Launch Settings Profile">
-      <option name="LAUNCH_PROFILE_PROJECT_FILE_PATH" value="$PROJECT_DIR$/PlatePath.API.csproj" />
+      <option name="LAUNCH_PROFILE_PROJECT_FILE_PATH" value="$PROJECT_DIR$/api.csproj" />
       <option name="LAUNCH_PROFILE_TFM" value="net6.0" />
       <option name="LAUNCH_PROFILE_NAME" value="IIS Express" />
       <option name="USE_EXTERNAL_CONSOLE" value="0" />
