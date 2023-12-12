@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { Link, LinkProps } from "react-router-dom";
 import { BoxContainer, Columns } from "../styled";
 import defaultAvatar from "../../assets/defaultAvatar.png";
 import logo128 from "../../assets/logo128.png";
@@ -10,6 +10,7 @@ import {
   Typography,
   avatarClasses,
 } from "@mui/material";
+import { ReactNode } from "react";
 interface MainLayoutProps {
   children: React.ReactNode;
 }
@@ -36,6 +37,12 @@ const SideNav = styled(Columns)`
     justify-content: space-between;
     flex: 1;
   }
+  & .side-link {
+    width: 100%;
+    & > button {
+      width: inherit;
+    }
+  }
 `;
 const ProfileInfo = styled(Columns)`
   gap: 7px;
@@ -47,6 +54,16 @@ const ProfileInfo = styled(Columns)`
     height: 100px;
   }
 `;
+interface SideLinkProps extends Pick<LinkProps, "to"> {
+  children: ReactNode;
+}
+const SideLink = ({ to, children }: SideLinkProps) => {
+  return (
+    <Link to={to} className="side-link">
+      <Button variant="text" children={children} />
+    </Link>
+  );
+};
 
 const MainLayout = ({ children }: MainLayoutProps) => {
   return (
@@ -65,14 +82,12 @@ const MainLayout = ({ children }: MainLayoutProps) => {
         </ProfileInfo>
         <Columns className="button-group">
           <Columns gap="20px">
-            <Button variant="text">Dashboard</Button>
-            <Button variant="text">Your Profile</Button>
-            <Button variant="text">Recipes</Button>
-            <Button variant="text">Forum</Button>
-            <Button variant="text">
-              <Link to="/plans">Plans</Link>
-            </Button>
-            <Button>FAQ</Button>
+            <SideLink to="/dashboard">Dashboard</SideLink>
+            <SideLink to="/profile">Your Profile</SideLink>
+            <SideLink to="/recipes">Recipes</SideLink>
+            <SideLink to="/forum">Forum</SideLink>
+            <SideLink to="/plans">Plans</SideLink>
+            <SideLink to="/faq">FAQ</SideLink>
           </Columns>
           <Button
             variant="text"

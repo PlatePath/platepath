@@ -10,7 +10,7 @@ const NavbarContent = styled(BoxContainer)`
   align-items: center;
 `;
 export interface NavbarProps {
-  title: string;
+  title?: string;
 }
 const Navbar = ({ title }: NavbarProps) => {
   return (
