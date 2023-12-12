@@ -9,8 +9,9 @@ import {
   Avatar,
   Typography,
   avatarClasses,
+  ButtonProps,
 } from "@mui/material";
-import { ReactNode } from "react";
+import { Fragment, ReactNode } from "react";
 interface MainLayoutProps {
   children: React.ReactNode;
 }
@@ -56,12 +57,14 @@ const ProfileInfo = styled(Columns)`
 `;
 interface SideLinkProps extends Pick<LinkProps, "to"> {
   children: ReactNode;
+  disabled?: ButtonProps["disabled"];
 }
-const SideLink = ({ to, children }: SideLinkProps) => {
+const SideLink = ({ to, children, disabled }: SideLinkProps) => {
+  const Parent = disabled ? Fragment : Link;
   return (
-    <Link to={to} className="side-link">
-      <Button variant="text" children={children} />
-    </Link>
+    <Parent to={to} className="side-link">
+      <Button variant="text" children={children} disabled={disabled} />
+    </Parent>
   );
 };
 
@@ -82,12 +85,20 @@ const MainLayout = ({ children }: MainLayoutProps) => {
         </ProfileInfo>
         <Columns className="button-group">
           <Columns gap="20px">
-            <SideLink to="/dashboard">Dashboard</SideLink>
+            <SideLink to="/dashboard" disabled>
+              Dashboard
+            </SideLink>
             <SideLink to="/profile">Your Profile</SideLink>
-            <SideLink to="/recipes">Recipes</SideLink>
-            <SideLink to="/forum">Forum</SideLink>
+            <SideLink to="/recipes" disabled>
+              Recipes
+            </SideLink>
+            <SideLink to="/forum" disabled>
+              Forum
+            </SideLink>
             <SideLink to="/plans">Plans</SideLink>
-            <SideLink to="/faq">FAQ</SideLink>
+            <SideLink to="/faq" disabled>
+              FAQ
+            </SideLink>
           </Columns>
           <Button
             variant="text"
