@@ -6,8 +6,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="28d31172-d20b-4f02-bd11-5783c6559131" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/../PlatePath.Client/src/AppRoutes.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/../PlatePath.Client/src/AppRoutes.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../PlatePath.Client/src/components/styled/reset.css" beforeDir="false" afterPath="$PROJECT_DIR$/../PlatePath.Client/src/components/styled/reset.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../client/src/AppRoutes.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/../client/src/AppRoutes.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../client/src/components/styled/reset.css" beforeDir="false" afterPath="$PROJECT_DIR$/../client/src/components/styled/reset.css" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
