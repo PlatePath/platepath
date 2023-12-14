@@ -10,11 +10,11 @@ namespace PlatePath.API.Data.Models.Users
 {
     public class User : IdentityUser
     {
-        public Gender Gender { get; set; }
+        public Gender? Gender { get; set; }
 
-        public ActivityLevel ActivityLevel { get; set; }
+        public ActivityLevel? ActivityLevel { get; set; }
 
-        public WeightGoal WeightGoal { get; set; }
+        public WeightGoal? WeightGoal { get; set; }
         
         public ICollection<MealPlan> MealPlans { get; init; } = new List<MealPlan>();
 

@@ -18,11 +18,11 @@ namespace PlatePath.API.Data.Models.Authentication.SignUp
 
         public double? WeightKg { get; set; }
 
-        public int ActivityLevel { get; set; }
+        public int? ActivityLevel { get; set; }
 
-        public int Gender { get; set; }
+        public int? Gender { get; set; }
 
-        public int WeightGoal { get; set; }
+        public int? WeightGoal { get; set; }
     }
 
     public record RegisterResponse : BaseResponse

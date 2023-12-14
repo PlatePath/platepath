@@ -10,6 +10,9 @@ using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Text;
 using Microsoft.Extensions.Options;
+using PlatePath.API.Data.Models.WeightGoals;
+using PlatePath.API.Data.Models.ActivityLevels;
+using PlatePath.API.Data.Models.Genders;
 
 namespace PlatePath.API.Services;
 
@@ -71,12 +74,15 @@ public class AuthService : IAuthService
         if (userExists is not null)
             return new RegisterResponse(ErrorCode.UserAlreadyExists);
 
-        var weightGoal = _dbContext.WeightGoal.FirstOrDefault(wg => wg.Id == request.WeightGoal);
-        var activityLevel = _dbContext.ActivityLevel.FirstOrDefault(al => al.Id == request.ActivityLevel);
-        var gender = _dbContext.Genders.FirstOrDefault(g => g.Id == request.Gender);
-
-        if (weightGoal is null || activityLevel is null || gender is null)
-            return new RegisterResponse(ErrorCode.InvalidParameters);
+        WeightGoal? weightGoal = request.WeightGoal != 0 
+            ? _dbContext.WeightGoal.FirstOrDefault(wg => wg.Id == request.WeightGoal) 
+            : null;
+        ActivityLevel? activityLevel = request.ActivityLevel != 0 
+            ? _dbContext.ActivityLevel.FirstOrDefault(wg => wg.Id == request.ActivityLevel) 
+            : null;
+        Gender? gender = request.Gender != 0
+            ? _dbContext.Genders.FirstOrDefault(wg => wg.Id == request.Gender) 
+            : null;
 
         var user = new User
         {

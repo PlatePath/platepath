@@ -72,6 +72,7 @@ namespace PlatePath.API.Data
             builder.Entity<IdentityRole>().HasData(rolesSeedData.Select(roleData =>
                 new IdentityRole
                 {
+                    Id = roleData.Id,
                     Name = roleData.Name,
                     ConcurrencyStamp = roleData.ConcurrencyStamp,
                     NormalizedName = roleData.NormalizedName
