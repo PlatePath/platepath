@@ -1,10 +1,14 @@
 ﻿using Microsoft.AspNetCore.DataProtection;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using PlatePath.API.Clients;
+using PlatePath.API.Data;
 using PlatePath.API.Data.Models.MealPlans;
 using PlatePath.API.Data.Models.Recipes;
 using PlatePath.API.Singleton;
+using System;
 using System.Dynamic;
+using System.Net.Http;
 
 namespace PlatePath.API.Services;
 
@@ -14,17 +18,22 @@ public class EdamamService : IEdamamService
     readonly ILogger<EdamamService> _logger;
     readonly Configuration _cfg;
     readonly IProfileService _profileService;
-    public EdamamService(IEdamamClient edamamClient, IProfileService profileService, ILogger<EdamamService> logger, IOptions<Configuration> cfg)
+    readonly ApplicationDbContext _dbContext;
+    readonly IBlobStorageService _blobStorageService;
+
+    public EdamamService(IEdamamClient edamamClient, IProfileService profileService, IBlobStorageService blobStorageService, ApplicationDbContext dbContext, ILogger<EdamamService> logger, IOptions<Configuration> cfg)
     {
         _edamamClient = edamamClient;
         _profileService = profileService;
+        _blobStorageService = blobStorageService;
+        _dbContext = dbContext;
         _logger = logger;
         _cfg = cfg.Value;
     }
 
     public async Task<GenerateMealPlanResponse> GenerateMealPlan(string userId, GenerateMealPlanRequest request) //TODO add params
     {
-        if (request.MaxCalories is null || request.MinCalories is null || request.Proteins is null || 
+        if (request.MaxCalories is null || request.MinCalories is null || request.Proteins is null ||
             request.Carbohydrates is null || request.Fats is null)
         {
             var nutritionsResponse = _profileService.CalculateNutrition(userId);
@@ -38,8 +47,8 @@ public class EdamamService : IEdamamService
             }
         }
 
-        if (request.MealsPerDay > 5)
-            request.MealsPerDay = 5;
+        var proteins = request.Proteins ??= 130;
+        var carbohydrates = request.Carbohydrates ??= 250;
 
         var mealplanRequest = new EdamamMealPlanRequest
         {
@@ -63,19 +72,19 @@ public class EdamamService : IEdamamService
                 {
                     ENERC_KCAL = new MinMaxQuantity
                     {
-                        min = request.MinCalories ?? 1000,
-                        max = request.MaxCalories ?? 5000
+                        min = request.MinCalories ??= 1000,
+                        max = request.MaxCalories ??= 5000
                     }
                     ,
                     PROCNT = new MinMaxQuantity
                     {
-                        min = request.Proteins ?? 70,
-                        max = request.Proteins ?? 200
+                        min = proteins - 30,
+                        max = proteins + 30
                     },
                     CHOCDF = new MinMaxQuantity
                     {
-                        min = request.Carbohydrates ?? 70,
-                        max = request.Carbohydrates ?? 200
+                        min = carbohydrates - 30,
+                        max = carbohydrates + 30
                     }
                     //fats????
                 },
@@ -87,14 +96,47 @@ public class EdamamService : IEdamamService
 
         var mealIdsPerDay = GetTrimmedIdsPerDay(mealPlanResponse);
 
-        var mealId = "";
-        await _edamamClient.GetRecipeInfo(mealId);
+        //var mealId = "";
+        // await _edamamClient.GetRecipeInfo(mealId);
 
-        var recipeSearch = ExecuteAsyncRecipeSearch(mealIdsPerDay);
+        var mealIds = mealIdsPerDay.Values.SelectMany(x => x).ToList();
+
+        List<Recipe> recipesInDBb = _dbContext.Recipes
+                .Where(row => !string.IsNullOrEmpty(row.EdamamId) && mealIds.Contains(row.EdamamId))
+                .ToList();
+
+        mealIds.RemoveAll(id => recipesInDBb.Any(row => row.EdamamId == id));
+
+        var recipeSearch = await ExecuteAsyncRecipeSearch(mealIds);
+
+        var recipesToSave = new List<Recipe>();
+
+        foreach (var recipe in recipeSearch)
+        {
+            var edamamId = GetTrimmedIdFromUrl(recipe.recipe.uri);
+
+            recipesToSave.Add(new Recipe
+            {
+                Name = recipe.recipe.label,
+                EnergyKcal = recipe.recipe.totalNutrients.ENERC_KCAL.quantity,
+                Carbohydrates = recipe.recipe.totalNutrients.CHOCDF.quantity,
+                Fats = recipe.recipe.totalNutrients.FAT.quantity,
+                Protein = recipe.recipe.totalNutrients.PROCNT.quantity,
+                EdamamId = edamamId,
+                ImageURL = await AddImageToBlobStorage(edamamId, recipe.recipe.image)
+            });
+        }
+
+        _dbContext.AddRange(recipesToSave);
+        _dbContext.SaveChanges();
+
+        _ = recipesInDBb.Concat(recipesToSave);
+
+        recipesInDBb = OrderMealsByDay(recipesInDBb, mealIdsPerDay);
 
         return new GenerateMealPlanResponse
         {
-
+            Recipes = recipesInDBb
         };
     }
 
@@ -149,17 +191,35 @@ public class EdamamService : IEdamamService
         return url;
     }
 
-    async Task<List<RecipeSearchResponse>> ExecuteAsyncRecipeSearch(Dictionary<int, List<string>> mealIdsPerDay)
+    static List<Recipe> OrderMealsByDay(List<Recipe> allMeals, Dictionary<int, List<string>> mealsByDay)
     {
-        var tasks = new List<Task<RecipeSearchResponse>>();
+        var orderedMeals = new List<Recipe>();
 
-        foreach (var idsForDay in mealIdsPerDay.Values)
+        foreach (var day in mealsByDay.Keys.OrderBy(day => day))
         {
-            tasks.AddRange(idsForDay.Select(id => _edamamClient.GetRecipeInfo(id)));
+            if (mealsByDay.TryGetValue(day, out List<string> mealIdsForDay))
+            {
+                orderedMeals.AddRange(allMeals.Where(meal => mealIdsForDay.Contains(meal.EdamamId)));
+            }
         }
 
-        await Task.WhenAll(tasks);
+        return orderedMeals;
+    }
 
-        return new List<RecipeSearchResponse>(tasks.Select(x => x.Result)).ToList();
+    async Task<List<RecipeSearchResponse>> ExecuteAsyncRecipeSearch(List<string> mealIdsPerDay)
+    {
+        var tasks = mealIdsPerDay.Select(id => _edamamClient.GetRecipeInfo(id)).ToList();
+
+        var completedTasks = await Task.WhenAll(tasks);
+
+        return completedTasks.ToList();
+    }
+
+    async Task<string> AddImageToBlobStorage(string mealId, string url)
+    {
+        using HttpClient httpClient = new HttpClient();
+        using Stream stream = await httpClient.GetStreamAsync(url);
+
+        return await _blobStorageService.UploadAsync(mealId, stream);
     }
 }

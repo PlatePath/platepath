@@ -31,5 +31,7 @@ namespace PlatePath.API.Data.Models.Recipes
         public double Fats { get; set; }
         
         public double Protein { get; set; }
+
+        public string? ImageURL { get; set; }
     }
 }

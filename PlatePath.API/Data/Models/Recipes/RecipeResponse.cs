@@ -118,6 +118,7 @@ public class RecipeSearchResponse
 
 public class RecipeBody
 {
+    public string uri { get; set; }
     public string label { get; set; }
     public string image { get; set; }
     public List<string> ingredientLines { get; set; }
@@ -135,7 +136,5 @@ public class TotalNutrients
 
 public class Nutrient
 {
-    public string? label { get; set; }
     public double quantity { get; set; }
-    public string? unit { get; set; }
 }
