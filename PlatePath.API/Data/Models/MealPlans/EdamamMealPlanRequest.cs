@@ -28,7 +28,7 @@ public class Fit
     public MinMaxQuantity ENERC_KCAL { get; set; }
     public MinMaxQuantity PROCNT { get; set; }
     public MinMaxQuantity CHOCDF { get; set; }
-    //public MinMaxQuantity FASAT { get; set; } Fats type????
+    public MinMaxQuantity FASAT { get; set; }
 }
 
 public class MinMaxQuantity

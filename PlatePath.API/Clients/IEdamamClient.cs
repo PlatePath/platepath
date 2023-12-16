@@ -7,8 +7,6 @@ namespace PlatePath.API.Clients
     {
         Task<EdamamMealPlanResponse?> GenerateMealPlan(EdamamMealPlanRequest request);
 
-        Task<RecipeResponse?> GetRecipeInfoByURI(string request);
-
         Task<RecipeSearchResponse?> GetRecipeInfo(string request);
 
         Task<string?> GetNutritionData(string request);

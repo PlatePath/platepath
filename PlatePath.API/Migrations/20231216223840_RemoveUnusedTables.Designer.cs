@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using PlatePath.API.Data;
 
@@ -11,9 +12,10 @@ using PlatePath.API.Data;
 namespace PlatePath.API.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20231216223840_RemoveUnusedTables")]
+    partial class RemoveUnusedTables
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -369,14 +371,14 @@ namespace PlatePath.API.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
-                    b.Property<int>("Carbohydrates")
-                        .HasColumnType("int");
+                    b.Property<double>("Carbohydrates")
+                        .HasColumnType("float");
 
                     b.Property<string>("EdamamId")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("Fats")
-                        .HasColumnType("int");
+                    b.Property<double>("Fats")
+                        .HasColumnType("float");
 
                     b.Property<string>("ImageURL")
                         .HasColumnType("nvarchar(max)");
@@ -385,11 +387,11 @@ namespace PlatePath.API.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("Kcal")
-                        .HasColumnType("int");
+                    b.Property<double>("Kcal")
+                        .HasColumnType("float");
 
-                    b.Property<int>("KcalPerServing")
-                        .HasColumnType("int");
+                    b.Property<double>("KcalPerServing")
+                        .HasColumnType("float");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -398,11 +400,11 @@ namespace PlatePath.API.Migrations
                     b.Property<int?>("PostId")
                         .HasColumnType("int");
 
-                    b.Property<int>("Protein")
-                        .HasColumnType("int");
+                    b.Property<double>("Protein")
+                        .HasColumnType("float");
 
-                    b.Property<int>("Servings")
-                        .HasColumnType("int");
+                    b.Property<double>("Servings")
+                        .HasColumnType("float");
 
                     b.Property<string>("UserId")
                         .HasColumnType("nvarchar(450)");
@@ -458,17 +460,17 @@ namespace PlatePath.API.Migrations
                     b.Property<DateTimeOffset?>("LockoutEnd")
                         .HasColumnType("datetimeoffset");
 
-                    b.Property<int?>("NeededCalories")
-                        .HasColumnType("int");
+                    b.Property<double?>("NeededCalories")
+                        .HasColumnType("float");
 
-                    b.Property<int?>("NeededCarbs")
-                        .HasColumnType("int");
+                    b.Property<double?>("NeededCarbs")
+                        .HasColumnType("float");
 
-                    b.Property<int?>("NeededFats")
-                        .HasColumnType("int");
+                    b.Property<double?>("NeededFats")
+                        .HasColumnType("float");
 
-                    b.Property<int?>("NeededProtein")
-                        .HasColumnType("int");
+                    b.Property<double?>("NeededProtein")
+                        .HasColumnType("float");
 
                     b.Property<string>("NormalizedEmail")
                         .HasMaxLength(256)

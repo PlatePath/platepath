@@ -12,8 +12,8 @@ using PlatePath.API.Data;
 namespace PlatePath.API.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20231214194933_UserNullableEntities")]
-    partial class UserNullableEntities
+    [Migration("20231216231013_ChangedNutritionsToInt")]
+    partial class ChangedNutritionsToInt
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -23,36 +23,6 @@ namespace PlatePath.API.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
-
-            modelBuilder.Entity("DietLabelRecipe", b =>
-                {
-                    b.Property<int>("DietLabelsId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("RecipesId")
-                        .HasColumnType("int");
-
-                    b.HasKey("DietLabelsId", "RecipesId");
-
-                    b.HasIndex("RecipesId");
-
-                    b.ToTable("DietLabelRecipe");
-                });
-
-            modelBuilder.Entity("IngredientRecipe", b =>
-                {
-                    b.Property<int>("IngredientsId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("RecipesId")
-                        .HasColumnType("int");
-
-                    b.HasKey("IngredientsId", "RecipesId");
-
-                    b.HasIndex("RecipesId");
-
-                    b.ToTable("IngredientRecipe");
-                });
 
             modelBuilder.Entity("MealPlanRecipe", b =>
                 {
@@ -393,47 +363,6 @@ namespace PlatePath.API.Migrations
                     b.ToTable("MealPlans");
                 });
 
-            modelBuilder.Entity("PlatePath.API.Data.Models.Recipes.DietLabel", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("DietLabels");
-                });
-
-            modelBuilder.Entity("PlatePath.API.Data.Models.Recipes.Ingredient", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
-
-                    b.Property<string>("Measure")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<double>("Quantity")
-                        .HasColumnType("float");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Ingredients");
-                });
-
             modelBuilder.Entity("PlatePath.API.Data.Models.Recipes.Recipe", b =>
                 {
                     b.Property<int>("Id")
@@ -442,20 +371,27 @@ namespace PlatePath.API.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
-                    b.Property<double>("Carbohydrates")
-                        .HasColumnType("float");
+                    b.Property<int>("Carbohydrates")
+                        .HasColumnType("int");
 
                     b.Property<string>("EdamamId")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<double>("EnergyKcal")
-                        .HasColumnType("float");
-
-                    b.Property<double>("Fats")
-                        .HasColumnType("float");
+                    b.Property<int>("Fats")
+                        .HasColumnType("int");
 
                     b.Property<string>("ImageURL")
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("IngredientLines")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("Kcal")
+                        .HasColumnType("int");
+
+                    b.Property<int>("KcalPerServing")
+                        .HasColumnType("int");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -464,8 +400,11 @@ namespace PlatePath.API.Migrations
                     b.Property<int?>("PostId")
                         .HasColumnType("int");
 
-                    b.Property<double>("Protein")
-                        .HasColumnType("float");
+                    b.Property<int>("Protein")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Servings")
+                        .HasColumnType("int");
 
                     b.Property<string>("UserId")
                         .HasColumnType("nvarchar(450)");
@@ -521,17 +460,17 @@ namespace PlatePath.API.Migrations
                     b.Property<DateTimeOffset?>("LockoutEnd")
                         .HasColumnType("datetimeoffset");
 
-                    b.Property<double?>("NeededCalories")
-                        .HasColumnType("float");
+                    b.Property<int?>("NeededCalories")
+                        .HasColumnType("int");
 
-                    b.Property<double?>("NeededCarbs")
-                        .HasColumnType("float");
+                    b.Property<int?>("NeededCarbs")
+                        .HasColumnType("int");
 
-                    b.Property<double?>("NeededFats")
-                        .HasColumnType("float");
+                    b.Property<int?>("NeededFats")
+                        .HasColumnType("int");
 
-                    b.Property<double?>("NeededProtein")
-                        .HasColumnType("float");
+                    b.Property<int?>("NeededProtein")
+                        .HasColumnType("int");
 
                     b.Property<string>("NormalizedEmail")
                         .HasMaxLength(256)
@@ -617,36 +556,6 @@ namespace PlatePath.API.Migrations
                             Id = 3,
                             Name = "GainWeight"
                         });
-                });
-
-            modelBuilder.Entity("DietLabelRecipe", b =>
-                {
-                    b.HasOne("PlatePath.API.Data.Models.Recipes.DietLabel", null)
-                        .WithMany()
-                        .HasForeignKey("DietLabelsId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("PlatePath.API.Data.Models.Recipes.Recipe", null)
-                        .WithMany()
-                        .HasForeignKey("RecipesId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("IngredientRecipe", b =>
-                {
-                    b.HasOne("PlatePath.API.Data.Models.Recipes.Ingredient", null)
-                        .WithMany()
-                        .HasForeignKey("IngredientsId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("PlatePath.API.Data.Models.Recipes.Recipe", null)
-                        .WithMany()
-                        .HasForeignKey("RecipesId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
                 });
 
             modelBuilder.Entity("MealPlanRecipe", b =>

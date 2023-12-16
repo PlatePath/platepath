@@ -46,10 +46,6 @@ namespace PlatePath.API.Data
 
         public DbSet<Recipe> Recipes { get; set; }
 
-        public DbSet<DietLabel> DietLabels { get; set; }
-
-        public DbSet<Ingredient> Ingredients { get; set; }
-
         public DbSet<MealPlan> MealPlans { get; set; }
 
         public DbSet<Gender> Genders { get; set; }

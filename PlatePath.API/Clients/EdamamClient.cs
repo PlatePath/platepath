@@ -58,56 +58,41 @@ namespace PlatePath.API.Clients
             string StringifyURL() => $"{_cfg.EdamamMealPlanner}/{_cfg.EdamamAppID}/select";
         }
 
-        public async Task<RecipeResponse?> GetRecipeInfoByURI(string request)  // todo add request body
+        public async Task<RecipeSearchResponse?> GetRecipeInfo(string request)
         {
-            AsyncPolicyWrap<HttpResponseMessage> policyWrap = GetPollyWrap();
-
-            var options = new JsonSerializerOptions
+            try
             {
-                DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull
-            };
+                AsyncPolicyWrap<HttpResponseMessage> policyWrap = GetPollyWrap();
 
-            var httpClient = new HttpClient();
+                var options = new JsonSerializerOptions
+                {
+                    DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull
+                };
 
-            HttpResponseMessage httpResponse = await policyWrap.ExecuteAsync(async () =>
-                 await httpClient.PostAsJsonAsync(StringifyURL(), new RecipeResponse()));  // todo add request body
+                var httpClient = new HttpClient();
 
-            RecipeResponse? recipeResponse = null;
+                AuthenticateEdamamRecipeAuth(httpClient);
 
-            if (httpResponse.IsSuccessStatusCode)
+                HttpResponseMessage httpResponse = await policyWrap.ExecuteAsync(async () =>
+                     await httpClient.GetAsync(StringifyURL()));
+
+                RecipeSearchResponse? recipeResponse = null;
+
+                if (httpResponse.IsSuccessStatusCode)
+                {
+                    recipeResponse = await httpResponse.Content.ReadFromJsonAsync<RecipeSearchResponse>();
+                    recipeResponse.recipe.CaloriesPerServing = recipeResponse.recipe.calories / recipeResponse.recipe.yield;
+                    recipeResponse.recipe.IngredientsString = string.Join("&&", recipeResponse.recipe.ingredientLines);
+                }
+
+                return recipeResponse;
+            }
+            catch (Exception ex)
             {
-                recipeResponse = await httpResponse.Content.ReadFromJsonAsync<RecipeResponse>();
+                _logger.LogError($"Failed GetRecipeInfo mealIdRequest: {request} \r\n {ex.Message}");
             }
 
-            return recipeResponse;
-
-            string StringifyURL() => $"{_cfg.EdamamRecipeSearchURI}/{request}&app_id={_cfg.EdamamAppID}&app_key={_cfg.EdamamAppKey}";
-        }
-
-        public async Task<RecipeSearchResponse?> GetRecipeInfo(string request)  // todo add request body
-        {
-            AsyncPolicyWrap<HttpResponseMessage> policyWrap = GetPollyWrap();
-
-            var options = new JsonSerializerOptions
-            {
-                DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull
-            };
-
-            var httpClient = new HttpClient();
-
-            AuthenticateEdamamRecipeAuth(httpClient);
-
-            HttpResponseMessage httpResponse = await policyWrap.ExecuteAsync(async () =>
-                 await httpClient.GetAsync(StringifyURL()));
-
-            RecipeSearchResponse? recipeResponse = null;
-
-            if (httpResponse.IsSuccessStatusCode)
-            {
-                recipeResponse = await httpResponse.Content.ReadFromJsonAsync<RecipeSearchResponse>();
-            }
-
-            return recipeResponse;
+            return null;
 
             string StringifyURL() => $"{_cfg.EdamamRecipeSearch}/{request}?type=public&app_id={_cfg.EdamamAppID}&app_key={_cfg.EdamamAppKey}";
         }

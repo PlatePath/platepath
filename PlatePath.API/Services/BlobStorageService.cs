@@ -14,6 +14,7 @@ namespace PlatePath.API.Services
         public async Task<string> UploadAsync(string blobName, Stream content)
         {
             var blob = _container.GetBlockBlobReference(blobName);
+            blob.Properties.ContentType = "image/jpg";
             await blob.UploadFromStreamAsync(content);
             return blob.Uri.AbsoluteUri;
         }

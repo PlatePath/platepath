@@ -13,10 +13,6 @@ namespace PlatePath.API.Data.Models.Recipes
         public int Id { get; set; }
         
         public Post? Post { get; set; }
-        
-        public ICollection<DietLabel> DietLabels { get; set; } = new List<DietLabel>();
-        
-        public ICollection<Ingredient> Ingredients { get; set; } = new List<Ingredient>();
 
         public ICollection<MealPlan> MealPlans { get; set; } = new List<MealPlan>();
         
@@ -24,13 +20,19 @@ namespace PlatePath.API.Data.Models.Recipes
         
         public string Name { get; set; }
         
-        public double EnergyKcal { get; set; }
+        public int Kcal { get; set; }
+
+        public int KcalPerServing { get; set; }
+
+        public int Servings { get; set; }
+
+        public string IngredientLines { get; set; }
+
+        public int Carbohydrates { get; set; }
         
-        public double Carbohydrates { get; set; }
+        public int Fats { get; set; }
         
-        public double Fats { get; set; }
-        
-        public double Protein { get; set; }
+        public int Protein { get; set; }
 
         public string? ImageURL { get; set; }
     }
