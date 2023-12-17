@@ -39,7 +39,7 @@ public class ProfileService : IProfileService
         };
     }
 
-    public bool SetUserPersonalData(UserPersonalDataInputModel request, string userId)
+    public bool SetUserPersonalData(UserPersonalDataModel request, string userId)
     {
         var user = _context.Users.Find(userId);
 
@@ -130,6 +130,4 @@ public class ProfileService : IProfileService
     {
         return Enum.TryParse(weightGoalName, out WeightGoalEnum weightGoal) ? weightGoal : WeightGoalEnum.MaintainWeight;
     }
-
-
 }
