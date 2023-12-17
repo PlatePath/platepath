@@ -2,4 +2,13 @@
 [Oo]bj/
 *.suo
 node_modules
+.idea/*
 *.dtbcache.v2
+/.vs/platepath/config/applicationhost.config
+*.vsidx
+*.lock
+*.v2
+/.vs/ProjectEvaluation
+*vs
+.vs/
+platepath/.vs

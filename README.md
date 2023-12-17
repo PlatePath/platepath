@@ -1,8 +1,8 @@
 # PlatePath - Automatic Meal Planner
 ## Authors:
-* Decimira Plamenova Dimitrova
+* Desimira Plamenova Dimitrova
 * Ioan Emilov Petrov
 * Kaloyan Ognyanov Parvanov
 * Mertol Ademov Bekirov
 * Veselin Rumenov Inzov
-* Christian Diez Petrov
+* Kristian Diez Petrov
