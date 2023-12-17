@@ -10,11 +10,11 @@ namespace PlatePath.API.Data.Models.Users
 {
     public class User : IdentityUser
     {
-        public Gender Gender { get; set; }
+        public Gender? Gender { get; set; }
 
-        public ActivityLevel ActivityLevel { get; set; }
+        public ActivityLevel? ActivityLevel { get; set; }
 
-        public WeightGoal WeightGoal { get; set; }
+        public WeightGoal? WeightGoal { get; set; }
         
         public ICollection<MealPlan> MealPlans { get; init; } = new List<MealPlan>();
 
@@ -32,13 +32,13 @@ namespace PlatePath.API.Data.Models.Users
 
         public double? WeightKg { get; set; }
 
-        public double? NeededCalories { get; set; }
+        public int? NeededCalories { get; set; }
 
-        public double? NeededFats { get; set; }
+        public int? NeededFats { get; set; }
 
-        public double? NeededCarbs { get; set; }
+        public int? NeededCarbs { get; set; }
 
-        public double? NeededProtein { get; set; }
+        public int? NeededProtein { get; set; }
         
         public bool IsBanned { get; set; }
     }

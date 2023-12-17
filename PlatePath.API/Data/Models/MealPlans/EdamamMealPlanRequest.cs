@@ -25,10 +25,13 @@ public class All
 
 public class Fit
 {
-    public ENERCKCAL ENERC_KCAL { get; set; }
+    public MinMaxQuantity ENERC_KCAL { get; set; }
+    public MinMaxQuantity PROCNT { get; set; }
+    public MinMaxQuantity CHOCDF { get; set; }
+    public MinMaxQuantity FASAT { get; set; }
 }
 
-public class ENERCKCAL
+public class MinMaxQuantity
 {
     public double min { get; set; }
     public double max { get; set; }
