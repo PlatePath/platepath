@@ -1,4 +1,5 @@
-﻿using PlatePath.API.Data;
+﻿using Microsoft.EntityFrameworkCore;
+using PlatePath.API.Data;
 using PlatePath.API.Data.Models.ActivityLevels;
 using PlatePath.API.Data.Models.Profile;
 using PlatePath.API.Enums;
@@ -13,6 +14,29 @@ public class ProfileService : IProfileService
     public ProfileService(ApplicationDbContext context)
     {
         _context = context;
+    }
+
+    public UserPersonalDataModel GetUserPersonalData(string userId)
+    {
+        var user = _context.Users.Include(x => x.Gender)
+                                 .Include(x => x.ActivityLevel)
+                                 .Include(x => x.WeightGoal)
+                                 .FirstOrDefault(x => x.Id == userId);
+
+        if (user == null)
+        {
+            return null;
+        }
+
+        return new UserPersonalDataModel
+        {
+            ActivityLevel = user.ActivityLevel.Name,
+            Age = user.Age ?? 0,
+            Gender = user.Gender.Name,
+            HeightCm = user.HeightCm ?? 0,
+            WeightGoal = user.WeightGoal.Name,
+            WeightKg = user.WeightKg ?? 0,
+        };
     }
 
     public bool SetUserPersonalData(UserPersonalDataInputModel request, string userId)
