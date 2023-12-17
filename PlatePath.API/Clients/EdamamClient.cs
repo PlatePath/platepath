@@ -1,5 +1,4 @@
 ﻿using Microsoft.Extensions.Options;
-using PlatePath.API.Data.Models;
 using PlatePath.API.Data.Models.MealPlans;
 using PlatePath.API.Data.Models.Recipes;
 using PlatePath.API.Services;
@@ -26,7 +25,7 @@ namespace PlatePath.API.Clients
             _cfg = cfg.Value;
         }
 
-        public async Task<EdamamMealPlanResponse?> GenerateMealPlan(EdamamMealPlanRequest request)  // todo add request body
+        public async Task<EdamamMealPlanResponse?> GenerateMealPlan(EdamamMealPlanRequest request)
         {
             AsyncPolicyWrap<HttpResponseMessage> policyWrap = GetPollyWrap();
 
@@ -46,14 +45,14 @@ namespace PlatePath.API.Clients
             HttpResponseMessage httpResponsePolly = await policyWrap.ExecuteAsync(async () =>
                  await httpClient.PostAsync(StringifyURL(), content));
 
-            EdamamMealPlanResponse? mealPlanResponse = null;
-
             if (httpResponsePolly.IsSuccessStatusCode)
             {
-                mealPlanResponse = await httpResponsePolly.Content.ReadFromJsonAsync<EdamamMealPlanResponse>();
+                return await httpResponsePolly.Content.ReadFromJsonAsync<EdamamMealPlanResponse>();
             }
 
-            return mealPlanResponse;
+            _logger.LogWarning($"Edamam HTTP Status code: {httpResponsePolly.StatusCode} ContentResult: {httpResponsePolly.Content.ReadAsStringAsync().Result}");
+
+            return null;
 
             string StringifyURL() => $"{_cfg.EdamamMealPlanner}/{_cfg.EdamamAppID}/select";
         }

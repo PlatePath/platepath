@@ -1,5 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Text.Json.Serialization;
 using PlatePath.API.Data.Models.Forum;
 using PlatePath.API.Data.Models.MealPlans;
 
@@ -14,6 +15,7 @@ namespace PlatePath.API.Data.Models.Recipes
         
         public Post? Post { get; set; }
 
+        [JsonIgnore]
         public ICollection<MealPlan> MealPlans { get; set; } = new List<MealPlan>();
         
         public string? EdamamId { get; set; }

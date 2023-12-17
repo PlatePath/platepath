@@ -1,15 +1,10 @@
-﻿using Microsoft.AspNetCore.DataProtection;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using PlatePath.API.Clients;
 using PlatePath.API.Data;
 using PlatePath.API.Data.Models.MealPlans;
 using PlatePath.API.Data.Models.Recipes;
 using PlatePath.API.Singleton;
-using System;
-using System.Collections;
-using System.Dynamic;
-using System.Net.Http;
 
 namespace PlatePath.API.Services;
 
@@ -48,9 +43,9 @@ public class EdamamService : IEdamamService
             }
         }
 
-        var proteins = request.Proteins ??= 130;
+        var proteins = request.Proteins ??= 120;
         var carbohydrates = request.Carbohydrates ??= 250;
-        var fats = request.Fats ??= 130;
+        var fats = request.Fats ??= 100;
 
         var mealplanRequest = new EdamamMealPlanRequest
         {
@@ -80,18 +75,18 @@ public class EdamamService : IEdamamService
                     ,
                     PROCNT = new MinMaxQuantity
                     {
-                        min = proteins - 30,
-                        max = proteins + 30
+                        min = proteins - 5,
+                        max = proteins + 5
                     },
                     CHOCDF = new MinMaxQuantity
                     {
-                        min = carbohydrates - 30,
-                        max = carbohydrates + 30
+                        min = carbohydrates - 5,
+                        max = carbohydrates + 5
                     },
                     FASAT = new MinMaxQuantity
                     {
-                        min = fats - 30,
-                        max = fats + 30
+                        min = fats - 5,
+                        max = fats + 5
                     }
                 },
                 sections = new RequestSections(request.MealsPerDay > 5 ? 5 : request.MealsPerDay) { }
@@ -99,6 +94,12 @@ public class EdamamService : IEdamamService
         };
 
         var mealPlanResponse = await _edamamClient.GenerateMealPlan(mealplanRequest);
+
+        if (mealPlanResponse?.status is not "OK")
+            return new GenerateMealPlanResponse(ErrorCode.InvalidParameters)
+            {
+                ErrorString = $"Edamam MealPlanner Error Status: {mealPlanResponse?.status}"
+            };
 
         var mealIdsPerDay = GetTrimmedIdsPerDay(mealPlanResponse);
 
@@ -148,10 +149,40 @@ public class EdamamService : IEdamamService
 
         recipesInDBb = OrderMealsByDay(recipesInDBb, mealIdsPerDay);
 
-        return new GenerateMealPlanResponse
+        if (recipesInDBb.Any())
         {
-            Recipes = recipesInDBb
-        };
+            var mealPlan = new MealPlan
+            {
+                UserId = userId,
+                Name = request.MealPlanName,
+                Meals = recipesInDBb,
+            };
+
+            _dbContext.MealPlans.Add(mealPlan);
+            _dbContext.SaveChanges();
+
+            return new GenerateMealPlanResponse(ErrorCode.OK)
+            {
+                Recipes = recipesInDBb
+            };
+        }
+
+        return new GenerateMealPlanResponse(ErrorCode.DbError);
+    }
+
+    public async Task<MealPlanResponse> GetMealPlan(string userId, string name)
+    {
+        var mealPlan = await _dbContext.MealPlans
+            .Include(mp => mp.Meals)
+            .FirstOrDefaultAsync(mp => mp.Name == name);
+
+        if (mealPlan is not null)
+            return new MealPlanResponse(ErrorCode.OK)
+            {
+                MealPlan = mealPlan
+            };
+
+        return new MealPlanResponse(ErrorCode.DbError);
     }
 
     Dictionary<int, List<string>> GetTrimmedIdsPerDay(EdamamMealPlanResponse? mealPlanResponse)
