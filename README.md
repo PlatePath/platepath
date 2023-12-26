@@ -6,3 +6,6 @@
 * Mertol Ademov Bekirov
 * Veselin Rumenov Inzov
 * Kristian Diez Petrov
+  
+### License
+Plate Path is licensed under the MIT License. See the LICENSE file for details.
