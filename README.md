@@ -6,3 +6,11 @@
 * Mertol Ademov Bekirov
 * Veselin Rumenov Inzov
 * Kristian Diez Petrov
+
+### 🍽 Key Features:
+*Automated Meal Planning
+*Extensive Recipe Repository
+*Nutritional Insights
+*Customizable Options
+*User-Generated Content
+*Flexible Planning
