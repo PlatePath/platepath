@@ -75,16 +75,6 @@ public class AuthService : IAuthService
         if (userExists is not null)
             return new RegisterResponse(ErrorCode.UserAlreadyExists);
 
-        //WeightGoal? weightGoal = request.WeightGoal != 0 
-        //    ? _dbContext.WeightGoal.FirstOrDefault(wg => wg.Id == request.WeightGoal) 
-        //    : null;
-        //ActivityLevel? activityLevel = request.ActivityLevel != 0 
-        //    ? _dbContext.ActivityLevel.FirstOrDefault(wg => wg.Id == request.ActivityLevel) 
-        //    : null;
-        //Gender? gender = request.Gender != 0
-        //    ? _dbContext.Genders.FirstOrDefault(wg => wg.Id == request.Gender) 
-        //    : null;
-
         var user = new User
         {
             Email = request.Email,
