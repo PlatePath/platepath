@@ -5,17 +5,27 @@ using PlatePath.API.Data.Models.Genders;
 using PlatePath.API.Data.Models.MealPlans;
 using PlatePath.API.Data.Models.Recipes;
 using PlatePath.API.Data.Models.WeightGoals;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace PlatePath.API.Data.Models.Users
 {
     public class User : IdentityUser
     {
+        public int? GenderId { get; set; }
+
+        [ForeignKey("GenderId")]
         public Gender? Gender { get; set; }
 
+        public int? ActivityLevelId { get; set; }
+
+        [ForeignKey("ActivityLevelId")]
         public ActivityLevel? ActivityLevel { get; set; }
 
+        public int? WeightGoalId { get; set; }
+
+        [ForeignKey("WeightGoalId")]
         public WeightGoal? WeightGoal { get; set; }
-        
+
         public ICollection<MealPlan> MealPlans { get; init; } = new List<MealPlan>();
 
         public ICollection<Recipe> Recipes { get; set; } = new List<Recipe>();
