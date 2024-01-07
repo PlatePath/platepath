@@ -52,19 +52,21 @@ public class EdamamService : IEdamamService
             size = request.Days,
             plan = new Plan
             {
-                accept = new Accept
+                accept = request.DietType != null
+                ? new Accept
                 {
                     all = new List<All>
+                {
+                    new All
+                    {
+                        health = new List<string>
                         {
-                           new All
-                           {
-                               health = new List<string>
-                               {
-                                   request.DietType
-                               }
-                           }
+                            request.DietType
                         }
-                },
+                    }
+                }
+                }
+                : null,
                 fit = new Fit
                 {
                     ENERC_KCAL = new MinMaxQuantity

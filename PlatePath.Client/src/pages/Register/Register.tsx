@@ -10,15 +10,15 @@ const Half = styled("div")`
 
 //TODO!: Separate into different components and apply theme
 const Register = () => {
-  const { isLogged, setLogged } = useAuth();
+  const { isLogged, setToken } = useAuth();
   const navigate = useNavigate();
   useEffect(() => {
-    if (isLogged) {
+    if (isLogged()) {
       navigate("/profile");
     }
   });
   const onSubmit = () => {
-    setLogged(true);
+    // setLogged(true);
     navigate("/plans");
   };
   return (

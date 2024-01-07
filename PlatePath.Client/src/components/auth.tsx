@@ -2,21 +2,31 @@ import { ReactNode, createContext, useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 interface IType {
-  isLogged: boolean;
-  setLogged: React.Dispatch<React.SetStateAction<boolean>>;
+  isLogged: () => boolean;
+  getToken: () => string;
+  setToken: (token: string) => void;
 }
-
+export const apiUrl =
+  window.location.hostname === "localhost" || window.location.hostname === ""
+    ? "http://localhost:3000/api"
+    : "https://platepath.azurewebsites.net/api";
 const authContext = createContext<IType>({
-  isLogged: false,
-  setLogged: () => {},
+  isLogged: () => false,
+  getToken: () => "",
+  setToken: () => {},
 });
 export const useAuth = () => useContext(authContext);
 
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
-  const [isLogged, setLogged] = useState(false);
-
+  const [, rerender] = useState(false);
+  const setToken = (jwt: string) => {
+    sessionStorage.setItem("token", jwt);
+    rerender((p) => !p);
+  };
+  const getToken = () => sessionStorage.getItem("token") as string;
+  const isLogged = () => Boolean(sessionStorage.getItem("token"));
   return (
-    <authContext.Provider value={{ isLogged, setLogged }}>
+    <authContext.Provider value={{ isLogged, setToken, getToken }}>
       {children}
     </authContext.Provider>
   );

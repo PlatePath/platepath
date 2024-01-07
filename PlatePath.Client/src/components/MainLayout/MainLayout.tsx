@@ -10,6 +10,7 @@ import {
   Typography,
   avatarClasses,
   ButtonProps,
+  Box,
 } from "@mui/material";
 import { Fragment, ReactNode, useEffect } from "react";
 import { useAuth, useRequireLogin } from "../auth";
@@ -61,19 +62,22 @@ interface SideLinkProps extends Pick<LinkProps, "to"> {
   disabled?: ButtonProps["disabled"];
 }
 const SideLink = ({ to, children, disabled }: SideLinkProps) => {
-  const Parent = disabled ? Fragment : Link;
+  const Parent = disabled ? Box : Link;
+  const props = disabled
+    ? { className: "side-link" }
+    : ({ to: to, className: "side-link" } as any);
   return (
-    <Parent to={to} className="side-link">
+    <Parent {...props}>
       <Button variant="text" children={children} disabled={disabled} />
     </Parent>
   );
 };
 
 const MainLayout = ({ children }: MainLayoutProps) => {
-  const { isLogged, setLogged } = useAuth();
+  const { isLogged, setToken } = useAuth();
   const navigate = useNavigate();
   useEffect(() => {
-    if (!isLogged) {
+    if (!isLogged()) {
       navigate("/login");
     }
   });
@@ -110,7 +114,7 @@ const MainLayout = ({ children }: MainLayoutProps) => {
           </Columns>
           <Button
             variant="text"
-            onClick={() => setLogged(false)}
+            onClick={() => setToken("")}
             sx={{
               background: "lightgrey",
               fontWeight: 600,

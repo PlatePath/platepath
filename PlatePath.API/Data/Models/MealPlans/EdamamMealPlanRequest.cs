@@ -8,7 +8,7 @@ public class EdamamMealPlanRequest
 
 public class Plan
 {
-    public Accept accept { get; set; }
+    public Accept? accept { get; set; }
     public Fit fit { get; set; }
     public RequestSections sections { get; set; }
 }
