@@ -89,6 +89,16 @@ builder.Services.AddSwaggerGen(c =>
     });
 });
 
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowLocalhost3000", builder =>
+    {
+        builder.AllowAnyHeader()
+               .AllowAnyMethod()
+               .WithOrigins("http://localhost:3000");
+    });
+});
+
 builder.Services.AddLogging(builder =>
 {
     builder.AddEventLog();
@@ -144,5 +154,6 @@ app.MapControllers();
 
 app.UseStatusCodePages();
 
+app.UseCors("AllowLocalhost3000");
 
 app.Run();
