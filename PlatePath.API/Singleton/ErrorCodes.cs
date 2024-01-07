@@ -9,7 +9,8 @@ public enum ErrorCode
     AuthenticationError = -1004,
     DbError = -1005,
     UserAlreadyExists = -1006,
-    CreateUserFailed = -1007
+    CreateUserFailed = -1007,
+    InvalidUser = -1008
 }
 
 public static class ErrorCodes
@@ -23,6 +24,7 @@ public static class ErrorCodes
         [(int)ErrorCode.AuthenticationError] = "ERROR: AUTHENTICATION ERROR",
         [(int)ErrorCode.DbError] = "ERROR: DATABASE EXCEPTION",
         [(int)ErrorCode.UserAlreadyExists] = "ERROR: USER ALREADY EXISTS",
-        [(int)ErrorCode.CreateUserFailed] = "ERROR: CREATING USER FAILED"
+        [(int)ErrorCode.CreateUserFailed] = "ERROR: CREATING USER FAILED",
+        [(int)ErrorCode.InvalidUser] = "ERROR: INVALID USER"
     };
 }

@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using PlatePath.API.Data;
 
@@ -11,9 +12,10 @@ using PlatePath.API.Data;
 namespace PlatePath.API.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20231228192827_UserDataNullability")]
+    partial class UserDataNullability
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -432,6 +434,7 @@ namespace PlatePath.API.Migrations
                         .HasColumnType("int");
 
                     b.Property<int?>("ActivityLevelId")
+                        .IsRequired()
                         .HasColumnType("int");
 
                     b.Property<int?>("Age")
@@ -449,6 +452,7 @@ namespace PlatePath.API.Migrations
                         .HasColumnType("bit");
 
                     b.Property<int?>("GenderId")
+                        .IsRequired()
                         .HasColumnType("int");
 
                     b.Property<double?>("HeightCm")
@@ -503,6 +507,7 @@ namespace PlatePath.API.Migrations
                         .HasColumnType("nvarchar(256)");
 
                     b.Property<int?>("WeightGoalId")
+                        .IsRequired()
                         .HasColumnType("int");
 
                     b.Property<double?>("WeightKg")
@@ -711,15 +716,21 @@ namespace PlatePath.API.Migrations
                 {
                     b.HasOne("PlatePath.API.Data.Models.ActivityLevels.ActivityLevel", "ActivityLevel")
                         .WithMany()
-                        .HasForeignKey("ActivityLevelId");
+                        .HasForeignKey("ActivityLevelId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("PlatePath.API.Data.Models.Genders.Gender", "Gender")
                         .WithMany()
-                        .HasForeignKey("GenderId");
+                        .HasForeignKey("GenderId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("PlatePath.API.Data.Models.WeightGoals.WeightGoal", "WeightGoal")
                         .WithMany()
-                        .HasForeignKey("WeightGoalId");
+                        .HasForeignKey("WeightGoalId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("ActivityLevel");
 

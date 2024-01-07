@@ -1,15 +1,19 @@
 ﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.Extensions.Options;
+using Microsoft.IdentityModel.Tokens;
 using PlatePath.API.Data;
-using PlatePath.API.Data.Models.Authentication.SignUp;
-using PlatePath.API.Data.Models.Authentication.Login;
 using PlatePath.API.Data.Models.Authentication;
+using PlatePath.API.Data.Models.Authentication.Login;
+using PlatePath.API.Data.Models.Authentication.SignUp;
 using PlatePath.API.Data.Models.Users;
 using PlatePath.API.Singleton;
-using System.Security.Claims;
-using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
 using System.Text;
 using Microsoft.Extensions.Options;
+using PlatePath.API.Data.Models.WeightGoals;
+using PlatePath.API.Data.Models.ActivityLevels;
+using PlatePath.API.Data.Models.Genders;
 
 namespace PlatePath.API.Services;
 
@@ -71,13 +75,6 @@ public class AuthService : IAuthService
         if (userExists is not null)
             return new RegisterResponse(ErrorCode.UserAlreadyExists);
 
-        var weightGoal = _dbContext.WeightGoal.FirstOrDefault(wg => wg.Id == request.WeightGoal);
-        var activityLevel = _dbContext.ActivityLevel.FirstOrDefault(al => al.Id == request.ActivityLevel);
-        var gender = _dbContext.Genders.FirstOrDefault(g => g.Id == request.Gender);
-
-        if (weightGoal is null || activityLevel is null || gender is null)
-            return new RegisterResponse(ErrorCode.InvalidParameters);
-
         var user = new User
         {
             Email = request.Email,
@@ -86,9 +83,9 @@ public class AuthService : IAuthService
             Age = request.Age,
             HeightCm = request.HeightCm,
             WeightKg = request.WeightKg,
-            WeightGoal = weightGoal,
-            ActivityLevel = activityLevel,
-            Gender = gender,
+            WeightGoalId = request.WeightGoal > 0 ? request.WeightGoal : null,
+            ActivityLevelId = request.ActivityLevel > 0 ? request.ActivityLevel : null,
+            GenderId = request.Gender > 0 ? request.Gender : null,
             IsBanned = false
         };
 

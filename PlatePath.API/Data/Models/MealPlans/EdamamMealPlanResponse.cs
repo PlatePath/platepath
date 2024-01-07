@@ -13,16 +13,16 @@ public class EdamamMealPlanResponse
 
 public class Selection
 {
-    public ResponseSections sections { get; set; }
+    public ResponseSections? sections { get; set; }
 }
 
 public class ResponseSections
 {
-    public ResponseMeal Meal1 { get; set; }
-    public ResponseMeal Meal2 { get; set; }
-    public ResponseMeal Meal3 { get; set; }
-    public ResponseMeal Meal4 { get; set; }
-    public ResponseMeal Meal5 { get; set; }
+    public ResponseMeal? Meal1 { get; set; }
+    public ResponseMeal? Meal2 { get; set; }
+    public ResponseMeal? Meal3 { get; set; }
+    public ResponseMeal? Meal4 { get; set; }
+    public ResponseMeal? Meal5 { get; set; }
 }
 
 public class ResponseMeal

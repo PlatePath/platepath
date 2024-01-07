@@ -5,17 +5,27 @@ using PlatePath.API.Data.Models.Genders;
 using PlatePath.API.Data.Models.MealPlans;
 using PlatePath.API.Data.Models.Recipes;
 using PlatePath.API.Data.Models.WeightGoals;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace PlatePath.API.Data.Models.Users
 {
     public class User : IdentityUser
     {
-        public Gender Gender { get; set; }
+        public int? GenderId { get; set; }
 
-        public ActivityLevel ActivityLevel { get; set; }
+        [ForeignKey("GenderId")]
+        public Gender? Gender { get; set; }
 
-        public WeightGoal WeightGoal { get; set; }
-        
+        public int? ActivityLevelId { get; set; }
+
+        [ForeignKey("ActivityLevelId")]
+        public ActivityLevel? ActivityLevel { get; set; }
+
+        public int? WeightGoalId { get; set; }
+
+        [ForeignKey("WeightGoalId")]
+        public WeightGoal? WeightGoal { get; set; }
+
         public ICollection<MealPlan> MealPlans { get; init; } = new List<MealPlan>();
 
         public ICollection<Recipe> Recipes { get; set; } = new List<Recipe>();
@@ -32,13 +42,13 @@ namespace PlatePath.API.Data.Models.Users
 
         public double? WeightKg { get; set; }
 
-        public double? NeededCalories { get; set; }
+        public int? NeededCalories { get; set; }
 
-        public double? NeededFats { get; set; }
+        public int? NeededFats { get; set; }
 
-        public double? NeededCarbs { get; set; }
+        public int? NeededCarbs { get; set; }
 
-        public double? NeededProtein { get; set; }
+        public int? NeededProtein { get; set; }
         
         public bool IsBanned { get; set; }
     }

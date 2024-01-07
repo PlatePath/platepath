@@ -30,5 +30,16 @@ namespace PlatePath.API.Controllers
 
             return Ok(await _edamamService.GenerateMealPlan(userId, request));
         }
+
+        [HttpGet("{name}")]
+        [Authorize(Roles = "User")]
+        public async Task<IActionResult> GetMealPlan(string name)
+        {
+            var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            if (userId is null)
+                return ValidationProblem();
+
+            return Ok(await _edamamService.GetMealPlan(userId, name));
+        }
     }
 }
