@@ -95,7 +95,7 @@ builder.Services.AddCors(options =>
     {
         builder.AllowAnyHeader()
                .AllowAnyMethod()
-               .WithOrigins("http://localhost:3000");
+               .AllowAnyOrigin();
     });
 });
 
@@ -144,6 +144,8 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
+app.UseCors("AllowLocalhost3000");
+
 app.UseHttpsRedirection();
 
 app.UseAuthorization();
@@ -153,7 +155,5 @@ app.UseAuthentication();
 app.MapControllers();
 
 app.UseStatusCodePages();
-
-app.UseCors("AllowLocalhost3000");
 
 app.Run();
