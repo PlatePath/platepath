@@ -2,6 +2,7 @@ import { Typography, styled } from "@mui/material";
 import { BoxContainer, Columns } from "../../components";
 import PageWrapper from "../../components/PageWrapper";
 import defaultAvatar from "../../assets/defaultAvatar.png";
+import ProfileEditForm from "../../components/ProfileEditForm";
 const ProfileInfoWrapper = styled(BoxContainer)`
   width: 100%;
   text-align: center;
@@ -81,7 +82,7 @@ const Profile = () => {
           </Columns>
         </ProfileInfoWrapper>
       </PageWrapper>
-      <PageWrapper>Please add your new plans</PageWrapper>
+      <PageWrapper><ProfileEditForm/></PageWrapper>
     </>
   );
 };
