@@ -1,4 +1,4 @@
-import { Link, LinkProps } from "react-router-dom";
+import { Link, LinkProps, useNavigate } from "react-router-dom";
 import { BoxContainer, Columns } from "../styled";
 import defaultAvatar from "../../assets/defaultAvatar.png";
 import logo128 from "../../assets/logo128.png";
@@ -11,7 +11,8 @@ import {
   avatarClasses,
   ButtonProps,
 } from "@mui/material";
-import { Fragment, ReactNode } from "react";
+import { Fragment, ReactNode, useEffect } from "react";
+import { useAuth, useRequireLogin } from "../auth";
 interface MainLayoutProps {
   children: React.ReactNode;
 }
@@ -69,6 +70,13 @@ const SideLink = ({ to, children, disabled }: SideLinkProps) => {
 };
 
 const MainLayout = ({ children }: MainLayoutProps) => {
+  const { isLogged, setLogged } = useAuth();
+  const navigate = useNavigate();
+  useEffect(() => {
+    if (!isLogged) {
+      navigate("/login");
+    }
+  });
   return (
     <BoxContainer
       sx={{
@@ -102,6 +110,7 @@ const MainLayout = ({ children }: MainLayoutProps) => {
           </Columns>
           <Button
             variant="text"
+            onClick={() => setLogged(false)}
             sx={{
               background: "lightgrey",
               fontWeight: 600,

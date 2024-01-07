@@ -1,6 +1,8 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { BoxContainer, Columns } from "../../components";
 import { styled, Typography, Button, TextField } from "@mui/material";
+import { useAuth } from "../../components/auth";
+import { useEffect } from "react";
 const Half = styled("div")`
   width: 50%;
   height: 100vh;
@@ -8,6 +10,17 @@ const Half = styled("div")`
 
 //TODO!: Separate into different components and apply theme
 const Register = () => {
+  const { isLogged, setLogged } = useAuth();
+  const navigate = useNavigate();
+  useEffect(() => {
+    if (isLogged) {
+      navigate("/profile");
+    }
+  });
+  const onSubmit = () => {
+    setLogged(true);
+    navigate("/plans");
+  };
   return (
     <BoxContainer>
       <Half sx={{ background: "#8DC63F" }}>
@@ -65,6 +78,7 @@ const Register = () => {
               <TextField id="password2" label="Repeat Password" />
             </Columns>
             <Button
+              onClick={onSubmit}
               variant="contained"
               sx={{
                 background: "#8DC63F",
