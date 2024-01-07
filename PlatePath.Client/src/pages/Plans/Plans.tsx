@@ -19,17 +19,22 @@ const Plans = () => {
       setShowAlert(false);
     }, 5000);
 
-    // fetch("http://localhost:7010/api/MealPlan/generate", {
-    //   method: "POST",
-    //   mode: "no-cors",
-    //   body: JSON.stringify(jsonData), // body data type must match "Content-Type" header
-    // })
-    //   .then((res) => {
-    //     console.log(res);
-    //   })
-    //   .catch((e) => {
-    //     console.log(e);
-    //   });
+    fetch("http://localhost:3000/api/Auth/login", {
+      method: "POST",
+      body: JSON.stringify({
+        username: "tes1t",
+        password: "Test1Test1!",
+      }), // body data type must match "Content-Type" header
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "application/json",
+      },
+    })
+      .then((r) => r.json())
+      .then((res) => {
+        return res;
+      })
+      .catch((err) => err);
   };
   const handleInputChange = (
     event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
