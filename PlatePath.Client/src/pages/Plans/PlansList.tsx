@@ -1,15 +1,10 @@
 import { useEffect, useState } from "react";
 import { BoxContainer, Columns } from "../../components";
 import { Plan } from "./Plans";
-import {
-  Box,
-  Typography,
-  Autocomplete,
-  TextField,
-  Divider,
-} from "@mui/material";
+import { Typography, Autocomplete, TextField, Divider } from "@mui/material";
+import { apiUrl, useAuth } from "../../components/auth";
 
-type Meal = {
+type Recipe = {
   id: number;
   post: null;
   edamamId: string;
@@ -22,53 +17,12 @@ type Meal = {
   ingredientLines: string;
   imageURL: string;
 };
-const PlanCard = ({
-  mealPlanName,
-  days,
-  mealsPerDay,
-  minCalories,
-  maxCalories,
-  proteins,
-  fats,
-  carbohydrates,
-  dietType,
-}: Plan) => {
-  return (
-    <Columns
-      sx={{
-        borderLeft: "2px solid #8DC63F",
-      }}
-    >
-      <Typography variant="h6" paddingLeft={1}>
-        {mealPlanName}
-      </Typography>
-      <Columns
-        sx={{
-          gap: "6px",
-          background: "#8DC63F",
-          color: "white",
-          padding: "10px",
-          fontWeight: 600,
-          borderTopRightRadius: "4px",
-          borderBottomRightRadius: "4px",
-        }}
-      >
-        <Typography fontWeight={600}>Days: {days}</Typography>
-        <Typography fontWeight={600}>Meals Per Day: {mealsPerDay}</Typography>
-        <Typography fontWeight={600}>Min Calories: {minCalories}</Typography>
-        <Typography fontWeight={600}>Max Calories: {maxCalories}</Typography>
-        <Typography fontWeight={600}>Proteins: {proteins}</Typography>
-        <Typography fontWeight={600}>Fats: {fats}</Typography>
-        <Typography fontWeight={600}>Carbs: {carbohydrates}</Typography>
-        <Typography fontWeight={600}>Diet Type: {dietType}</Typography>
-      </Columns>
-    </Columns>
-  );
-};
 
 const PlansList = () => {
+  const { getToken } = useAuth();
   const [names, setNames] = useState(["Kopele"]);
-  const [meal, setMeal] = useState<Meal>({
+  const [recipes, setRecipes] = useState<Recipe[]>([]);
+  const [recipe, setRecipe] = useState<Recipe>({
     id: 108,
     post: null,
     edamamId: "630d1df1686cca0c08fda0f4dbb53855",
@@ -84,20 +38,88 @@ const PlansList = () => {
       "https://platepathstorage01.blob.core.windows.net/platepathblobs/630d1df1686cca0c08fda0f4dbb53855",
   });
   const getNames = () => {};
-  useEffect(() => {}, []);
+  useEffect(() => {
+    const token = getToken();
+    const myHeaders = new Headers({
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
+    });
+    fetch(`${apiUrl}/MealPlans/getAll`, {
+      method: "GET",
+      headers: myHeaders,
+    })
+      .then((r) => r.json())
+      .then((res) => {
+        if (res.mealPlanNames) {
+          setNames(res.mealPlanNames);
+        }
+      })
+      .catch((err) => err);
+  }, []);
+  const onSelect = (e: React.SyntheticEvent<Element, Event>) => {
+    const target = e.target as HTMLLIElement;
+
+    const token = getToken();
+    const myHeaders = new Headers({
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
+    });
+    fetch(`${apiUrl}/MealPlans/${target.textContent}`, {
+      method: "GET",
+      headers: myHeaders,
+    })
+      .then((r) => r.json())
+      .then((res) => {
+        console.log(res);
+        if (res.mealPlan?.meals) {
+          setRecipes(res.mealPlan?.meals);
+        }
+      })
+      .catch((err) => err);
+  };
+  const onSelectRecipe = (e: React.SyntheticEvent<Element, Event>) => {
+    const target = e.target as HTMLLIElement;
+    console.log(target);
+    const recipe = recipes.find((obj) => obj.name === target.textContent);
+    if (recipe) {
+      setRecipe({
+        ...recipe,
+        ingredientLines: recipe.ingredientLines.replaceAll("&&", "\n"),
+      });
+    }
+  };
   return (
     <>
-      <Autocomplete
-        disablePortal
-        id="combo-box-demo"
-        options={names}
-        sx={{ width: 300 }}
-        renderInput={(params) => (
-          <TextField {...params} label="Meal Plan Names" />
-        )}
-      />
+      <BoxContainer
+        gap="30px"
+        sx={{
+          justifyContent: "flex-start",
+        }}
+      >
+        <Autocomplete
+          disablePortal
+          id="combo-box-demo"
+          options={names}
+          onChange={(e) => onSelect(e)}
+          sx={{ width: 300 }}
+          renderInput={(params) => <TextField {...params} label="Meal Plans" />}
+        />
+        {recipes.length ? (
+          <Autocomplete
+            disablePortal
+            id="combo-box-demo"
+            options={recipes}
+            onChange={(e) => onSelectRecipe(e)}
+            sx={{ width: 300 }}
+            renderInput={(params) => (
+              <TextField {...params} label="Meal Plans" />
+            )}
+            getOptionLabel={(option: Recipe) => option.name}
+          />
+        ) : null}
+      </BoxContainer>
       <Divider sx={{ my: "10px" }} />
-      {meal ? (
+      {recipe ? (
         <>
           <BoxContainer
             sx={{
@@ -106,18 +128,18 @@ const PlansList = () => {
             }}
           >
             <img
-              src={meal.imageURL}
+              src={recipe.imageURL}
               alt="meal img"
               width="250px"
               height="250px"
             />
             <Columns gap="7px" ml="15px">
-              <Typography variant="h6">Calories: {meal.kcal}kcal</Typography>
-              <Typography variant="h6">Fats: {meal.fats}g</Typography>
+              <Typography variant="h6">Calories: {recipe.kcal}kcal</Typography>
+              <Typography variant="h6">Fats: {recipe.fats}g</Typography>
               <Typography variant="h6">
-                Carbohydrates: {meal.carbohydrates}g
+                Carbohydrates: {recipe.carbohydrates}g
               </Typography>
-              <Typography variant="h6">Protein: {meal.protein}g</Typography>
+              <Typography variant="h6">Protein: {recipe.protein}g</Typography>
             </Columns>
           </BoxContainer>
           <Columns
@@ -134,7 +156,7 @@ const PlansList = () => {
               <Divider />
             </Columns>
             <Typography variant="h6" fontStyle="italic">
-              {meal.ingredientLines}
+              {recipe.ingredientLines}
             </Typography>
           </Columns>
         </>
