@@ -1,10 +1,10 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { BoxContainer, Columns } from "../../components";
 import { Plan } from "./Plans";
 import { Box, Typography } from "@mui/material";
 
 const PlanCard = ({
-  name,
+  mealPlanName,
   days,
   mealsPerDay,
   minCalories,
@@ -21,7 +21,7 @@ const PlanCard = ({
       }}
     >
       <Typography variant="h6" paddingLeft={1}>
-        {name}
+        {mealPlanName}
       </Typography>
       <Columns
         sx={{
@@ -50,7 +50,7 @@ const PlanCard = ({
 const PlansList = () => {
   const [plans, setPlans] = useState<Plan[]>([
     {
-      name: "Some Name",
+      mealPlanName: "Some Name",
       days: 5,
       mealsPerDay: 3,
       minCalories: 1800,
@@ -61,7 +61,7 @@ const PlansList = () => {
       dietType: "dairy-free",
     },
     {
-      name: "Some Name",
+      mealPlanName: "Some Name",
       days: 5,
       mealsPerDay: 3,
       minCalories: 1800,
@@ -72,7 +72,7 @@ const PlansList = () => {
       dietType: "dairy-free",
     },
     {
-      name: "Some Name",
+      mealPlanName: "Some Name",
       days: 5,
       mealsPerDay: 3,
       minCalories: 1800,
@@ -83,7 +83,7 @@ const PlansList = () => {
       dietType: "dairy-free",
     },
     {
-      name: "Some Name",
+      mealPlanName: "Some Name",
       days: 5,
       mealsPerDay: 3,
       minCalories: 1800,
@@ -94,7 +94,7 @@ const PlansList = () => {
       dietType: "dairy-free",
     },
     {
-      name: "Some Name",
+      mealPlanName: "Some Name",
       days: 5,
       mealsPerDay: 3,
       minCalories: 1800,
@@ -105,7 +105,7 @@ const PlansList = () => {
       dietType: "dairy-free",
     },
     {
-      name: "Some Name",
+      mealPlanName: "Some Name",
       days: 5,
       mealsPerDay: 3,
       minCalories: 1800,
@@ -116,11 +116,12 @@ const PlansList = () => {
       dietType: "dairy-free",
     },
   ]);
+  useEffect(() => {}, []);
   return (
     <Box
       sx={{
         width: "100%",
-        maxHeight: 500,
+        maxHeight: "80%",
         overflow: "scroll",
       }}
     >

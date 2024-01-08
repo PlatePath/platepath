@@ -1,8 +1,10 @@
-import { Typography, styled } from "@mui/material";
+import { Alert, Typography, styled } from "@mui/material";
 import { BoxContainer, Columns } from "../../components";
 import PageWrapper from "../../components/PageWrapper";
 import defaultAvatar from "../../assets/defaultAvatar.png";
 import ProfileEditForm from "../../components/ProfileEditForm";
+import { useEffect, useState } from "react";
+import { apiUrl, useAuth } from "../../components/auth";
 const ProfileInfoWrapper = styled(BoxContainer)`
   width: 100%;
   text-align: center;
@@ -45,7 +47,7 @@ interface InfoLabelProps {
 const InfoLabel = ({ label, data }: InfoLabelProps) => {
   return (
     <BoxContainer>
-      <Typography mr="30px" variant="subtitle">
+      <Typography mr="20px" variant="subtitle">
         {label}:
       </Typography>
       <Typography variant="title20" sx={{ fontSize: "14px" }}>
@@ -54,35 +56,93 @@ const InfoLabel = ({ label, data }: InfoLabelProps) => {
     </BoxContainer>
   );
 };
+export type ProfileData = {
+  age: number | string;
+  heightCm: number | string;
+  weightKg: number | string;
+  gender: "male" | "female";
+  activityLevel: string;
+  weightGoal: string;
+};
 const Profile = () => {
+  const [personalData, setPersonalData] = useState<ProfileData>();
+  const fetchData = (data?: ProfileData) => {
+    const token = getToken();
+    const myHeaders = new Headers({
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
+    });
+    fetch(`${apiUrl}/User/${data ? "set" : "get"}PersonalData`, {
+      method: "POST",
+      body: JSON.stringify(data),
+      headers: myHeaders,
+    })
+      .then((r) => r.json())
+      .then((res) => {
+        console.log(res);
+        if (!res.age) {
+          fetchData();
+        }
+        if (res.age) {
+          setPersonalData(res);
+        }
+      })
+      .catch((err) => err);
+  };
+  const { getToken } = useAuth();
+  useEffect(() => {
+    fetchData();
+  }, []);
   return (
     <>
       <PageWrapper title="User Personal Information">
         <ProfileInfoWrapper>
           <Columns className="content-wrapper">
-            <Columns gap="5px" className="avatar-wrapper">
-              <img className="avatar" src={defaultAvatar} alt="avatar"></img>
-              <Typography variant="subtitle1" sx={{ fontSize: "20px" }}>
-                John Lane
-              </Typography>
-              <Typography variant="subtitle" sx={{ fontSize: "14px" }}>
-                johnlane123
-              </Typography>
-            </Columns>
-            <Columns gap="30px" className="info-wrapper">
-              <InfoLabel label="Email" data="johnlane123@gmail.com" />
-              <InfoLabel label="Phone" data="+1 123 456 7890" />
-              <InfoLabel label="Gender" data="Male" />
-              <InfoLabel label="Date of Birth" data="June 21, 1989" />
-              <InfoLabel
-                label="Location"
-                data="4664 Buena Vista Avenue Eugene, OR 97401"
-              />
-            </Columns>
+            {personalData ? (
+              <>
+                <Columns gap="5px" className="avatar-wrapper">
+                  <img
+                    className="avatar"
+                    src={defaultAvatar}
+                    alt="avatar"
+                  ></img>
+                  <Typography variant="subtitle1" sx={{ fontSize: "20px" }}>
+                    John Lane
+                  </Typography>
+                </Columns>
+                <Columns gap="30px" className="info-wrapper">
+                  <InfoLabel label="Age" data={`${personalData.age} years`} />
+                  <InfoLabel
+                    label="Height"
+                    data={`${personalData.heightCm} cm`}
+                  />
+                  <InfoLabel
+                    label="Weight"
+                    data={`${personalData.weightKg} kg`}
+                  />
+                  <InfoLabel label="Gender" data={personalData.gender} />
+                  <InfoLabel
+                    label="Weight Goal"
+                    data={`${personalData?.weightGoal}`}
+                  />
+                  <InfoLabel
+                    label="Activity Level"
+                    data={personalData?.activityLevel}
+                  />
+                </Columns>
+              </>
+            ) : (
+              <Alert severity="error">
+                No Personal Information Found <br />
+                Please fill out the form
+              </Alert>
+            )}
           </Columns>
         </ProfileInfoWrapper>
       </PageWrapper>
-      <PageWrapper><ProfileEditForm/></PageWrapper>
+      <PageWrapper>
+        <ProfileEditForm setData={fetchData} />
+      </PageWrapper>
     </>
   );
 };

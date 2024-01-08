@@ -8,7 +8,7 @@ interface IType {
 }
 export const apiUrl =
   window.location.hostname === "localhost" || window.location.hostname === ""
-    ? "http://localhost:3000/api"
+    ? "https://localhost:7010/api"
     : "https://platepath.azurewebsites.net/api";
 const authContext = createContext<IType>({
   isLogged: () => false,

@@ -5,7 +5,7 @@ import { Columns } from "../../components";
 import PlansForm from "./PlansForm";
 import PlansList from "./PlansList";
 export type Plan = {
-  name: string;
+  mealPlanName: string;
   days: number;
   mealsPerDay: number;
   minCalories: number;

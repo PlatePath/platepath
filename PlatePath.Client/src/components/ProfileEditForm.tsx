@@ -10,8 +10,13 @@ import {
   Alert,
 } from "@mui/material";
 import { BoxContainer } from "./styled";
+import { ProfileData } from "../pages/Profile/Profile";
 
-const ProfileEditForm = () => {
+const ProfileEditForm = ({
+  setData,
+}: {
+  setData: (data: ProfileData) => void;
+}) => {
   const [formData, setFormData] = useState({
     age: "",
     heightCm: "",
@@ -50,12 +55,8 @@ const ProfileEditForm = () => {
     currentTimeout = setTimeout(() => {
       setShowAlert(false);
     }, 5000);
-    Object.keys(formData).forEach((key) => {
-      // @ts-ignore: Unreachable code error
-      sessionStorage.setItem(key, formData[key]);
-    });
-
-    console.log("Form submitted:", formData);
+    console.log(formData);
+    setData(formData as any);
   };
 
   return (
@@ -96,8 +97,8 @@ const ProfileEditForm = () => {
         <FormControl fullWidth required>
           <InputLabel>Gender</InputLabel>
           <Select name="gender" value={formData.gender} onChange={handleChange}>
-            <MenuItem value="male">Male</MenuItem>
-            <MenuItem value="female">Female</MenuItem>
+            <MenuItem value="Male">Male</MenuItem>
+            <MenuItem value="Female">Female</MenuItem>
           </Select>
         </FormControl>
         <FormControl fullWidth required>
@@ -107,10 +108,11 @@ const ProfileEditForm = () => {
             value={formData.activityLevel}
             onChange={handleChange}
           >
-            <MenuItem value="sedentary">Sedentary</MenuItem>
-            <MenuItem value="moderatelyActive">Moderately active</MenuItem>
-            <MenuItem value="vigorouslyActive">Vigorously active</MenuItem>
-            <MenuItem value="extremelyActive">Extremely active</MenuItem>
+            <MenuItem value="Sedentary">Sedentary</MenuItem>
+            <MenuItem value="LightlyActive">Lightly active</MenuItem>
+            <MenuItem value="ModeratelyActive">Moderately active</MenuItem>
+            <MenuItem value="VeryActive">Very active</MenuItem>
+            <MenuItem value="ExtraActive">Extra active</MenuItem>
           </Select>
         </FormControl>
         <FormControl fullWidth required>
@@ -120,9 +122,9 @@ const ProfileEditForm = () => {
             value={formData.weightGoal}
             onChange={handleChange}
           >
-            <MenuItem value="loss">Loss</MenuItem>
-            <MenuItem value="maintain">Maintain</MenuItem>
-            <MenuItem value="gain">Gain</MenuItem>
+            <MenuItem value="LooseWeight">Loose Weight</MenuItem>
+            <MenuItem value="MaintainWeight">Maintain Weight</MenuItem>
+            <MenuItem value="GainWeight">Gain Weight</MenuItem>
           </Select>
         </FormControl>
       </BoxContainer>

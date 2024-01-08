@@ -91,7 +91,7 @@ builder.Services.AddSwaggerGen(c =>
 
 builder.Services.AddCors(options =>
 {
-    options.AddPolicy("AllowLocalhost3000", builder =>
+    options.AddPolicy("AllowAll", builder =>
     {
         builder.AllowAnyHeader()
                .AllowAnyMethod()
@@ -144,8 +144,8 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-app.UseCors("AllowLocalhost3000");
-
+app.UseCors("AllowAll");
+    
 app.UseHttpsRedirection();
 
 app.UseAuthorization();

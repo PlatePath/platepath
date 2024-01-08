@@ -15,7 +15,7 @@ import { Plan } from "./Plans";
 const PlansForm = () => {
   const { getToken } = useAuth();
   const [formData, setFormData] = useState<Plan>({
-    name: "",
+    mealPlanName: "",
     days: 5,
     mealsPerDay: 3,
     minCalories: 1800,
@@ -55,7 +55,12 @@ const PlansForm = () => {
     id: string
   ) => {
     const target = event.target as HTMLInputElement;
-    if (id === "name" || id === "dietType" || target.value.match(/^[0-9]+$/))
+    if (
+      id === "mealPlanName" ||
+      id === "dietType" ||
+      target.value.match(/^[0-9]+$/) ||
+      target.value === ""
+    )
       setFormData({ ...formData, [id]: target.value });
   };
   return (
@@ -65,8 +70,8 @@ const PlansForm = () => {
       ) : null}
       <TextField
         label="Name"
-        value={formData.name}
-        onChange={(e) => handleInputChange(e, "name")}
+        value={formData.mealPlanName}
+        onChange={(e) => handleInputChange(e, "mealPlanName")}
       />
       <TextField
         label="Days"
