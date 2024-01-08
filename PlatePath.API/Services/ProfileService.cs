@@ -86,10 +86,10 @@ public class ProfileService : IProfileService
 
         return new NutritionCalculationResult
         {
-            Calories = tdee,
-            ProteinGrams = proteinGrams,
-            FatGrams = fatGrams,
-            CarbGrams = carbGrams
+            Calories = Math.Round(tdee),
+            ProteinGrams = Math.Round(proteinGrams),
+            FatGrams = Math.Round(fatGrams),
+            CarbGrams = Math.Round(carbGrams)
         };
     }
 
