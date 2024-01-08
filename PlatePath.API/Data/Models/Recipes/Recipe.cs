@@ -24,17 +24,15 @@ namespace PlatePath.API.Data.Models.Recipes
         
         public int Kcal { get; set; }
 
-        public int KcalPerServing { get; set; }
-
         public int Servings { get; set; }
-
-        public string IngredientLines { get; set; }
 
         public int Carbohydrates { get; set; }
         
         public int Fats { get; set; }
         
         public int Protein { get; set; }
+
+        public string IngredientLines { get; set; }
 
         public string? ImageURL { get; set; }
     }

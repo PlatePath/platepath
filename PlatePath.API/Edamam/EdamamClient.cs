@@ -50,7 +50,7 @@ namespace PlatePath.API.Clients
                 return await httpResponsePolly.Content.ReadFromJsonAsync<EdamamMealPlanResponse>();
             }
 
-            _logger.LogWarning($"Edamam HTTP Status code: {httpResponsePolly.StatusCode} ContentResult: {httpResponsePolly.Content.ReadAsStringAsync().Result}");
+            _logger.LogError($"Edamam HTTP Status code: {httpResponsePolly.StatusCode} ContentResult: {httpResponsePolly.Content.ReadAsStringAsync().Result}");
 
             return null;
 
