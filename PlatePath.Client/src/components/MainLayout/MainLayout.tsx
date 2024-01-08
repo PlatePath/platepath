@@ -12,8 +12,8 @@ import {
   ButtonProps,
   Box,
 } from "@mui/material";
-import { Fragment, ReactNode, useEffect } from "react";
-import { useAuth, useRequireLogin } from "../auth";
+import { ReactNode, useEffect } from "react";
+import { useAuth } from "../auth";
 interface MainLayoutProps {
   children: React.ReactNode;
 }
