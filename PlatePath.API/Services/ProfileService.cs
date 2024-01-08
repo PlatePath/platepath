@@ -60,7 +60,7 @@ public class ProfileService : IProfileService
 
     public NutritionCalculationResult CalculateNutrition(string userId)
     {
-        var user = _context.Users.FirstOrDefault(u => u.Id == userId);
+        var user = _context.Users.Where(u => u.Id == userId).Include(x => x.Gender).Include(x => x.ActivityLevel).Include(x => x.WeightGoal).FirstOrDefault();
         if (user == null)
             throw new ArgumentException("User not found.", nameof(userId));
 
@@ -86,10 +86,10 @@ public class ProfileService : IProfileService
 
         return new NutritionCalculationResult
         {
-            Calories = tdee,
-            ProteinGrams = proteinGrams,
-            FatGrams = fatGrams,
-            CarbGrams = carbGrams
+            Calories = Math.Round(tdee),
+            ProteinGrams = Math.Round(proteinGrams),
+            FatGrams = Math.Round(fatGrams),
+            CarbGrams = Math.Round(carbGrams)
         };
     }
 

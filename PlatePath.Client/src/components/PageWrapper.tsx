@@ -11,6 +11,7 @@ const PageWrapperContent = styled(BoxContainer)`
   padding: 70px;
   justify-content: flex-start;
   background: white;
+  height: 80%;
 `;
 interface PageWrapperProps extends NavbarProps {
   children: ReactNode;
@@ -20,7 +21,7 @@ const PageWrapper = ({ title, children }: PageWrapperProps) => {
     <Columns
       sx={{
         width: "100%",
-        height: "100%",
+        height: "100vh",
       }}
     >
       <Navbar title={title} />

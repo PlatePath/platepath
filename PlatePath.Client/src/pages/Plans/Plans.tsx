@@ -26,7 +26,7 @@ const Plans = () => {
       </PageWrapper>
       <PageWrapper>
         <Columns gap="30px" width="100%">
-          <Typography variant="h5">Plans</Typography>
+          <Typography variant="h5">Meal Plans</Typography>
           <PlansList />
         </Columns>
       </PageWrapper>

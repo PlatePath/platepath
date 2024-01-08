@@ -34,7 +34,7 @@ const PlansForm = () => {
       "Content-Type": "application/json",
       Authorization: `Bearer ${token}`,
     });
-    fetch(`${apiUrl}/MealPlan/generate`, {
+    fetch(`${apiUrl}/MealPlans/generate`, {
       method: "POST",
       body: JSON.stringify(formData),
       headers: myHeaders,
