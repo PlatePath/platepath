@@ -1,8 +1,27 @@
 import { useEffect, useState } from "react";
 import { BoxContainer, Columns } from "../../components";
 import { Plan } from "./Plans";
-import { Box, Typography } from "@mui/material";
+import {
+  Box,
+  Typography,
+  Autocomplete,
+  TextField,
+  Divider,
+} from "@mui/material";
 
+type Meal = {
+  id: number;
+  post: null;
+  edamamId: string;
+  name: string;
+  kcal: number;
+  servings: number;
+  carbohydrates: number;
+  fats: number;
+  protein: number;
+  ingredientLines: string;
+  imageURL: string;
+};
 const PlanCard = ({
   mealPlanName,
   days,
@@ -48,84 +67,79 @@ const PlanCard = ({
 };
 
 const PlansList = () => {
-  const [plans, setPlans] = useState<Plan[]>([
-    {
-      mealPlanName: "Some Name",
-      days: 5,
-      mealsPerDay: 3,
-      minCalories: 1800,
-      maxCalories: 3000,
-      proteins: 0,
-      fats: 0,
-      carbohydrates: 0,
-      dietType: "dairy-free",
-    },
-    {
-      mealPlanName: "Some Name",
-      days: 5,
-      mealsPerDay: 3,
-      minCalories: 1800,
-      maxCalories: 3000,
-      proteins: 0,
-      fats: 0,
-      carbohydrates: 0,
-      dietType: "dairy-free",
-    },
-    {
-      mealPlanName: "Some Name",
-      days: 5,
-      mealsPerDay: 3,
-      minCalories: 1800,
-      maxCalories: 3000,
-      proteins: 0,
-      fats: 0,
-      carbohydrates: 0,
-      dietType: "dairy-free",
-    },
-    {
-      mealPlanName: "Some Name",
-      days: 5,
-      mealsPerDay: 3,
-      minCalories: 1800,
-      maxCalories: 3000,
-      proteins: 0,
-      fats: 0,
-      carbohydrates: 0,
-      dietType: "dairy-free",
-    },
-    {
-      mealPlanName: "Some Name",
-      days: 5,
-      mealsPerDay: 3,
-      minCalories: 1800,
-      maxCalories: 3000,
-      proteins: 0,
-      fats: 0,
-      carbohydrates: 0,
-      dietType: "dairy-free",
-    },
-    {
-      mealPlanName: "Some Name",
-      days: 5,
-      mealsPerDay: 3,
-      minCalories: 1800,
-      maxCalories: 3000,
-      proteins: 0,
-      fats: 0,
-      carbohydrates: 0,
-      dietType: "dairy-free",
-    },
-  ]);
+  const [names, setNames] = useState(["Kopele"]);
+  const [meal, setMeal] = useState<Meal>({
+    id: 108,
+    post: null,
+    edamamId: "630d1df1686cca0c08fda0f4dbb53855",
+    name: "THE BEST INSTANT POT MEATLOAF",
+    kcal: 763,
+    servings: 4,
+    carbohydrates: 57,
+    fats: 44,
+    protein: 38,
+    ingredientLines:
+      "1.5 lbs Boomer Gold Little Potatoes\r\n1 cup chicken broth or water\r\n2 tsp minced garlic\r\n4 tbsp salted butter sliced\r\n1/2 cup shredded Parmesan cheese\r\ndried parsley optional\r\nFor the meatloaf:\r\n1 pound lean ground beef 93% lean\r\n3/4 cup milk\r\n1 egg\r\n3 slices bread cut up into small pieces\r\n1 tablespoon Worcestershire sauce\r\n½ tablespoon onion powder\r\n½ teaspoon salt\r\n½ teaspoon dry ground mustard\r\n¼ teaspoon black pepper\r\n⅛ teaspoon garlic powder\r\nFor the meatloaf glaze:\r\n½ cup ketchup\r\n1 tbsp. balsamic vinegar optional",
+    imageURL:
+      "https://platepathstorage01.blob.core.windows.net/platepathblobs/630d1df1686cca0c08fda0f4dbb53855",
+  });
+  const getNames = () => {};
   useEffect(() => {}, []);
   return (
-    <Box
-      sx={{
-        width: "100%",
-        maxHeight: "80%",
-        overflow: "scroll",
-      }}
-    >
-      <BoxContainer
+    <>
+      <Autocomplete
+        disablePortal
+        id="combo-box-demo"
+        options={names}
+        sx={{ width: 300 }}
+        renderInput={(params) => (
+          <TextField {...params} label="Meal Plan Names" />
+        )}
+      />
+      <Divider sx={{ my: "10px" }} />
+      {meal ? (
+        <>
+          <BoxContainer
+            sx={{
+              justifyContent: "flex-start",
+              width: "100%",
+            }}
+          >
+            <img
+              src={meal.imageURL}
+              alt="meal img"
+              width="250px"
+              height="250px"
+            />
+            <Columns gap="7px" ml="15px">
+              <Typography variant="h6">Calories: {meal.kcal}kcal</Typography>
+              <Typography variant="h6">Fats: {meal.fats}g</Typography>
+              <Typography variant="h6">
+                Carbohydrates: {meal.carbohydrates}g
+              </Typography>
+              <Typography variant="h6">Protein: {meal.protein}g</Typography>
+            </Columns>
+          </BoxContainer>
+          <Columns
+            sx={{
+              alignItems: "flex-start",
+              width: "100%",
+              whiteSpace: "pre-line",
+              maxHeight: "500px",
+              overflow: "scroll",
+            }}
+          >
+            <Columns mb="20px">
+              <Typography variant="h5">Needed Ingredients</Typography>
+              <Divider />
+            </Columns>
+            <Typography variant="h6" fontStyle="italic">
+              {meal.ingredientLines}
+            </Typography>
+          </Columns>
+        </>
+      ) : null}
+      {/* <BoxContainer
         sx={{
           flexWrap: "wrap",
           justifyContent: "space-between",
@@ -136,11 +150,12 @@ const PlansList = () => {
           },
         }}
       >
+        
         {plans.map((plan, i) => (
           <PlanCard {...plan} key={i} />
         ))}
-      </BoxContainer>
-    </Box>
+      </BoxContainer> */}
+    </>
   );
 };
 export default PlansList;

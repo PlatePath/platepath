@@ -1,4 +1,4 @@
-import { Alert, Typography, styled } from "@mui/material";
+import { Alert, Divider, Typography, styled } from "@mui/material";
 import { BoxContainer, Columns } from "../../components";
 import PageWrapper from "../../components/PageWrapper";
 import defaultAvatar from "../../assets/defaultAvatar.png";
@@ -38,6 +38,7 @@ const ProfileInfoWrapper = styled(BoxContainer)`
   & .info-wrapper {
     align-items: flex-start;
     width: 100%;
+    text-align: start;
   }
 `;
 interface InfoLabelProps {
@@ -64,8 +65,16 @@ export type ProfileData = {
   activityLevel: string;
   weightGoal: string;
 };
+export type NeededNutrition = {
+  calories: number;
+  proteinGrams: number;
+  fatGrams: number;
+  carbGrams: number;
+};
 const Profile = () => {
   const [personalData, setPersonalData] = useState<ProfileData>();
+  const [neededNutrition, setNeededNutrition] = useState<NeededNutrition>();
+  const { getToken } = useAuth();
   const fetchData = (data?: ProfileData) => {
     const token = getToken();
     const myHeaders = new Headers({
@@ -89,9 +98,26 @@ const Profile = () => {
       })
       .catch((err) => err);
   };
-  const { getToken } = useAuth();
   useEffect(() => {
+    const token = getToken();
     fetchData();
+    const myHeaders = new Headers({
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
+    });
+    fetch(`${apiUrl}/User/getNeededNutrition`, {
+      method: "GET",
+      headers: myHeaders,
+    })
+      .then((r) => r.json())
+      .then((res) => {
+        if (res.calories) {
+          setNeededNutrition(res);
+        } else {
+          setNeededNutrition(undefined);
+        }
+      })
+      .catch((err) => err);
   }, []);
   return (
     <>
@@ -100,7 +126,7 @@ const Profile = () => {
           <Columns className="content-wrapper">
             {personalData ? (
               <>
-                <Columns gap="5px" className="avatar-wrapper">
+                <Columns gap="5px" className="avatar-wrapper" mb="30px">
                   <img
                     className="avatar"
                     src={defaultAvatar}
@@ -130,6 +156,32 @@ const Profile = () => {
                     data={personalData?.activityLevel}
                   />
                 </Columns>
+                {neededNutrition ? (
+                  <Columns className="info-wrapper">
+                    <Columns>
+                      <Typography variant="h5">Needed Nutrition</Typography>
+                      <Divider />
+                    </Columns>
+                    <Columns gap="5px" mt="15px" className="info-wrapper">
+                      <InfoLabel
+                        label="Calories"
+                        data={`${neededNutrition?.calories}kcal`}
+                      />
+                      <InfoLabel
+                        label="Fats"
+                        data={`${neededNutrition?.fatGrams}g`}
+                      />
+                      <InfoLabel
+                        label="Carbohydrates"
+                        data={`${neededNutrition?.carbGrams}g`}
+                      />
+                      <InfoLabel
+                        label="Protein"
+                        data={`${neededNutrition?.proteinGrams}g`}
+                      />
+                    </Columns>
+                  </Columns>
+                ) : null}
               </>
             ) : (
               <Alert severity="error">
