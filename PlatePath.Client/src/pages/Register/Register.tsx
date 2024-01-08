@@ -1,6 +1,8 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { BoxContainer, Columns } from "../../components";
 import { styled, Typography, Button, TextField } from "@mui/material";
+import { apiUrl, useAuth } from "../../components/auth";
+import { useEffect, useState } from "react";
 const Half = styled("div")`
   width: 50%;
   height: 100vh;
@@ -8,6 +10,50 @@ const Half = styled("div")`
 
 //TODO!: Separate into different components and apply theme
 const Register = () => {
+  const { isLogged } = useAuth();
+  const [form, setForm] = useState({
+    username: "",
+    email: "",
+    password: "",
+  });
+  const handleInputChange = (
+    event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
+    id: string
+  ) => {
+    const target = event.target as HTMLInputElement;
+    setForm({ ...form, [id]: target.value });
+  };
+  const navigate = useNavigate();
+  useEffect(() => {
+    if (isLogged()) {
+      navigate("/profile");
+    }
+  });
+  const onSubmit = () => {
+    fetch(`${apiUrl}/Auth/register`, {
+      method: "POST",
+      body: JSON.stringify({
+        ...form,
+        age: 18,
+        heightCm: 180,
+        weightKg: 80,
+        activityLevel: 1,
+        gender: 1,
+        weightGoal: 1,
+      }),
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "application/json",
+      },
+    })
+      .then((r) => r.json())
+      .then((res) => {
+        if (res.success) {
+          navigate("/login");
+        }
+      })
+      .catch((err) => err);
+  };
   return (
     <BoxContainer>
       <Half sx={{ background: "#8DC63F" }}>
@@ -59,12 +105,28 @@ const Register = () => {
               Register to get started
             </Typography>
             <Columns gap="30px" mt="50px" mb="30px">
-              <TextField id="email" label="Email Address" />
-              <TextField id="name" label="Name" />
-              <TextField id="password1" label="Password" />
-              <TextField id="password2" label="Repeat Password" />
+              <TextField
+                id="email"
+                label="Email Address"
+                value={form.email}
+                onChange={(e) => handleInputChange(e, "email")}
+              />
+              <TextField
+                id="username"
+                label="Username"
+                value={form.username}
+                onChange={(e) => handleInputChange(e, "username")}
+              />
+              <TextField
+                id="password1"
+                label="Password"
+                type="password"
+                value={form.password}
+                onChange={(e) => handleInputChange(e, "password")}
+              />
             </Columns>
             <Button
+              onClick={onSubmit}
               variant="contained"
               sx={{
                 background: "#8DC63F",

@@ -1,6 +1,8 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { BoxContainer, Columns } from "../../components";
 import { styled, Typography, Button, TextField } from "@mui/material";
+import { apiUrl, useAuth } from "../../components/auth";
+import { useEffect, useState } from "react";
 const Half = styled("div")`
   width: 50%;
   height: 100vh;
@@ -8,6 +10,42 @@ const Half = styled("div")`
 
 //TODO!: Separate into different components and apply theme
 const Login = () => {
+  const { isLogged, setToken } = useAuth();
+  const [form, setForm] = useState({
+    username: "",
+    password: "",
+  });
+  const navigate = useNavigate();
+  useEffect(() => {
+    if (isLogged()) {
+      navigate("/profile");
+    }
+  });
+  const onSubmit = () => {
+    fetch(`${apiUrl}/Auth/login`, {
+      method: "POST",
+      body: JSON.stringify(form),
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "application/json",
+      },
+    })
+      .then((r) => r.json())
+      .then((res) => {
+        if (res.token) {
+          setToken(res.token);
+          navigate("/plans");
+        }
+      })
+      .catch((err) => err);
+  };
+  const handleInputChange = (
+    event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
+    id: string
+  ) => {
+    const target = event.target as HTMLInputElement;
+    setForm({ ...form, [id]: target.value });
+  };
   return (
     <BoxContainer>
       <Half sx={{ background: "#8DC63F" }}>
@@ -59,10 +97,22 @@ const Login = () => {
               Login to get started
             </Typography>
             <Columns gap="30px" mt="50px" mb="30px">
-              <TextField id="email" label="Email Address" />
-              <TextField id="password2" label="Repeat Password" />
+              <TextField
+                id="username"
+                label="Username"
+                value={form.username}
+                onChange={(e) => handleInputChange(e, "username")}
+              />
+              <TextField
+                id="password"
+                label="Password"
+                type="password"
+                value={form.password}
+                onChange={(e) => handleInputChange(e, "password")}
+              />
             </Columns>
             <Button
+              onClick={onSubmit}
               variant="contained"
               sx={{
                 background: "#8DC63F",

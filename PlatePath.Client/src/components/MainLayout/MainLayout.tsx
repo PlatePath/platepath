@@ -1,4 +1,4 @@
-import { Link, LinkProps } from "react-router-dom";
+import { Link, LinkProps, useNavigate } from "react-router-dom";
 import { BoxContainer, Columns } from "../styled";
 import defaultAvatar from "../../assets/defaultAvatar.png";
 import logo128 from "../../assets/logo128.png";
@@ -10,8 +10,10 @@ import {
   Typography,
   avatarClasses,
   ButtonProps,
+  Box,
 } from "@mui/material";
-import { Fragment, ReactNode } from "react";
+import { Fragment, ReactNode, useEffect } from "react";
+import { useAuth, useRequireLogin } from "../auth";
 interface MainLayoutProps {
   children: React.ReactNode;
 }
@@ -60,15 +62,25 @@ interface SideLinkProps extends Pick<LinkProps, "to"> {
   disabled?: ButtonProps["disabled"];
 }
 const SideLink = ({ to, children, disabled }: SideLinkProps) => {
-  const Parent = disabled ? Fragment : Link;
+  const Parent = disabled ? Box : Link;
+  const props = disabled
+    ? { className: "side-link" }
+    : ({ to: to, className: "side-link" } as any);
   return (
-    <Parent to={to} className="side-link">
+    <Parent {...props}>
       <Button variant="text" children={children} disabled={disabled} />
     </Parent>
   );
 };
 
 const MainLayout = ({ children }: MainLayoutProps) => {
+  const { isLogged, setToken } = useAuth();
+  const navigate = useNavigate();
+  useEffect(() => {
+    if (!isLogged()) {
+      navigate("/login");
+    }
+  });
   return (
     <BoxContainer
       sx={{
@@ -102,6 +114,7 @@ const MainLayout = ({ children }: MainLayoutProps) => {
           </Columns>
           <Button
             variant="text"
+            onClick={() => setToken("")}
             sx={{
               background: "lightgrey",
               fontWeight: 600,
