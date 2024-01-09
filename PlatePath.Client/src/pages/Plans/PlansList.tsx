@@ -18,47 +18,23 @@ type Recipe = {
   imageURL: string;
 };
 
-const PlansList = () => {
+const PlansList = ({
+  names,
+  getNames,
+}: {
+  names: string[];
+  getNames: () => void;
+}) => {
   const { getToken } = useAuth();
-  const [names, setNames] = useState(["Kopele"]);
   const [recipes, setRecipes] = useState<Recipe[]>([]);
-  const [recipe, setRecipe] = useState<Recipe>({
-    id: 108,
-    post: null,
-    edamamId: "630d1df1686cca0c08fda0f4dbb53855",
-    name: "THE BEST INSTANT POT MEATLOAF",
-    kcal: 763,
-    servings: 4,
-    carbohydrates: 57,
-    fats: 44,
-    protein: 38,
-    ingredientLines:
-      "1.5 lbs Boomer Gold Little Potatoes\r\n1 cup chicken broth or water\r\n2 tsp minced garlic\r\n4 tbsp salted butter sliced\r\n1/2 cup shredded Parmesan cheese\r\ndried parsley optional\r\nFor the meatloaf:\r\n1 pound lean ground beef 93% lean\r\n3/4 cup milk\r\n1 egg\r\n3 slices bread cut up into small pieces\r\n1 tablespoon Worcestershire sauce\r\n½ tablespoon onion powder\r\n½ teaspoon salt\r\n½ teaspoon dry ground mustard\r\n¼ teaspoon black pepper\r\n⅛ teaspoon garlic powder\r\nFor the meatloaf glaze:\r\n½ cup ketchup\r\n1 tbsp. balsamic vinegar optional",
-    imageURL:
-      "https://platepathstorage01.blob.core.windows.net/platepathblobs/630d1df1686cca0c08fda0f4dbb53855",
-  });
-  const getNames = () => {};
+  const [recipe, setRecipe] = useState<Recipe>();
+
   useEffect(() => {
-    const token = getToken();
-    const myHeaders = new Headers({
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${token}`,
-    });
-    fetch(`${apiUrl}/MealPlans/getAll`, {
-      method: "GET",
-      headers: myHeaders,
-    })
-      .then((r) => r.json())
-      .then((res) => {
-        if (res.mealPlanNames) {
-          setNames(res.mealPlanNames);
-        }
-      })
-      .catch((err) => alert(err));
+    getNames();
   }, []);
   const onSelect = (e: React.SyntheticEvent<Element, Event>) => {
     const target = e.target as HTMLLIElement;
-
+    setRecipe(undefined);
     const token = getToken();
     const myHeaders = new Headers({
       "Content-Type": "application/json",
