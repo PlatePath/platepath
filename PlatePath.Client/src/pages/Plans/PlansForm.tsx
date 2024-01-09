@@ -12,7 +12,7 @@ import {
 } from "@mui/material";
 import { Plan } from "./Plans";
 
-const PlansForm = () => {
+const PlansForm = ({ getNames }: { getNames: () => void }) => {
   const { getToken } = useAuth();
   const [formData, setFormData] = useState<Plan>({
     mealPlanName: "",
@@ -44,6 +44,7 @@ const PlansForm = () => {
         console.log(res);
         currentTimeout = null;
         setShowAlert(true);
+        getNames();
         currentTimeout = setTimeout(() => {
           setShowAlert(false);
         }, 5000);
