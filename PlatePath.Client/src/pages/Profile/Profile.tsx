@@ -64,6 +64,8 @@ export type ProfileData = {
   gender: "male" | "female";
   activityLevel: string;
   weightGoal: string;
+  email: string;
+  username: string;
 };
 export type NeededNutrition = {
   calories: number;
@@ -133,7 +135,7 @@ const Profile = () => {
                     alt="avatar"
                   ></img>
                   <Typography variant="subtitle1" sx={{ fontSize: "20px" }}>
-                    John Lane
+                    {personalData.username}
                   </Typography>
                 </Columns>
                 <Columns gap="30px" className="info-wrapper">
