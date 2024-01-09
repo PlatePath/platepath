@@ -30,6 +30,8 @@ public class ProfileService : IProfileService
 
         return new UserPersonalDataModel
         {
+            UserName = user.UserName,
+            Email = user.Email,
             ActivityLevel = user.ActivityLevel.Name,
             Age = user.Age ?? 0,
             Gender = user.Gender.Name,
