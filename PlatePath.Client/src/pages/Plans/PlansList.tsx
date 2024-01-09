@@ -54,7 +54,7 @@ const PlansList = () => {
           setNames(res.mealPlanNames);
         }
       })
-      .catch((err) => err);
+      .catch((err) => alert(err));
   }, []);
   const onSelect = (e: React.SyntheticEvent<Element, Event>) => {
     const target = e.target as HTMLLIElement;
@@ -75,7 +75,7 @@ const PlansList = () => {
           setRecipes(res.mealPlan?.meals);
         }
       })
-      .catch((err) => err);
+      .catch((err) => alert(err));
   };
   const onSelectRecipe = (e: React.SyntheticEvent<Element, Event>) => {
     const target = e.target as HTMLLIElement;

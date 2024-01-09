@@ -35,9 +35,11 @@ const Login = () => {
         if (res.token) {
           setToken(res.token);
           navigate("/plans");
+        } else {
+          alert("Error");
         }
       })
-      .catch((err) => err);
+      .catch((err) => alert(err));
   };
   const handleInputChange = (
     event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
@@ -103,13 +105,19 @@ const Login = () => {
                 value={form.username}
                 onChange={(e) => handleInputChange(e, "username")}
               />
-              <TextField
-                id="password"
-                label="Password"
-                type="password"
-                value={form.password}
-                onChange={(e) => handleInputChange(e, "password")}
-              />
+              <Columns>
+                <TextField
+                  id="password"
+                  label="Password"
+                  type="password"
+                  value={form.password}
+                  onChange={(e) => handleInputChange(e, "password")}
+                />
+                <Typography variant="subtitle2" color="grey" fontStyle="italic">
+                  The password must contain 6 characters, 1 Uppercase, 1
+                  Lowercase and one special symbol
+                </Typography>
+              </Columns>
             </Columns>
             <Button
               onClick={onSubmit}
