@@ -96,7 +96,7 @@ const Profile = () => {
           setPersonalData(res);
         }
       })
-      .catch((err) => err);
+      .catch((err) => alert(err));
   };
   useEffect(() => {
     const token = getToken();
@@ -117,7 +117,7 @@ const Profile = () => {
           setNeededNutrition(undefined);
         }
       })
-      .catch((err) => err);
+      .catch((err) => alert(err));
   }, []);
   return (
     <>

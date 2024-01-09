@@ -50,9 +50,11 @@ const Register = () => {
       .then((res) => {
         if (res.success) {
           navigate("/login");
+        } else {
+          alert("Error");
         }
       })
-      .catch((err) => err);
+      .catch((err) => alert(err));
   };
   return (
     <BoxContainer>
@@ -117,13 +119,19 @@ const Register = () => {
                 value={form.username}
                 onChange={(e) => handleInputChange(e, "username")}
               />
-              <TextField
-                id="password1"
-                label="Password"
-                type="password"
-                value={form.password}
-                onChange={(e) => handleInputChange(e, "password")}
-              />
+              <Columns gap="2px">
+                <TextField
+                  id="password1"
+                  label="Password"
+                  type="password"
+                  value={form.password}
+                  onChange={(e) => handleInputChange(e, "password")}
+                />
+                <Typography variant="subtitle2" color="grey" fontStyle="italic">
+                  The password must contain 6 characters, 1 Uppercase, 1
+                  Lowercase and one special symbol
+                </Typography>
+              </Columns>
             </Columns>
             <Button
               onClick={onSubmit}
