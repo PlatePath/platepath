@@ -111,9 +111,7 @@ const PlansList = () => {
             options={recipes}
             onChange={(e) => onSelectRecipe(e)}
             sx={{ width: 300 }}
-            renderInput={(params) => (
-              <TextField {...params} label="Meal Plans" />
-            )}
+            renderInput={(params) => <TextField {...params} label="Recipes" />}
             getOptionLabel={(option: Recipe) => option.name}
           />
         ) : null}
