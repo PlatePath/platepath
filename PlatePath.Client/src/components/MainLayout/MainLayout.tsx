@@ -92,7 +92,14 @@ const MainLayout = ({ children }: MainLayoutProps) => {
         <img className="sidebar-logo" src={logo128} alt="logo"></img>
         <ProfileInfo>
           <Avatar src={defaultAvatar} />
-          <Typography variant="title20">Welcome Back</Typography>
+          <Typography
+            variant="title20"
+            sx={{
+              fontSize: "15px",
+            }}
+          >
+            Welcome Back
+          </Typography>
         </ProfileInfo>
         <Columns className="button-group">
           <Columns gap="20px">
