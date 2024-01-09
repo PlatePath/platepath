@@ -6,9 +6,9 @@ namespace PlatePath.API.Models.InputModels.User
 {
     public record UserPersonalDataModel
     {
-        public string UserName { get; set; }
+        public string? UserName { get; set; }
 
-        public string Email { get; set; }
+        public string? Email { get; set; }
 
         [Required]
         public int Age { get; set; }
